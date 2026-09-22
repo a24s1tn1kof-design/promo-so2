@@ -213,7 +213,7 @@
         }
         .btn-sell:hover { background-color: #f57c00; color: #0b0e14; }
         .empty-inv { text-align: center; color: #8a919f; padding: 40px 20px; font-size: 14px; }
-            /* === Апгрейдер с вращающейся стрелкой === */
+                /* === Апгрейдер === */
         .upgrader-container {
             background-color: #0b0e14;
             min-height: calc(100vh - 140px);
@@ -243,11 +243,11 @@
             gap: 6px;
         }
 
-        /* Круг с процентами */
+        /* Колесо с процентами */
         .wheel-wrapper {
             position: relative;
-            width: 260px;
-            height: 260px;
+            width: 280px;
+            height: 280px;
             margin: 10px 0 20px;
             display: flex;
             align-items: center;
@@ -258,18 +258,23 @@
             width: 100%;
             height: 100%;
             transform: rotate(-90deg);
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            pointer-events: none;
         }
 
         .wheel-bg-circle {
             fill: none;
             stroke: #1f2530;
-            stroke-width: 30;
+            stroke-width: 24;
         }
 
         .wheel-chance-circle {
             fill: none;
             stroke: #ff3b30;
-            stroke-width: 30;
+            stroke-width: 24;
             stroke-linecap: butt;
             transition: stroke-dasharray 0.4s ease;
         }
@@ -277,8 +282,8 @@
         /* Центральный шар */
         .wheel-center {
             position: absolute;
-            width: 160px;
-            height: 160px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
             background: radial-gradient(circle at 50% 40%, #2a2e38 0%, #151920 70%, #0b0e14 100%);
             border: 4px solid #1f2530;
@@ -291,50 +296,48 @@
         }
 
         .wheel-percent {
-            font-size: 32px;
+            font-size: 34px;
             font-weight: 900;
             color: #00ff88;
             text-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
         }
 
         .wheel-center-emoji {
-            font-size: 40px;
-            margin-bottom: 5px;
+            font-size: 44px;
+            margin-bottom: 4px;
+            line-height: 1;
         }
+
+        /* Знак результата (галочка / крестик) */
+        .wheel-result-icon {
+            font-size: 50px;
+            font-weight: 900;
+            line-height: 1;
+        }
+        .wheel-result-icon.win { color: #00ff88; text-shadow: 0 0 15px rgba(0,255,136,0.8); }
+        .wheel-result-icon.lose { color: #ff3b30; text-shadow: 0 0 15px rgba(255,59,48,0.8); }
 
         /* Вращающаяся стрелка */
-        .wheel-arrow {
+        .wheel-arrow-wrapper {
             position: absolute;
-            width: 260px;
-            height: 260px;
+            width: 280px;
+            height: 280px;
             z-index: 4;
             pointer-events: none;
-            transition: transform 3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transition: transform 3.2s cubic-bezier(0.15, 0.7, 0.2, 1);
         }
 
-        .wheel-arrow::before {
-            content: '';
+        .wheel-arrow {
             position: absolute;
             left: 50%;
-            bottom: 0;
+            top: 6px;
             transform: translateX(-50%);
             width: 0;
             height: 0;
             border-left: 10px solid transparent;
             border-right: 10px solid transparent;
-            border-bottom: 20px solid #f57c00;
+            border-top: 18px solid #f57c00;
             filter: drop-shadow(0 0 6px rgba(245, 124, 0, 0.9));
-        }
-
-        .wheel-pointer-line {
-            position: absolute;
-            left: 50%;
-            top: 10px;
-            width: 2px;
-            height: 40px;
-            background-color: #f57c00;
-            transform: translateX(-50%);
-            filter: drop-shadow(0 0 4px rgba(245, 124, 0, 0.9));
         }
 
         /* Панель управления */
@@ -441,7 +444,6 @@
         .upgrade-skin .skin-label { font-size: 11px; color: #8a919f; margin-top: 6px; }
         .upgrade-arrow { color: #f57c00; font-size: 22px; font-weight: 700; }
 
-        /* Модалка */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -589,7 +591,6 @@
         <div class="inventory-grid" id="inventoryGrid"></div>
     </div>
 
-    <!-- === Апгрейдер === -->
     <div class="screen" id="screen-upgrader">
         <div class="upgrader-container">
             <div class="upgrader-top">
@@ -598,19 +599,18 @@
                 </div>
             </div>
 
-            <!-- Круг с процентами и вращающейся стрелкой -->
             <div class="wheel-wrapper">
-                <svg class="wheel-svg" viewBox="0 0 260 260">
-                    <circle class="wheel-bg-circle" cx="130" cy="130" r="100"></circle>
-                    <circle class="wheel-chance-circle" id="chanceCircle" cx="130" cy="130" r="100" 
-                            stroke-dasharray="0 628" stroke-dashoffset="0"></circle>
+                <svg class="wheel-svg" viewBox="0 0 280 280">
+                    <circle class="wheel-bg-circle" cx="140" cy="140" r="110"></circle>
+                    <circle class="wheel-chance-circle" id="chanceCircle" cx="140" cy="140" r="110"
+                            stroke-dasharray="0 691"></circle>
                 </svg>
                 <div class="wheel-center">
                     <div class="wheel-center-emoji" id="wheelCenterEmoji">🎁</div>
                     <div class="wheel-percent" id="wheelPercent">50%</div>
                 </div>
-                <div class="wheel-arrow" id="wheelArrow">
-                    <div class="wheel-pointer-line"></div>
+                <div class="wheel-arrow-wrapper" id="wheelArrowWrapper">
+                    <div class="wheel-arrow"></div>
                 </div>
             </div>
 
@@ -662,261 +662,305 @@
             <span class="nav-icon">⬆️</span><span>Апгрейд</span>
         </button>
     </div>
-        <script>
-        // === Данные (все скины с эмодзи, чтобы не ломались ссылки) ===
-        const cases = [
-            { id: 1, name: "Стартовый", price: 49, icon: "📦" },
-            { id: 2, name: "Новичок", price: 99, icon: "🎁" },
-            { id: 3, name: "Любитель", price: 199, icon: "💎" },
-            { id: 4, name: "Профи", price: 499, icon: "🔥" },
-            { id: 5, name: "Элита", price: 999, icon: "👑" },
-            { id: 6, name: "Легенда", price: 1999, icon: "⭐" }
-        ];
+    <script>
+    // === Данные кейсов ===
+    const cases = [
+        { id: 1, name: "Стартовый", price: 49, icon: "📦" },
+        { id: 2, name: "Новичок", price: 99, icon: "🎁" },
+        { id: 3, name: "Любитель", price: 199, icon: "💎" },
+        { id: 4, name: "Профи", price: 499, icon: "🔥" },
+        { id: 5, name: "Элита", price: 999, icon: "👑" },
+        { id: 6, name: "Легенда", price: 1999, icon: "⭐" }
+    ];
 
-        const possibleDrops = [
-            { name: "AK-47 | Redline", emoji: "🔫", price: 250 },
-            { name: "AWP | Asiimov", emoji: "🎯", price: 500 },
-            { name: "M4A4 | Howl", emoji: "🔫", price: 1200 },
-            { name: "Нож | Fade", emoji: "🗡️", price: 2500 },
-            { name: "Перчатки | Pandora", emoji: "🧤", price: 1800 },
-            { name: "USP-S | Neo-Noir", emoji: "🔫", price: 350 },
-            { name: "Glock-18 | Water Elemental", emoji: "🔫", price: 150 },
-            { name: "Desert Eagle | Blaze", emoji: "🔫", price: 800 },
-            { name: "AWP | Dragon Lore", emoji: "🎯", price: 5000 },
-            { name: "Керамбит | Doppler", emoji: "🗡️", price: 3500 }
-        ];
+    // === Скины (эмодзи, чтобы точно работало) ===
+    const possibleDrops = [
+        { name: "AK-47 | Redline", emoji: "🔫", price: 250 },
+        { name: "AWP | Asiimov", emoji: "🎯", price: 500 },
+        { name: "M4A4 | Howl", emoji: "🔫", price: 1200 },
+        { name: "Нож | Fade", emoji: "🗡️", price: 2500 },
+        { name: "Перчатки | Pandora", emoji: "🧤", price: 1800 },
+        { name: "USP-S | Neo-Noir", emoji: "🔫", price: 350 },
+        { name: "Glock-18 | Water Elemental", emoji: "🔫", price: 150 },
+        { name: "Desert Eagle | Blaze", emoji: "🔫", price: 800 },
+        { name: "AWP | Dragon Lore", emoji: "🎯", price: 5000 },
+        { name: "Керамбит | Doppler", emoji: "🗡️", price: 3500 }
+    ];
 
-        // === Автосохранение ===
-        function saveState() {
-            localStorage.setItem('ardrop_save', JSON.stringify({ balance, inventory }));
+    // === Автосохранение ===
+    function saveState() {
+        localStorage.setItem('ardrop_save', JSON.stringify({ balance, inventory }));
+    }
+
+    function loadState() {
+        const saved = localStorage.getItem('ardrop_save');
+        if (saved) {
+            try {
+                const data = JSON.parse(saved);
+                balance = data.balance ?? 5000;
+                inventory = data.inventory ?? [];
+            } catch (e) { console.error(e); }
         }
+    }
 
-        function loadState() {
-            const saved = localStorage.getItem('ardrop_save');
-            if (saved) {
-                try {
-                    const data = JSON.parse(saved);
-                    balance = data.balance ?? 5000;
-                    inventory = data.inventory ?? [];
-                } catch (e) { console.error(e); }
-            }
-        }
+    let balance = 5000;
+    let inventory = [];
+    let currentCase = null;
+    let isSpinning = false;
+    let selectedQuantity = 1;
+    let isFastOpen = false;
+    let currentMultiplier = 2;
+    let isFastUpgrade = false;
+    let selectedSourceIndex = null;
+    let selectedTargetIndex = null;
 
-        let balance = 5000;
-        let inventory = [];
-        let currentCase = null;
-        let isSpinning = false;
-        let selectedQuantity = 1;
-        let isFastOpen = false;
-        let currentMultiplier = 2;
-        let isFastUpgrade = false;
-        let selectedSourceIndex = null;
-        let selectedTargetIndex = null;
+    loadState();
+    updateBalance();
+    renderCases();
+    renderInventory();
+    updateWheelChance();
 
-        loadState();
-        updateBalance();
-        renderCases();
-        renderInventory();
-        updateWheel();
+    // === Отрисовка кейсов ===
+    function renderCases() {
+        const grid = document.getElementById('casesGrid');
+        grid.innerHTML = '';
+        cases.forEach(c => {
+            const card = document.createElement('div');
+            card.className = 'case-card';
+            card.onclick = () => openCaseScreen(c.id);
+            card.innerHTML = `
+                <div class="case-image">${c.icon}</div>
+                <div class="case-title">${c.name}</div>
+                <div class="case-price">Цена: <span class="price-val">${c.price}</span> 🪙</div>`;
+            grid.appendChild(card);
+        });
+    }
 
-        // === Кейсы ===
-        function renderCases() {
-            const grid = document.getElementById('casesGrid');
-            grid.innerHTML = '';
-            cases.forEach(c => {
-                const card = document.createElement('div');
-                card.className = 'case-card';
-                card.onclick = () => openCaseScreen(c.id);
-                card.innerHTML = `
-                    <div class="case-image">${c.icon}</div>
-                    <div class="case-title">${c.name}</div>
-                    <div class="case-price">Цена: <span class="price-val">${c.price}</span> 🪙</div>`;
-                grid.appendChild(card);
-            });
-        }
+    // === Количество открытий ===
+    function setQuantity(qty) {
+        selectedQuantity = qty;
+        document.querySelectorAll('.qty-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (parseInt(btn.textContent) === qty) btn.classList.add('active');
+        });
+        checkBalance();
+    }
 
-        function setQuantity(qty) {
-            selectedQuantity = qty;
-            document.querySelectorAll('.qty-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (parseInt(btn.textContent) === qty) btn.classList.add('active');
-            });
-            checkBalance();
-        }
+    document.getElementById('fastOpenCheckbox').addEventListener('change', (e) => {
+        isFastOpen = e.target.checked;
+    });
 
-        document.getElementById('fastOpenCheckbox').addEventListener('change', (e) => { isFastOpen = e.target.checked; });
+    // === Переход на экран кейса ===
+    function openCaseScreen(id) {
+        currentCase = cases.find(c => c.id === id);
+        if (!currentCase) return;
+        document.getElementById('caseTitle').textContent = currentCase.name;
+        document.getElementById('casePrice').textContent = currentCase.price;
+        document.getElementById('contentsCaseName').textContent = currentCase.name;
+        document.getElementById('dropResult').classList.remove('show');
+        document.getElementById('openCaseBtn').disabled = false;
+        document.getElementById('openCaseBtn').textContent = 'Открыть кейс';
+        document.getElementById('insufficientFunds').classList.remove('show');
+        setQuantity(1);
+        renderCaseContents();
+        buildRouletteTrack();
+        checkBalance();
+        showScreen('case');
+    }
 
-        function openCaseScreen(id) {
-            currentCase = cases.find(c => c.id === id);
-            if (!currentCase) return;
-            document.getElementById('caseTitle').textContent = currentCase.name;
-            document.getElementById('casePrice').textContent = currentCase.price;
-            document.getElementById('contentsCaseName').textContent = currentCase.name;
-            document.getElementById('dropResult').classList.remove('show');
-            document.getElementById('openCaseBtn').disabled = false;
-            document.getElementById('openCaseBtn').textContent = 'Открыть кейс';
-            document.getElementById('insufficientFunds').classList.remove('show');
-            setQuantity(1);
-            renderCaseContents();
-            buildRouletteTrack();
-            checkBalance();
-            showScreen('case');
-        }
+    // === Содержимое кейса ===
+    function renderCaseContents() {
+        const grid = document.getElementById('contentsGrid');
+        grid.innerHTML = '';
+        possibleDrops.forEach(item => {
+            const el = document.createElement('div');
+            el.className = 'content-item';
+            el.innerHTML = `
+                <div class="content-emoji">${item.emoji}</div>
+                <div class="content-name">${item.name}</div>
+                <div class="content-price">${item.price} 🪙</div>`;
+            grid.appendChild(el);
+        });
+    }
 
-        function renderCaseContents() {
-            const grid = document.getElementById('contentsGrid');
-            grid.innerHTML = '';
-            possibleDrops.forEach(item => {
-                const el = document.createElement('div');
-                el.className = 'content-item';
-                el.innerHTML = `<div class="content-emoji">${item.emoji}</div><div class="content-name">${item.name}</div><div class="content-price">${item.price} 🪙</div>`;
-                grid.appendChild(el);
-            });
-        }
-
-        function checkBalance() {
-            if (!currentCase) return;
-            const totalCost = currentCase.price * selectedQuantity;
-            if (balance < totalCost) {
-                document.getElementById('currentBalanceWarn').textContent = balance;
-                document.getElementById('requiredBalanceWarn').textContent = totalCost;
-                document.getElementById('missingBalance').textContent = (totalCost - balance).toFixed(2);
-                document.getElementById('insufficientFunds').classList.add('show');
-                document.getElementById('openCaseBtn').disabled = true;
-            } else {
-                document.getElementById('insufficientFunds').classList.remove('show');
-                document.getElementById('openCaseBtn').disabled = false;
-            }
-        }
-
-        function buildRouletteTrack() {
-            const track = document.getElementById('rouletteTrack');
-            track.style.transition = 'none';
-            track.style.transform = 'translateX(0)';
-            track.innerHTML = '';
-            for (let i = 0; i < 50; i++) {
-                const item = possibleDrops[Math.floor(Math.random() * possibleDrops.length)];
-                const el = document.createElement('div');
-                el.className = 'roulette-item' + (item.price > 1000 ? ' rare' : '');
-                el.innerHTML = `<span class="item-emoji">${item.emoji}</span><span class="item-name">${item.name}</span>`;
-                track.appendChild(el);
-            }
-        }
-
-        function spinRoulette() {
-            if (isSpinning || !currentCase) return;
-            const totalCost = currentCase.price * selectedQuantity;
-            if (balance < totalCost) { checkBalance(); return; }
-            isSpinning = true;
+    // === Проверка баланса ===
+    function checkBalance() {
+        if (!currentCase) return;
+        const totalCost = currentCase.price * selectedQuantity;
+        if (balance < totalCost) {
+            document.getElementById('currentBalanceWarn').textContent = balance;
+            document.getElementById('requiredBalanceWarn').textContent = totalCost;
+            document.getElementById('missingBalance').textContent = (totalCost - balance).toFixed(2);
+            document.getElementById('insufficientFunds').classList.add('show');
             document.getElementById('openCaseBtn').disabled = true;
-            document.getElementById('openCaseBtn').textContent = 'Крутим...';
-            document.getElementById('dropResult').classList.remove('show');
+        } else {
             document.getElementById('insufficientFunds').classList.remove('show');
-            balance -= totalCost;
-            updateBalance();
-            saveState();
-            const droppedItem = possibleDrops[Math.floor(Math.random() * possibleDrops.length)];
-            if (isFastOpen) {
-                setTimeout(() => {
-                    inventory.push(droppedItem);
-                    renderInventory();
-                    saveState();
-                    document.getElementById('dropIcon').textContent = droppedItem.emoji;
-                    document.getElementById('dropName').textContent = droppedItem.name;
-                    document.getElementById('dropResult').classList.add('show');
-                    isSpinning = false;
-                    document.getElementById('openCaseBtn').disabled = false;
-                    document.getElementById('openCaseBtn').textContent = 'Открыть ещё раз';
-                    checkBalance();
-                }, 300);
-                return;
-            }
-            buildRouletteTrack();
-            const track = document.getElementById('rouletteTrack');
-            const items = track.children;
-            const targetIndex = 40;
-            const dropEl = document.createElement('div');
-            dropEl.className = 'roulette-item' + (droppedItem.price > 1000 ? ' rare' : '');
-            dropEl.innerHTML = `<span class="item-emoji">${droppedItem.emoji}</span><span class="item-name">${droppedItem.name}</span>`;
-            track.replaceChild(dropEl, items[targetIndex]);
-            const itemWidth = 100 + 8;
-            const wrapperWidth = document.querySelector('.roulette-wrapper').offsetWidth;
-            const centerOffset = wrapperWidth / 2 - 100 / 2;
-            const targetPosition = targetIndex * itemWidth - centerOffset;
+            document.getElementById('openCaseBtn').disabled = false;
+        }
+    }
+
+    // === Лента рулетки ===
+    function buildRouletteTrack() {
+        const track = document.getElementById('rouletteTrack');
+        track.style.transition = 'none';
+        track.style.transform = 'translateX(0)';
+        track.innerHTML = '';
+        for (let i = 0; i < 50; i++) {
+            const item = possibleDrops[Math.floor(Math.random() * possibleDrops.length)];
+            const el = document.createElement('div');
+            el.className = 'roulette-item' + (item.price > 1000 ? ' rare' : '');
+            el.innerHTML = `<span class="item-emoji">${item.emoji}</span><span class="item-name">${item.name}</span>`;
+            track.appendChild(el);
+        }
+    }
+
+    // === Прокрутка рулетки ===
+    function spinRoulette() {
+        if (isSpinning || !currentCase) return;
+        const totalCost = currentCase.price * selectedQuantity;
+        if (balance < totalCost) { checkBalance(); return; }
+
+        isSpinning = true;
+        document.getElementById('openCaseBtn').disabled = true;
+        document.getElementById('openCaseBtn').textContent = 'Крутим...';
+        document.getElementById('dropResult').classList.remove('show');
+        document.getElementById('insufficientFunds').classList.remove('show');
+
+        balance -= totalCost;
+        updateBalance();
+        saveState();
+
+        const droppedItem = possibleDrops[Math.floor(Math.random() * possibleDrops.length)];
+
+        // Быстрое открытие
+        if (isFastOpen) {
             setTimeout(() => {
-                track.style.transition = 'transform 4s cubic-bezier(0.2, 0.8, 0.2, 1)';
-                track.style.transform = `translateX(-${targetPosition}px)`;
-            }, 50);
-            setTimeout(() => {
-                isSpinning = false;
-                document.getElementById('openCaseBtn').disabled = false;
-                document.getElementById('openCaseBtn').textContent = 'Открыть ещё раз';
-                document.getElementById('dropIcon').textContent = droppedItem.emoji;
-                document.getElementById('dropName').textContent = droppedItem.name;
-                document.getElementById('dropResult').classList.add('show');
                 inventory.push(droppedItem);
                 renderInventory();
                 saveState();
+                document.getElementById('dropIcon').textContent = droppedItem.emoji;
+                document.getElementById('dropName').textContent = droppedItem.name;
+                document.getElementById('dropResult').classList.add('show');
+                isSpinning = false;
+                document.getElementById('openCaseBtn').disabled = false;
+                document.getElementById('openCaseBtn').textContent = 'Открыть ещё раз';
                 checkBalance();
-            }, 4200);
+            }, 300);
+            return;
         }
 
-        function renderInventory() {
-            const grid = document.getElementById('inventoryGrid');
-            grid.innerHTML = '';
-            if (inventory.length === 0) {
-                grid.innerHTML = '<div class="empty-inv">Инвентарь пуст. Откройте кейс!</div>';
-                return;
-            }
-            inventory.forEach((item, index) => {
-                const el = document.createElement('div');
-                el.className = 'inv-item';
-                el.innerHTML = `
-                    <div class="inv-emoji">${item.emoji}</div>
-                    <div class="inv-name">${item.name}</div>
-                    <div class="inv-price">${item.price} 🪙</div>
-                    <button class="btn-sell" onclick="sellItem(${index})">Продать</button>`;
-                grid.appendChild(el);
-            });
-        }
+        // Обычная рулетка
+        buildRouletteTrack();
+        const track = document.getElementById('rouletteTrack');
+        const items = track.children;
+        const targetIndex = 40;
 
-        function sellItem(index) {
-            balance += inventory[index].price;
-            inventory.splice(index, 1);
-            updateBalance();
+        const dropEl = document.createElement('div');
+        dropEl.className = 'roulette-item' + (droppedItem.price > 1000 ? ' rare' : '');
+        dropEl.innerHTML = `<span class="item-emoji">${droppedItem.emoji}</span><span class="item-name">${droppedItem.name}</span>`;
+        track.replaceChild(dropEl, items[targetIndex]);
+
+        const itemWidth = 100 + 8;
+        const wrapperWidth = document.querySelector('.roulette-wrapper').offsetWidth;
+        const centerOffset = wrapperWidth / 2 - 100 / 2;
+        const targetPosition = targetIndex * itemWidth - centerOffset;
+
+        setTimeout(() => {
+            track.style.transition = 'transform 4s cubic-bezier(0.2, 0.8, 0.2, 1)';
+            track.style.transform = `translateX(-${targetPosition}px)`;
+        }, 50);
+
+        setTimeout(() => {
+            isSpinning = false;
+            document.getElementById('openCaseBtn').disabled = false;
+            document.getElementById('openCaseBtn').textContent = 'Открыть ещё раз';
+            document.getElementById('dropIcon').textContent = droppedItem.emoji;
+            document.getElementById('dropName').textContent = droppedItem.name;
+            document.getElementById('dropResult').classList.add('show');
+            inventory.push(droppedItem);
             renderInventory();
             saveState();
-        }
+            checkBalance();
+        }, 4200);
+    }
 
-        // === Апгрейдер ===
-        function setMultiplier(mult) {
-            currentMultiplier = mult;
-            document.querySelectorAll('.chance-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.textContent === `x${mult}`) btn.classList.add('active');
-            });
-            updateWheel();
+    // === Отрисовка инвентаря ===
+    function renderInventory() {
+        const grid = document.getElementById('inventoryGrid');
+        grid.innerHTML = '';
+        if (inventory.length === 0) {
+            grid.innerHTML = '<div class="empty-inv">Инвентарь пуст. Откройте кейс!</div>';
+            return;
         }
+        inventory.forEach((item, index) => {
+            const el = document.createElement('div');
+            el.className = 'inv-item';
+            el.innerHTML = `
+                <div class="inv-emoji">${item.emoji}</div>
+                <div class="inv-name">${item.name}</div>
+                <div class="inv-price">${item.price} 🪙</div>
+                <button class="btn-sell" onclick="sellItem(${index})">Продать</button>`;
+            grid.appendChild(el);
+        });
+    }
 
-        function updateWheel() {
-            // Шанс = 100 / множитель (x2=50%, x3=33%, x5=20%, x10=10%, x25=4%)
-            const chance = Math.round(100 / currentMultiplier);
-            document.getElementById('wheelPercent').textContent = `${chance}%`;
-            
-            // Радиус 100, длина окружности = 2 * π * 100 ≈ 628
-            const circumference = 628;
-            const dashLength = (chance / 100) * circumference;
-            const circle = document.getElementById('chanceCircle');
-            circle.setAttribute('stroke-dasharray', `${dashLength} ${circumference - dashLength}`);
-            circle.setAttribute('stroke-dashoffset', '0');
+    // === Продажа скина ===
+    function sellItem(index) {
+        balance += inventory[index].price;
+        inventory.splice(index, 1);
+        updateBalance();
+        renderInventory();
+        saveState();
+    }
+
+    // === Апгрейдер: множители ===
+    function setMultiplier(mult) {
+        currentMultiplier = mult;
+        document.querySelectorAll('.chance-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.textContent === `x${mult}`) btn.classList.add('active');
+        });
+        if (selectedSourceIndex !== null && selectedTargetIndex !== null) {
+            updateWheelChance();
+        } else {
+            const baseChance = Math.round(100 / mult);
+            document.getElementById('wheelPercent').textContent = `${baseChance}%`;
+            updateCircleArc(baseChance);
         }
+    }
 
-        function toggleFastUpgrade() {
-            isFastUpgrade = !isFastUpgrade;
-            document.getElementById('fastUpgradeBtn').classList.toggle('active', isFastUpgrade);
+    // === Обновление красной дуги ===
+    function updateCircleArc(chancePercent) {
+        const radius = 110;
+        const circumference = 2 * Math.PI * radius; // ≈ 691
+        const arcLength = (chancePercent / 100) * circumference;
+        const circle = document.getElementById('chanceCircle');
+        circle.setAttribute('stroke-dasharray', `${arcLength} ${circumference - arcLength}`);
+        circle.setAttribute('stroke-dashoffset', '0');
+    }
+
+    // === Пересчёт шанса по цене ===
+    function updateWheelChance() {
+        if (selectedSourceIndex === null || selectedTargetIndex === null) return;
+        const src = inventory[selectedSourceIndex];
+        const tgt = possibleDrops[selectedTargetIndex];
+        if (!src || !tgt) return;
+        if (tgt.price <= src.price) {
+            document.getElementById('wheelPercent').textContent = '0%';
+            updateCircleArc(0);
+            return;
         }
+        const chance = (src.price / tgt.price) * 100;
+        document.getElementById('wheelPercent').textContent = `${chance.toFixed(1)}%`;
+        updateCircleArc(chance);
+    }
 
-        // === Модалка ===
+    // === Быстрый апгрейд ===
+    function toggleFastUpgrade() {
+        isFastUpgrade = !isFastUpgrade;
+        document.getElementById('fastUpgradeBtn').classList.toggle('active', isFastUpgrade);
+    }
+                // === Модалка выбора скина ===
         let modalMode = 'source';
 
         function openInventoryModal(mode) {
@@ -952,12 +996,14 @@
                 document.getElementById('upgradeSkinEmoji').textContent = item.emoji;
                 document.getElementById('upgradeSkinLabel').textContent = `${item.name} (${item.price} 🪙)`;
                 document.getElementById('wheelCenterEmoji').textContent = item.emoji;
+                document.getElementById('wheelCenterEmoji').style.display = 'block';
             } else {
                 selectedTargetIndex = index;
                 const item = possibleDrops[index];
                 document.getElementById('targetSkinEmoji').textContent = item.emoji;
                 document.getElementById('targetSkinLabel').textContent = `${item.name} (${item.price} 🪙)`;
             }
+            updateWheelChance();
             closeModal();
         }
 
@@ -965,7 +1011,7 @@
             document.getElementById('modalOverlay').classList.remove('show');
         }
 
-        // === Апгрейд со стрелкой ===
+        // === Запуск апгрейда ===
         function doUpgrade() {
             if (selectedSourceIndex === null) { alert('Выберите свой скин'); return; }
             if (selectedTargetIndex === null) { alert('Выберите что получите'); return; }
@@ -978,59 +1024,90 @@
                 return;
             }
 
+            // Шанс = цена исходного / цена целевого × 100
             const chance = (sourceItem.price / targetItem.price) * 100;
             const roll = Math.random() * 100;
+            const isWin = roll < chance;
 
             document.getElementById('improveBtn').disabled = true;
             document.getElementById('improveBtn').textContent = 'Крутим...';
 
-            // Случайный угол для стрелки (0–360)
-            const randomAngle = Math.floor(Math.random() * 360);
-            // Угол, под которым находится "успешный" сектор
-            const chanceAngle = (chance / 100) * 360;
-            // Проверяем, попала ли стрелка в успешный сектор
-            // Успешный сектор начинается с 0 и идёт по часовой стрелке
-            const isWin = randomAngle <= chanceAngle;
+            // Скрываем проценты и эмодзи на время анимации
+            document.getElementById('wheelPercent').style.display = 'none';
+            document.getElementById('wheelCenterEmoji').style.display = 'none';
 
-            // Крутим стрелку
-            const arrow = document.getElementById('wheelArrow');
-            arrow.style.transition = 'transform 3s cubic-bezier(0.2, 0.8, 0.2, 1)';
-            // Полный оборот + случайный угол
-            const totalRotation = 360 * 3 + randomAngle;
-            arrow.style.transform = `rotate(${totalRotation}deg)`;
+            // Стрелка останавливается на случайном угле от 0° до 360°
+            // Успех, если угол попадает в диапазон [0; chance% от 360°]
+            const chanceAngle = (chance / 100) * 360;
+            let finalAngle = Math.random() * 360;
+
+            // Корректируем результат, чтобы визуал совпадал с шансом
+            if (isWin) {
+                // Если выигрыш — ставим угол внутри красного сектора
+                finalAngle = Math.random() * chanceAngle;
+            } else {
+                // Если проигрыш — ставим угол вне красного сектора
+                finalAngle = chanceAngle + Math.random() * (360 - chanceAngle);
+            }
+
+            const totalRotation = 360 * 4 + finalAngle;
+
+            const wrapper = document.getElementById('wheelArrowWrapper');
+            wrapper.style.transition = 'transform 3.2s cubic-bezier(0.15, 0.7, 0.2, 1)';
+            wrapper.style.transform = `rotate(${totalRotation}deg)`;
 
             setTimeout(() => {
+                // Показываем результат — галочка или крестик
+                const resultIcon = document.createElement('div');
+                resultIcon.className = 'wheel-result-icon ' + (isWin ? 'win' : 'lose');
+                resultIcon.textContent = isWin ? '✓' : '✕';
+
+                const center = document.querySelector('.wheel-center');
+                const oldIcon = center.querySelector('.wheel-result-icon');
+                if (oldIcon) oldIcon.remove();
+                center.appendChild(resultIcon);
+
                 if (isWin) {
                     inventory.splice(selectedSourceIndex, 1);
                     inventory.push(targetItem);
-                    alert(`🎉 Успех! Вы получили ${targetItem.name}`);
                 } else {
                     inventory.splice(selectedSourceIndex, 1);
-                    alert(`💀 Провал! Скин ${sourceItem.name} сгорел.`);
                 }
 
+                // Сброс выбора
                 selectedSourceIndex = null;
                 selectedTargetIndex = null;
                 document.getElementById('upgradeSkinEmoji').textContent = '➕';
                 document.getElementById('upgradeSkinLabel').textContent = 'Выбрать скин';
                 document.getElementById('targetSkinEmoji').textContent = '🎯';
                 document.getElementById('targetSkinLabel').textContent = 'Выбрать результат';
-                document.getElementById('wheelCenterEmoji').textContent = '🎁';
                 document.getElementById('improveBtn').disabled = false;
                 document.getElementById('improveBtn').innerHTML = '<span style="font-size: 18px;">🛡</span> Улучшить';
-                
-                // Сброс стрелки
-                arrow.style.transition = 'none';
-                arrow.style.transform = 'rotate(0deg)';
-                setTimeout(() => { arrow.style.transition = 'transform 3s cubic-bezier(0.2, 0.8, 0.2, 1)'; }, 50);
 
                 renderInventory();
                 updateBalance();
                 saveState();
-            }, 3200);
+
+                // Возврат через 2 секунды — убираем крестик/галочку, показываем 🎁 и 50%
+                setTimeout(() => {
+                    if (resultIcon.parentNode) resultIcon.remove();
+                    document.getElementById('wheelPercent').style.display = 'block';
+                    document.getElementById('wheelCenterEmoji').style.display = 'block';
+                    document.getElementById('wheelCenterEmoji').textContent = '🎁';
+                    document.getElementById('wheelPercent').textContent = '50%';
+                    updateCircleArc(50);
+
+                    wrapper.style.transition = 'none';
+                    wrapper.style.transform = 'rotate(0deg)';
+                    setTimeout(() => {
+                        wrapper.style.transition = 'transform 3.2s cubic-bezier(0.15, 0.7, 0.2, 1)';
+                    }, 50);
+                }, 2000);
+
+            }, 3400);
         }
 
-        // === Экраны ===
+        // === Переключение экранов ===
         function showScreen(name) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1048,10 +1125,24 @@
                 document.getElementById('screen-upgrader').classList.add('active');
                 document.getElementById('navUpgrader').classList.add('active');
                 updateBalance();
-                updateWheel();
+
+                // Сброс апгрейдера при входе
+                document.getElementById('wheelCenterEmoji').textContent = '🎁';
+                document.getElementById('wheelCenterEmoji').style.display = 'block';
+                document.getElementById('wheelPercent').style.display = 'block';
+                document.getElementById('wheelPercent').textContent = '50%';
+                updateCircleArc(50);
+
+                selectedSourceIndex = null;
+                selectedTargetIndex = null;
+                document.getElementById('upgradeSkinEmoji').textContent = '➕';
+                document.getElementById('upgradeSkinLabel').textContent = 'Выбрать скин';
+                document.getElementById('targetSkinEmoji').textContent = '🎯';
+                document.getElementById('targetSkinLabel').textContent = 'Выбрать результат';
             }
         }
 
+        // === Обновление баланса ===
         function updateBalance() {
             document.getElementById('balanceDisplay').textContent = balance.toLocaleString('ru-RU');
             const upgBal = document.getElementById('upgraderBalanceDisplay');
@@ -1059,4 +1150,4 @@
         }
     </script>
 </body>
-    </html>
+</html>
