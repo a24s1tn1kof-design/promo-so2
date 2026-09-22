@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Standoff 2 — Генератор промокодов</title>
+<title>promo-so2 — Генератор промокодов</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -31,29 +32,27 @@
   h1 { color: #ff9d2e; font-size: 28px; letter-spacing: 1px; }
   .subtitle { color: #8a97a6; font-size: 13px; margin-top: 4px; }
 
-  .controls {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-
-  .controls label {
+  .field {
     display: flex;
     flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .field label {
     font-size: 13px;
     color: #8a97a6;
-    gap: 6px;
   }
 
   input, select {
     background: #0d131b;
     border: 1px solid #2a3947;
     color: #e6edf3;
-    padding: 10px;
+    padding: 12px;
     border-radius: 8px;
     font-size: 14px;
     outline: none;
+    width: 100%;
   }
 
   input:focus, select:focus { border-color: #ff9d2e; }
@@ -68,12 +67,13 @@
     cursor: pointer;
     font-size: 14px;
     transition: transform .15s, filter .15s;
+    font-family: inherit;
   }
 
   button:hover { filter: brightness(1.1); transform: translateY(-1px); }
   button:active { transform: translateY(0); }
 
-  #generate { grid-column: 1 / -1; margin-top: 6px; }
+  .generate-btn { width: 100%; margin-top: 6px; }
 
   .codes {
     list-style: none;
@@ -82,7 +82,7 @@
     gap: 8px;
     max-height: 340px;
     overflow-y: auto;
-    margin-bottom: 16px;
+    margin: 18px 0 16px;
   }
 
   .codes li {
@@ -103,7 +103,7 @@
     font-family: 'Consolas', monospace;
     font-size: 15px;
     color: #4dd0e1;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
   }
 
   .reward-tag {
@@ -122,6 +122,7 @@
     padding: 6px 10px;
     font-size: 12px;
     font-weight: 500;
+    flex-shrink: 0;
   }
 
   .actions { display: flex; gap: 10px; margin-bottom: 18px; }
@@ -133,39 +134,95 @@
     text-align: center;
     line-height: 1.5;
   }
+
+  /* ===== Своё модальное окно ===== */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 8, 12, .75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease;
+    z-index: 100;
+  }
+
+  .modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .modal {
+    background: #131a24;
+    border: 1px solid #2a3947;
+    border-radius: 14px;
+    padding: 24px;
+    width: 100%;
+    max-width: 360px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.7);
+    transform: translateY(-10px);
+    transition: transform .2s ease;
+  }
+
+  .modal-overlay.active .modal { transform: translateY(0); }
+
+  .modal h2 {
+    font-size: 17px;
+    color: #ff9d2e;
+    margin-bottom: 6px;
+  }
+
+  .modal p {
+    font-size: 13px;
+    color: #8a97a6;
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .modal-actions button { flex: 1; }
 </style>
 </head>
 <body>
   <div class="app">
     <header>
-      <h1>🎯 Standoff 2</h1>
-      <p class="subtitle">Генератор промокодов (демо)</p>
+      <h1>🎯 promo-so2</h1>
+      <p class="subtitle">by a24s1tn1kof-design</p>
     </header>
 
-    <div class="controls">
-      <label>
-        Количество:
-        <input type="number" id="count" value="5" min="1" max="50">
-      </label>
-
-      <label>
-        Тип награды:
-        <select id="reward">
-          <option value="500 кредитов">500 кредитов</option>
-          <option value="1000 кредитов">1000 кредитов</option>
-          <option value="Скин AKR">Скин AKR</option>
-          <option value="Кейс">Кейс</option>
-          <option value="Gold">Gold</option>
-        </select>
-      </label>
-
-      <label>
-        Длина кода:
-        <input type="number" id="length" value="12" min="8" max="20">
-      </label>
-
-      <button id="generate">Сгенерировать</button>
+    <div class="field">
+      <label>Тип награды</label>
+      <select id="rewardType">
+        <option value="gold">💰 Голда</option>
+        <option value="skins">🔫 Скины</option>
+      </select>
     </div>
+
+    <div class="field" id="goldField">
+      <label>Количество голды</label>
+      <input type="number" id="goldAmount" value="100" min="1" placeholder="Например: 100">
+    </div>
+
+    <div class="field" id="skinsField" style="display:none;">
+      <label>Название скина</label>
+      <input type="text" id="skinName" placeholder="Например: AKR Red Dragon">
+    </div>
+
+    <div class="field">
+      <label>Количество промокодов</label>
+      <input type="number" id="count" value="5" min="1" max="100">
+    </div>
+
+    <button class="generate-btn" id="generate">Сгенерировать</button>
 
     <ul id="codes" class="codes"></ul>
 
@@ -175,16 +232,29 @@
     </div>
 
     <p class="disclaimer">
-      Демонстрационный генератор. Не связан с официальной игрой Standoff 2.
-      Реальные награды не выдаёт.
+      © promo-so2 — демонстрационный генератор.
+      Не связан с официальной игрой Standoff 2. Реальные награды не выдаёт.
     </p>
   </div>
 
-<script>
-  // Алфавит без неоднозначных символов (0/O, 1/I/L)
-  const ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  <!-- Своё модальное окно «Количество активаций» -->
+  <div class="modal-overlay" id="activationModal">
+    <div class="modal">
+      <h2>Количество активаций</h2>
+      <p>Укажите, сколько раз можно активировать каждый промокод.</p>
+      <input type="number" id="activationInput" value="1" min="1" max="9999">
+      <div class="modal-actions">
+        <button class="secondary" id="cancelActivation">Отмена</button>
+        <button id="confirmActivation">Подтвердить</button>
+      </div>
+    </div>
+  </div>
 
-  // Криптостойкий генератор случайных чисел
+<script>
+  const ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  const CODE_LENGTH = 12;
+
+  // Криптостойкий генератор
   function randomInt(max) {
     if (window.crypto && window.crypto.getRandomValues) {
       const buf = new Uint32Array(1);
@@ -194,33 +264,23 @@
     return Math.floor(Math.random() * max);
   }
 
-  // Генерация одного промокода формата SO2-XXXX-XXXX-XXXX
-  function generateCode(length, prefix = 'SO2') {
-    const clean = length - prefix.length - 1;
-    const groups = 3;
-    const perGroup = Math.floor(clean / groups);
-    const remainder = clean % groups;
-
-    const parts = [];
-    for (let g = 0; g < groups; g++) {
-      const size = perGroup + (g < remainder ? 1 : 0);
-      let part = '';
-      for (let i = 0; i < size; i++) {
-        part += ALPHABET[randomInt(ALPHABET.length)];
-      }
-      parts.push(part);
+  // Промокод без дефисов: AAAAAAAAAAAA
+  function generateCode() {
+    let code = '';
+    for (let i = 0; i < CODE_LENGTH; i++) {
+      code += ALPHABET[randomInt(ALPHABET.length)];
     }
-    return `${prefix}-${parts.join('-')}`;
+    return code;
   }
 
   const usedCodes = new Set();
 
-  function generateUnique(length) {
+  function generateUnique() {
     let code, attempts = 0;
     do {
-      code = generateCode(length);
+      code = generateCode();
       attempts++;
-      if (attempts > 100) break;
+      if (attempts > 200) break;
     } while (usedCodes.has(code));
     usedCodes.add(code);
     return code;
@@ -231,17 +291,47 @@
   const btnGenerate = document.getElementById('generate');
   const btnCopyAll = document.getElementById('copyAll');
   const btnClear = document.getElementById('clear');
+  const rewardType = document.getElementById('rewardType');
+  const goldField = document.getElementById('goldField');
+  const skinsField = document.getElementById('skinsField');
+  const goldAmount = document.getElementById('goldAmount');
+  const skinName = document.getElementById('skinName');
+  const countInput = document.getElementById('count');
 
-  function createCodeElement(code, reward) {
+  // Переключение полей голда/скины
+  rewardType.addEventListener('change', () => {
+    if (rewardType.value === 'gold') {
+      goldField.style.display = 'flex';
+      skinsField.style.display = 'none';
+    } else {
+      goldField.style.display = 'none';
+      skinsField.style.display = 'flex';
+    }
+  });
+
+  // Собираем описание награды
+  function getRewardLabel() {
+    if (rewardType.value === 'gold') {
+      const amount = Math.max(1, +goldAmount.value || 0);
+      return `${amount} голды`;
+    } else {
+      const name = skinName.value.trim() || 'Скин';
+      return name;
+    }
+  }
+
+  function createCodeElement(code, reward, activations) {
     const li = document.createElement('li');
 
     const left = document.createElement('div');
     const spanCode = document.createElement('div');
     spanCode.className = 'code-text';
     spanCode.textContent = code;
+
     const spanReward = document.createElement('span');
     spanReward.className = 'reward-tag';
-    spanReward.textContent = reward;
+    spanReward.textContent = `${reward} · ${activations} акт.`;
+
     left.appendChild(spanCode);
     left.appendChild(spanReward);
 
@@ -260,15 +350,60 @@
     return li;
   }
 
-  btnGenerate.addEventListener('click', () => {
-    const count = Math.min(50, Math.max(1, +document.getElementById('count').value || 1));
-    const length = Math.min(20, Math.max(8, +document.getElementById('length').value || 12));
-    const reward = document.getElementById('reward').value;
+  // ===== Своё модальное окно =====
+  const modal = document.getElementById('activationModal');
+  const activationInput = document.getElementById('activationInput');
+  const confirmBtn = document.getElementById('confirmActivation');
+  const cancelBtn = document.getElementById('cancelActivation');
+
+  function openActivationModal() {
+    return new Promise((resolve) => {
+      activationInput.value = 1;
+      modal.classList.add('active');
+      setTimeout(() => activationInput.focus(), 100);
+
+      function onConfirm() {
+        const val = Math.max(1, Math.min(9999, +activationInput.value || 1));
+        cleanup();
+        resolve(val);
+      }
+
+      function onCancel() {
+        cleanup();
+        resolve(null);
+      }
+
+      function onKey(e) {
+        if (e.key === 'Enter') onConfirm();
+        if (e.key === 'Escape') onCancel();
+      }
+
+      function cleanup() {
+        modal.classList.remove('active');
+        confirmBtn.removeEventListener('click', onConfirm);
+        cancelBtn.removeEventListener('click', onCancel);
+        document.removeEventListener('keydown', onKey);
+      }
+
+      confirmBtn.addEventListener('click', onConfirm);
+      cancelBtn.addEventListener('click', onCancel);
+      document.addEventListener('keydown', onKey);
+    });
+  }
+
+  // ===== Генерация =====
+  btnGenerate.addEventListener('click', async () => {
+    // Сначала спрашиваем количество активаций через своё окно
+    const activations = await openActivationModal();
+    if (activations === null) return; // отмена
+
+    const count = Math.min(100, Math.max(1, +countInput.value || 1));
+    const reward = getRewardLabel();
 
     codesList.innerHTML = '';
     for (let i = 0; i < count; i++) {
-      const code = generateUnique(length);
-      codesList.appendChild(createCodeElement(code, reward));
+      const code = generateUnique();
+      codesList.appendChild(createCodeElement(code, reward, activations));
     }
   });
 
@@ -287,4 +422,4 @@
   });
 </script>
 </body>
-  </html>
+ </html>
