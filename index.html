@@ -5,33 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Генератор промокодов в Standoff 2</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            background-color: #111318;
+            background-color: #0f1115;
             color: #e0e0e0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            margin: 0;
             padding: 20px;
-            box-sizing: border-box;
         }
 
         .container {
             background-color: #1a1d24;
             border: 1px solid #2a2e38;
             border-radius: 20px;
-            padding: 30px;
+            padding: 25px;
             width: 100%;
             max-width: 420px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
+        /* Шапка */
         .header {
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 12px;
             margin-bottom: 25px;
         }
@@ -39,23 +43,25 @@
         .header-icon {
             background-color: #f57c00;
             color: #111;
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: bold;
+            flex-shrink: 0;
         }
 
         .header-title {
             font-size: 20px;
             font-weight: 700;
             color: #f57c00;
-            margin: 0;
+            line-height: 1.2;
         }
 
+        /* Поля ввода */
         .label {
             font-size: 14px;
             color: #8a919f;
@@ -71,12 +77,11 @@
             width: 100%;
             background-color: #0f1115;
             border: 1px solid #2a2e38;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 14px 16px;
             color: #fff;
             font-size: 16px;
             outline: none;
-            box-sizing: border-box;
             transition: border-color 0.3s;
         }
 
@@ -84,32 +89,60 @@
             border-color: #f57c00;
         }
 
+        /* Кнопка "Изменить награду" */
+        .btn-change {
+            width: 100%;
+            background-color: #2a2e38;
+            color: #e0e0e0;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 8px;
+            transition: background-color 0.2s;
+            text-align: left;
+        }
+
+        .btn-change:hover {
+            background-color: #3a3f4d;
+        }
+
+        .selected-reward {
+            color: #00bcd4;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* Основная кнопка */
         .btn-primary {
             width: 100%;
             background-color: #f57c00;
             color: #111;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 16px;
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
             transition: background-color 0.2s;
-            margin-top: 10px;
+            margin-top: 5px;
         }
 
         .btn-primary:hover {
             background-color: #e65100;
         }
 
-        /* Стили для блока результата */
+        /* Блок результата */
         .result-box {
             margin-top: 25px;
             background-color: #0f1115;
             border: 1px solid #2a2e38;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 15px;
-            display: none; /* Скрыто по умолчанию */
+            display: none;
         }
 
         .result-box.active {
@@ -141,6 +174,7 @@
             font-weight: 600;
             cursor: pointer;
             white-space: nowrap;
+            flex-shrink: 0;
             transition: background-color 0.2s;
         }
 
@@ -162,8 +196,7 @@
         .error-text {
             color: #ff5252;
             font-size: 14px;
-            margin-top: -10px;
-            margin-bottom: 15px;
+            margin-top: 8px;
             display: none;
         }
     </style>
@@ -171,25 +204,36 @@
 <body>
 
 <div class="container">
+    <!-- Шапка -->
     <div class="header">
         <div class="header-icon">P</div>
-        <h1 class="header-title">Генератор промокодов в Standoff 2</h1>
+        <div class="header-title">Генератор промокодов в Standoff 2</div>
     </div>
 
+    <!-- Награда -->
     <div class="input-group">
-        <label class="label">Название скина (награда)</label>
+        <label class="label">Награда</label>
+        <button class="btn-change" onclick="changeReward()">Изменить награду</button>
+        <span class="selected-reward" id="selectedReward">Выбрано: Голда</span>
+    </div>
+
+    <!-- Количество голды -->
+    <div class="input-group">
+        <label class="label">Количество голды</label>
+        <input type="number" id="goldInput" class="input-field" value="100" min="1">
+    </div>
+
+    <!-- Скин (для проверки) -->
+    <div class="input-group">
+        <label class="label">Название скина (для проверки)</label>
         <input type="text" id="skinInput" class="input-field" placeholder="Например: AK-47 | Redline" value="">
         <div id="errorMsg" class="error-text">Такого скина не существует!</div>
     </div>
 
-    <div class="input-group">
-        <label class="label">Количество активаций</label>
-        <input type="number" id="usesInput" class="input-field" placeholder="Например: 1" value="1" min="1">
-    </div>
-
+    <!-- Кнопка генерации -->
     <button class="btn-primary" onclick="generatePromo()">Сгенерировать промокод</button>
 
-    <!-- Блок результата -->
+    <!-- Результат -->
     <div id="resultBox" class="result-box">
         <div class="promo-row">
             <div id="promoCode" class="promo-code">----</div>
@@ -200,6 +244,11 @@
 </div>
 
 <script>
+    // Доступные награды (для кнопки "Изменить награду")
+    const rewards = ["Голда", "Скин", "Кейс", "Боевой пропуск"];
+    let currentReward = "Голда";
+    let rewardIndex = 0;
+
     // База "правдоподобных" скинов для проверки
     const validSkins = [
         "AK-47 | Redline", "AK-47 | Vulcan", "M4A4 | Howl", "AWP | Dragon Lore",
@@ -211,43 +260,52 @@
         "Desert Eagle | Printstream", "USP-S | Neo-Noir", "Glock-18 | Water Elemental"
     ];
 
+    // Смена награды
+    function changeReward() {
+        rewardIndex = (rewardIndex + 1) % rewards.length;
+        currentReward = rewards[rewardIndex];
+        document.getElementById('selectedReward').textContent = `Выбрано: ${currentReward}`;
+        
+        // Меняем подпись в зависимости от награды
+        const goldLabel = document.querySelector('label[for="goldInput"]') || document.querySelectorAll('.label')[1];
+        if (currentReward === "Голда") {
+            goldLabel.textContent = "Количество голды";
+        } else {
+            goldLabel.textContent = `Количество (${currentReward})`;
+        }
+    }
+
+    // Генерация промокода
     function generatePromo() {
         const skinInput = document.getElementById('skinInput').value.trim();
-        const usesInput = document.getElementById('usesInput').value.trim();
+        const goldInput = document.getElementById('goldInput').value.trim();
         const errorMsg = document.getElementById('errorMsg');
         const resultBox = document.getElementById('resultBox');
         
-        // Сброс ошибок
         errorMsg.style.display = 'none';
 
-        // Проверка на пустое поле скина
-        if (!skinInput) {
-            errorMsg.textContent = "Пожалуйста, введите название скина.";
-            errorMsg.style.display = 'block';
-            resultBox.classList.remove('active');
-            return;
+        // Проверка скина (если поле заполнено)
+        if (skinInput) {
+            const isSkinValid = validSkins.some(skin => 
+                skin.toLowerCase().includes(skinInput.toLowerCase()) || 
+                skinInput.toLowerCase().includes(skin.toLowerCase())
+            );
+
+            if (!isSkinValid) {
+                errorMsg.textContent = `Скина "${skinInput}" не существует в Standoff 2.`;
+                errorMsg.style.display = 'block';
+                resultBox.classList.remove('active');
+                return;
+            }
         }
 
-        // Проверка на правдоподобность скина
-        const isSkinValid = validSkins.some(skin => 
-            skin.toLowerCase().includes(skinInput.toLowerCase()) || 
-            skinInput.toLowerCase().includes(skin.toLowerCase())
-        );
-
-        if (!isSkinValid) {
-            errorMsg.textContent = `Скина "${skinInput}" не существует в Standoff 2.`;
-            errorMsg.style.display = 'block';
-            resultBox.classList.remove('active');
-            return;
+        // Проверка количества
+        let amount = parseInt(goldInput);
+        if (isNaN(amount) || amount < 1) {
+            amount = 1;
         }
 
-        // Проверка количества активаций
-        let uses = parseInt(usesInput);
-        if (isNaN(uses) || uses < 1) {
-            uses = 1; // По умолчанию 1, если введено некорректное число
-        }
-
-        // Генерация рандомного промокода (12 символов)
+        // Генерация рандомного промокода
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         let promoCode = '';
         for (let i = 0; i < 12; i++) {
@@ -256,12 +314,12 @@
 
         // Вывод результата
         document.getElementById('promoCode').textContent = promoCode;
-        document.getElementById('promoMeta').textContent = `${uses} акт. · Скин: ${skinInput}`;
+        document.getElementById('promoMeta').textContent = `${amount} ${currentReward.toLowerCase()} · ${currentReward === "Голда" ? "1 акт." : "1 акт."}`;
         
-        // Показываем блок
         resultBox.classList.add('active');
     }
 
+    // Копирование
     function copyToClipboard() {
         const code = document.getElementById('promoCode').textContent;
         navigator.clipboard.writeText(code).then(() => {
@@ -278,4 +336,4 @@
 </script>
 
 </body>
-</html>
+    </html>
