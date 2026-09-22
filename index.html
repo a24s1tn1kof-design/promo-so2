@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>promo-so2 — Генератор промокодов</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23ff9d2e'/><path d='M30 35 L70 35 L70 45 L55 45 L55 70 L45 70 L45 45 L30 45 Z' fill='%23131a24'/></svg>">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -26,11 +26,35 @@
     border-radius: 16px;
     padding: 28px;
     box-shadow: 0 20px 60px rgba(0,0,0,.6);
+    height: fit-content;
   }
 
-  header { text-align: center; margin-bottom: 22px; }
-  h1 { color: #ff9d2e; font-size: 28px; letter-spacing: 1px; }
-  .subtitle { color: #8a97a6; font-size: 13px; margin-top: 4px; }
+  header { text-align: center; margin-bottom: 24px; }
+
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .logo svg {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, #ff9d2e, #ff6a00);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .subtitle { color: #8a97a6; font-size: 13px; }
 
   .field {
     display: flex;
@@ -39,12 +63,12 @@
     margin-bottom: 14px;
   }
 
-  .field label {
+  .field > label {
     font-size: 13px;
     color: #8a97a6;
   }
 
-  input, select {
+  input {
     background: #0d131b;
     border: 1px solid #2a3947;
     color: #e6edf3;
@@ -53,9 +77,10 @@
     font-size: 14px;
     outline: none;
     width: 100%;
+    font-family: inherit;
   }
 
-  input:focus, select:focus { border-color: #ff9d2e; }
+  input:focus { border-color: #ff9d2e; }
 
   button {
     background: linear-gradient(135deg, #ff9d2e, #ff6a00);
@@ -80,8 +105,6 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    max-height: 340px;
-    overflow-y: auto;
     margin: 18px 0 16px;
   }
 
@@ -89,7 +112,7 @@
     background: #0d131b;
     border: 1px solid #22303f;
     border-radius: 8px;
-    padding: 12px 14px;
+    padding: 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -101,9 +124,10 @@
 
   .code-text {
     font-family: 'Consolas', monospace;
-    font-size: 15px;
+    font-size: 17px;
     color: #4dd0e1;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
+    font-weight: 600;
   }
 
   .reward-tag {
@@ -113,13 +137,13 @@
     padding: 3px 8px;
     border-radius: 12px;
     display: inline-block;
-    margin-top: 4px;
+    margin-top: 6px;
   }
 
   .copy-btn {
     background: #22303f;
     color: #e6edf3;
-    padding: 6px 10px;
+    padding: 8px 12px;
     font-size: 12px;
     font-weight: 500;
     flex-shrink: 0;
@@ -135,12 +159,12 @@
     line-height: 1.5;
   }
 
-  /* ===== Своё модальное окно ===== */
+  /* ===== Свои модальные окна ===== */
   .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(5, 8, 12, .75);
-    backdrop-filter: blur(4px);
+    background: rgba(5, 8, 12, .78);
+    backdrop-filter: blur(5px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -162,7 +186,7 @@
     border-radius: 14px;
     padding: 24px;
     width: 100%;
-    max-width: 360px;
+    max-width: 380px;
     box-shadow: 0 20px 60px rgba(0,0,0,.7);
     transform: translateY(-10px);
     transition: transform .2s ease;
@@ -190,24 +214,86 @@
   }
 
   .modal-actions button { flex: 1; }
+
+  /* Своя заставка выбора награды */
+  .reward-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  .reward-option {
+    background: #0d131b;
+    border: 1px solid #2a3947;
+    border-radius: 10px;
+    padding: 14px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all .15s ease;
+    color: #e6edf3;
+    text-align: left;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .reward-option:hover {
+    border-color: #ff9d2e;
+    background: #131d28;
+    transform: translateY(-1px);
+  }
+
+  .reward-option .icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .reward-option .icon.gold { background: linear-gradient(135deg, #ffcf4d, #ff9d2e); }
+  .reward-option .icon.skins { background: linear-gradient(135deg, #7b61ff, #4dd0e1); }
+
+  .reward-option .icon svg { width: 18px; height: 18px; }
+
+  .reward-option .info { display: flex; flex-direction: column; gap: 2px; }
+  .reward-option .info .name { font-weight: 600; }
+  .reward-option .info .desc { font-size: 11px; color: #8a97a6; }
 </style>
 </head>
 <body>
   <div class="app">
     <header>
-      <h1>🎯 promo-so2</h1>
-      <p class="subtitle">by a24s1tn1kof-design</p>
+      <div class="logo">
+        <!-- Свой SVG-логотип: стилизованная буква P в щите -->
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#ff9d2e"/>
+              <stop offset="1" stop-color="#ff6a00"/>
+            </linearGradient>
+          </defs>
+          <path d="M24 3 L42 10 V24 C42 34 34 42 24 45 C14 42 6 34 6 24 V10 Z" fill="url(#g1)"/>
+          <path d="M17 15 H28 C31 15 33 17 33 20 C33 23 31 25 28 25 H22 V33 H17 Z M22 20 V20.5 H27 C28 20.5 28.5 20.3 28.5 20 C28.5 19.7 28 19.5 27 19.5 H22 Z" fill="#131a24"/>
+        </svg>
+        <span class="logo-text">promo-so2</span>
+      </div>
+      <p class="subtitle">Генератор промокодов Standoff 2</p>
     </header>
 
     <div class="field">
-      <label>Тип награды</label>
-      <select id="rewardType">
-        <option value="gold">💰 Голда</option>
-        <option value="skins">🔫 Скины</option>
-      </select>
+      <label>Награда</label>
+      <button type="button" id="rewardPickerBtn" class="secondary" style="text-align:left; padding:12px; font-weight:500;">
+        Выбрать награду
+      </button>
+      <div id="rewardDisplay" style="font-size:13px; color:#4dd0e1; margin-top:4px;"></div>
     </div>
 
-    <div class="field" id="goldField">
+    <div class="field" id="goldField" style="display:none;">
       <label>Количество голды</label>
       <input type="number" id="goldAmount" value="100" min="1" placeholder="Например: 100">
     </div>
@@ -217,17 +303,12 @@
       <input type="text" id="skinName" placeholder="Например: AKR Red Dragon">
     </div>
 
-    <div class="field">
-      <label>Количество промокодов</label>
-      <input type="number" id="count" value="5" min="1" max="100">
-    </div>
-
-    <button class="generate-btn" id="generate">Сгенерировать</button>
+    <button class="generate-btn" id="generate">Сгенерировать промокод</button>
 
     <ul id="codes" class="codes"></ul>
 
     <div class="actions">
-      <button id="copyAll" class="secondary">📋 Копировать все</button>
+      <button id="copyAll" class="secondary">📋 Копировать</button>
       <button id="clear" class="secondary">🗑 Очистить</button>
     </div>
 
@@ -237,15 +318,55 @@
     </p>
   </div>
 
-  <!-- Своё модальное окно «Количество активаций» -->
+  <!-- Модалка: выбор награды (своя заставка) -->
+  <div class="modal-overlay" id="rewardModal">
+    <div class="modal">
+      <h2>Выберите награду</h2>
+      <p>Что должен выдавать промокод?</p>
+      <div class="reward-options">
+        <button type="button" class="reward-option" data-type="gold">
+          <span class="icon gold">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="9" fill="#131a24" opacity=".25"/>
+              <circle cx="12" cy="12" r="7" stroke="#131a24" stroke-width="2"/>
+              <text x="12" y="16" text-anchor="middle" font-size="9" font-weight="bold" fill="#131a24">G</text>
+            </svg>
+          </span>
+          <span class="info">
+            <span class="name">Голда</span>
+            <span class="desc">Указать количество вручную</span>
+          </span>
+        </button>
+
+        <button type="button" class="reward-option" data-type="skins">
+          <span class="icon skins">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="7" width="16" height="11" rx="2" stroke="#131a24" stroke-width="2"/>
+              <path d="M8 7 L9.5 4.5 H14.5 L16 7" stroke="#131a24" stroke-width="2" stroke-linejoin="round"/>
+              <circle cx="12" cy="12.5" r="2.5" stroke="#131a24" stroke-width="2"/>
+            </svg>
+          </span>
+          <span class="info">
+            <span class="name">Скины</span>
+            <span class="desc">Ввести название вручную</span>
+          </span>
+        </button>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="secondary" id="rewardCancel">Отмена</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модалка: количество активаций (своя заставка) -->
   <div class="modal-overlay" id="activationModal">
     <div class="modal">
       <h2>Количество активаций</h2>
-      <p>Укажите, сколько раз можно активировать каждый промокод.</p>
+      <p>Сколько раз можно активировать этот промокод?</p>
       <input type="number" id="activationInput" value="1" min="1" max="9999">
       <div class="modal-actions">
-        <button class="secondary" id="cancelActivation">Отмена</button>
-        <button id="confirmActivation">Подтвердить</button>
+        <button type="button" class="secondary" id="cancelActivation">Отмена</button>
+        <button type="button" id="confirmActivation">Подтвердить</button>
       </div>
     </div>
   </div>
@@ -254,7 +375,6 @@
   const ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
   const CODE_LENGTH = 12;
 
-  // Криптостойкий генератор
   function randomInt(max) {
     if (window.crypto && window.crypto.getRandomValues) {
       const buf = new Uint32Array(1);
@@ -264,7 +384,6 @@
     return Math.floor(Math.random() * max);
   }
 
-  // Промокод без дефисов: AAAAAAAAAAAA
   function generateCode() {
     let code = '';
     for (let i = 0; i < CODE_LENGTH; i++) {
@@ -273,53 +392,124 @@
     return code;
   }
 
-  const usedCodes = new Set();
+  // ===== Состояние =====
+  let rewardType = null; // 'gold' | 'skins'
 
-  function generateUnique() {
-    let code, attempts = 0;
-    do {
-      code = generateCode();
-      attempts++;
-      if (attempts > 200) break;
-    } while (usedCodes.has(code));
-    usedCodes.add(code);
-    return code;
-  }
-
-  // ===== UI =====
+  // ===== Элементы =====
   const codesList = document.getElementById('codes');
   const btnGenerate = document.getElementById('generate');
   const btnCopyAll = document.getElementById('copyAll');
   const btnClear = document.getElementById('clear');
-  const rewardType = document.getElementById('rewardType');
+  const rewardPickerBtn = document.getElementById('rewardPickerBtn');
+  const rewardDisplay = document.getElementById('rewardDisplay');
   const goldField = document.getElementById('goldField');
   const skinsField = document.getElementById('skinsField');
   const goldAmount = document.getElementById('goldAmount');
   const skinName = document.getElementById('skinName');
-  const countInput = document.getElementById('count');
 
-  // Переключение полей голда/скины
-  rewardType.addEventListener('change', () => {
-    if (rewardType.value === 'gold') {
+  // ===== Универсальная модалка =====
+  function openModal(modalEl) {
+    return new Promise((resolve) => {
+      modalEl.classList.add('active');
+
+      function close(result) {
+        modalEl.classList.remove('active');
+        modalEl.removeEventListener('click', overlayClick);
+        document.removeEventListener('keydown', escListener);
+        resolve(result);
+      }
+
+      function overlayClick(e) {
+        if (e.target === modalEl) close(null);
+      }
+
+      function escListener(e) {
+        if (e.key === 'Escape') close(null);
+      }
+
+      modalEl.addEventListener('click', overlayClick);
+      document.addEventListener('keydown', escListener);
+      modalEl._close = close;
+    });
+  }
+
+  // ===== Модалка выбора награды =====
+  const rewardModal = document.getElementById('rewardModal');
+  const rewardCancel = document.getElementById('rewardCancel');
+
+  rewardPickerBtn.addEventListener('click', async () => {
+    const promise = openModal(rewardModal);
+
+    const options = rewardModal.querySelectorAll('.reward-option');
+    const handler = (e) => {
+      const btn = e.currentTarget;
+      const type = btn.dataset.type;
+      rewardModal._close(type);
+      options.forEach(o => o.removeEventListener('click', handler));
+    };
+    options.forEach(o => o.addEventListener('click', handler));
+
+    rewardCancel.onclick = () => {
+      rewardModal._close(null);
+      options.forEach(o => o.removeEventListener('click', handler));
+    };
+
+    const result = await promise;
+    if (result === 'gold') {
+      rewardType = 'gold';
+      rewardDisplay.textContent = 'Выбрано: Голда';
       goldField.style.display = 'flex';
       skinsField.style.display = 'none';
-    } else {
+      rewardPickerBtn.textContent = 'Изменить награду';
+    } else if (result === 'skins') {
+      rewardType = 'skins';
+      rewardDisplay.textContent = 'Выбрано: Скины';
       goldField.style.display = 'none';
       skinsField.style.display = 'flex';
+      rewardPickerBtn.textContent = 'Изменить награду';
     }
   });
 
-  // Собираем описание награды
-  function getRewardLabel() {
-    if (rewardType.value === 'gold') {
-      const amount = Math.max(1, +goldAmount.value || 0);
-      return `${amount} голды`;
-    } else {
-      const name = skinName.value.trim() || 'Скин';
-      return name;
-    }
+  // ===== Модалка активаций =====
+  const activationModal = document.getElementById('activationModal');
+  const activationInput = document.getElementById('activationInput');
+  const confirmActivation = document.getElementById('confirmActivation');
+  const cancelActivation = document.getElementById('cancelActivation');
+
+  async function askActivations() {
+    const promise = openModal(activationModal);
+    activationInput.value = 1;
+    setTimeout(() => activationInput.focus(), 100);
+
+    const onConfirm = () => {
+      const val = Math.max(1, Math.min(9999, +activationInput.value || 1));
+      activationModal._close(val);
+    };
+    const onCancel = () => activationModal._close(null);
+    const onKey = (e) => { if (e.key === 'Enter') onConfirm(); };
+
+    confirmActivation.onclick = onConfirm;
+    cancelActivation.onclick = onCancel;
+    document.addEventListener('keydown', onKey);
+
+    const result = await promise;
+    document.removeEventListener('keydown', onKey);
+    return result;
   }
 
+  // ===== Описание награды =====
+  function getRewardLabel() {
+    if (rewardType === 'gold') {
+      const amount = Math.max(1, +goldAmount.value || 0);
+      return `${amount} голды`;
+    }
+    if (rewardType === 'skins') {
+      return skinName.value.trim() || 'Скин';
+    }
+    return '';
+  }
+
+  // ===== Создание элемента кода =====
   function createCodeElement(code, reward, activations) {
     const li = document.createElement('li');
 
@@ -350,61 +540,32 @@
     return li;
   }
 
-  // ===== Своё модальное окно =====
-  const modal = document.getElementById('activationModal');
-  const activationInput = document.getElementById('activationInput');
-  const confirmBtn = document.getElementById('confirmActivation');
-  const cancelBtn = document.getElementById('cancelActivation');
-
-  function openActivationModal() {
-    return new Promise((resolve) => {
-      activationInput.value = 1;
-      modal.classList.add('active');
-      setTimeout(() => activationInput.focus(), 100);
-
-      function onConfirm() {
-        const val = Math.max(1, Math.min(9999, +activationInput.value || 1));
-        cleanup();
-        resolve(val);
-      }
-
-      function onCancel() {
-        cleanup();
-        resolve(null);
-      }
-
-      function onKey(e) {
-        if (e.key === 'Enter') onConfirm();
-        if (e.key === 'Escape') onCancel();
-      }
-
-      function cleanup() {
-        modal.classList.remove('active');
-        confirmBtn.removeEventListener('click', onConfirm);
-        cancelBtn.removeEventListener('click', onCancel);
-        document.removeEventListener('keydown', onKey);
-      }
-
-      confirmBtn.addEventListener('click', onConfirm);
-      cancelBtn.addEventListener('click', onCancel);
-      document.addEventListener('keydown', onKey);
-    });
-  }
-
-  // ===== Генерация =====
+  // ===== Генерация (всегда 1 промокод) =====
   btnGenerate.addEventListener('click', async () => {
-    // Сначала спрашиваем количество активаций через своё окно
-    const activations = await openActivationModal();
-    if (activations === null) return; // отмена
-
-    const count = Math.min(100, Math.max(1, +countInput.value || 1));
-    const reward = getRewardLabel();
-
-    codesList.innerHTML = '';
-    for (let i = 0; i < count; i++) {
-      const code = generateUnique();
-      codesList.appendChild(createCodeElement(code, reward, activations));
+    if (!rewardType) {
+      // Подсветим кнопку выбора награды
+      rewardPickerBtn.style.borderColor = '#ff6a00';
+      rewardPickerBtn.textContent = 'Сначала выберите награду';
+      setTimeout(() => {
+        rewardPickerBtn.style.borderColor = '#22303f';
+        rewardPickerBtn.textContent = 'Выбрать награду';
+      }, 1500);
+      return;
     }
+
+    const reward = getRewardLabel();
+    if (!reward) {
+      alert('Укажите голду или название скина');
+      return;
+    }
+
+    const activations = await askActivations();
+    if (activations === null) return;
+
+    // Очищаем старый код и создаём новый (всегда 1)
+    codesList.innerHTML = '';
+    const code = generateCode();
+    codesList.appendChild(createCodeElement(code, reward, activations));
   });
 
   btnCopyAll.addEventListener('click', () => {
@@ -412,14 +573,13 @@
     if (!items.length) return;
     navigator.clipboard.writeText(items.join('\n')).then(() => {
       btnCopyAll.textContent = '✓ Скопировано';
-      setTimeout(() => (btnCopyAll.textContent = '📋 Копировать все'), 1200);
+      setTimeout(() => (btnCopyAll.textContent = '📋 Копировать'), 1200);
     });
   });
 
   btnClear.addEventListener('click', () => {
     codesList.innerHTML = '';
-    usedCodes.clear();
   });
 </script>
 </body>
- </html>
+               </html>
