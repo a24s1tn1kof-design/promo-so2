@@ -140,7 +140,7 @@
             align-items: center; justify-content: center; gap: 4px;
             border: 1px solid #2a2e38; font-size: 28px; overflow: hidden;
         }
-        .roulette-item img { width: 70px; height: 70px; object-fit: contain; }
+        .roulette-item .item-emoji { font-size: 40px; }
         .roulette-item .item-name {
             font-size: 9px; color: #8a919f; text-align: center;
             padding: 0 4px; white-space: nowrap; overflow: hidden;
@@ -174,7 +174,7 @@
         .drop-result.show { display: block; }
         @keyframes popIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
         .drop-result h3 { font-size: 16px; color: #8a919f; margin-bottom: 10px; font-weight: 500; }
-        .drop-item-img { width: 100px; height: 100px; object-fit: contain; margin: 0 auto 10px; display: block; }
+        .drop-item-emoji { font-size: 60px; margin-bottom: 10px; display: block; }
         .drop-name { font-size: 18px; font-weight: 700; color: #f57c00; }
 
         .case-contents { margin-top: 30px; border-top: 1px solid #1f2530; padding-top: 20px; }
@@ -186,7 +186,7 @@
             transition: border-color 0.2s;
         }
         .content-item:hover { border-color: #f57c00; }
-        .content-item img { width: 60px; height: 60px; object-fit: contain; margin-bottom: 6px; }
+        .content-item .content-emoji { font-size: 40px; margin-bottom: 6px; }
         .content-item .content-name {
             font-size: 10px; color: #e0e0e0; font-weight: 600;
             margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
@@ -198,7 +198,7 @@
             background-color: #151920; border: 1px solid #1f2530;
             border-radius: 12px; padding: 12px; text-align: center;
         }
-        .inv-item img { width: 70px; height: 70px; object-fit: contain; margin-bottom: 6px; }
+        .inv-item .inv-emoji { font-size: 40px; margin-bottom: 6px; }
         .inv-item .inv-name { font-size: 12px; font-weight: 600; color: #e0e0e0; margin-bottom: 4px; }
         .inv-item .inv-price {
             font-size: 12px; color: #ffb300; font-weight: 700;
@@ -213,7 +213,7 @@
         }
         .btn-sell:hover { background-color: #f57c00; color: #0b0e14; }
         .empty-inv { text-align: center; color: #8a919f; padding: 40px 20px; font-size: 14px; }
-                /* === Апгрейдер === */
+            /* === Апгрейдер с вращающейся стрелкой === */
         .upgrader-container {
             background-color: #0b0e14;
             min-height: calc(100vh - 140px);
@@ -243,89 +243,101 @@
             gap: 6px;
         }
 
-        /* Круг с рулеткой */
-        .upgrader-circle {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: conic-gradient(from 0deg, #2a2e38 0%, #1a1d24 25%, #2a2e38 50%, #1a1d24 75%, #2a2e38 100%);
-            border: 6px solid #1f2530;
-            box-shadow:
-                inset 0 0 40px rgba(0,0,0,0.9),
-                0 0 30px rgba(0,0,0,0.7),
-                0 0 0 4px #11151c;
+        /* Круг с процентами */
+        .wheel-wrapper {
+            position: relative;
+            width: 260px;
+            height: 260px;
+            margin: 10px 0 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            margin: 10px 0 20px;
-            transition: transform 0.3s;
         }
 
-        .upgrader-circle.spinning {
-            animation: spinCircle 1s linear infinite;
+        .wheel-svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
         }
 
-        @keyframes spinCircle {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .wheel-bg-circle {
+            fill: none;
+            stroke: #1f2530;
+            stroke-width: 30;
         }
 
-        .upgrader-circle::before {
+        .wheel-chance-circle {
+            fill: none;
+            stroke: #ff3b30;
+            stroke-width: 30;
+            stroke-linecap: butt;
+            transition: stroke-dasharray 0.4s ease;
+        }
+
+        /* Центральный шар */
+        .wheel-center {
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 50% 40%, #2a2e38 0%, #151920 70%, #0b0e14 100%);
+            border: 4px solid #1f2530;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+        }
+
+        .wheel-percent {
+            font-size: 32px;
+            font-weight: 900;
+            color: #00ff88;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
+        }
+
+        .wheel-center-emoji {
+            font-size: 40px;
+            margin-bottom: 5px;
+        }
+
+        /* Вращающаяся стрелка */
+        .wheel-arrow {
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            z-index: 4;
+            pointer-events: none;
+            transition: transform 3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .wheel-arrow::before {
             content: '';
             position: absolute;
-            inset: 25px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #0a0c10 0%, #050608 100%);
-            box-shadow: inset 0 0 30px rgba(0,0,0,1);
-        }
-
-        .upgrader-arrow {
-            position: absolute;
-            top: -2px;
             left: 50%;
+            bottom: 0;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-top: 12px solid #fff;
-            z-index: 5;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 20px solid #f57c00;
+            filter: drop-shadow(0 0 6px rgba(245, 124, 0, 0.9));
         }
 
-        .upgrader-center-img {
-            position: relative;
-            z-index: 3;
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-            display: none;
-        }
-
-        .upgrader-dots {
-            position: relative;
-            z-index: 2;
-            color: #fff;
-            font-size: 22px;
-            letter-spacing: 6px;
-            font-weight: 300;
-            opacity: 0.5;
-        }
-
-        .upgrader-tube {
+        .wheel-pointer-line {
             position: absolute;
-            width: 24px;
-            height: 60px;
-            background: linear-gradient(90deg, #2a2e38, #1a1d24, #2a2e38);
-            border-radius: 8px;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 1;
+            left: 50%;
+            top: 10px;
+            width: 2px;
+            height: 40px;
+            background-color: #f57c00;
+            transform: translateX(-50%);
+            filter: drop-shadow(0 0 4px rgba(245, 124, 0, 0.9));
         }
-        .upgrader-tube.left { left: -30px; }
-        .upgrader-tube.right { right: -30px; }
 
-        /* Панель управления апгрейдом */
+        /* Панель управления */
         .upgrade-controls {
             display: flex;
             align-items: center;
@@ -374,7 +386,6 @@
         .btn-improve:hover { background-color: #2a2e38; border-color: #f57c00; }
         .btn-improve:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* Множители */
         .upgrader-chances {
             display: flex;
             gap: 8px;
@@ -398,7 +409,6 @@
 
         .chance-btn.active { background-color: #2a2e38; color: #f57c00; border-color: #f57c00; }
 
-        /* Скины в апгрейде */
         .upgrade-skins {
             display: flex;
             justify-content: space-between;
@@ -427,18 +437,11 @@
         }
 
         .upgrade-skin:hover { border-color: #f57c00; }
-
-        .upgrade-skin img { width: 100px; height: 70px; object-fit: contain; }
-
-        .upgrade-skin .skin-label {
-            font-size: 11px;
-            color: #8a919f;
-            margin-top: 6px;
-        }
-
+        .upgrade-skin .skin-emoji { font-size: 40px; }
+        .upgrade-skin .skin-label { font-size: 11px; color: #8a919f; margin-top: 6px; }
         .upgrade-arrow { color: #f57c00; font-size: 22px; font-weight: 700; }
 
-        /* Модалка выбора скина */
+        /* Модалка */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -485,7 +488,6 @@
 
         .modal-close:hover { background-color: #f57c00; color: #0b0e14; }
 
-        /* Нижнее меню */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0;
             background-color: #11151c; border-top: 1px solid #1f2530;
@@ -535,7 +537,7 @@
             <button class="back-btn" onclick="showScreen('cases')">←</button>
             <div class="case-header-info">
                 <h2 id="caseTitle">Кейс</h2>
-                <p>Цена: <span style="color: #ffb300; display: flex; align-items: center; gap: 3px;"><span id="casePrice">0</span></span></p>
+                <p>Цена: <span style="color: #ffb300;" id="casePrice">0</span></p>
             </div>
         </div>
 
@@ -572,7 +574,7 @@
 
         <div class="drop-result" id="dropResult">
             <h3>Вам выпало:</h3>
-            <img class="drop-item-img" id="dropIcon" src="" alt="">
+            <span class="drop-item-emoji" id="dropIcon">🎁</span>
             <div class="drop-name" id="dropName">Предмет</div>
         </div>
 
@@ -587,28 +589,29 @@
         <div class="inventory-grid" id="inventoryGrid"></div>
     </div>
 
-    <!-- === Экран 4: Апгрейдер === -->
+    <!-- === Апгрейдер === -->
     <div class="screen" id="screen-upgrader">
         <div class="upgrader-container">
             <div class="upgrader-top">
                 <div class="upgrader-balance">
-                    <svg class="gold-icon" style="width: 18px; height: 14px;" viewBox="0 0 32 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4 6L2 20H30L28 6H4Z" fill="url(#gUp)"/>
-                        <path d="M2 20L1 24H31L30 20H2Z" fill="#8B6914"/>
-                        <path d="M4 6L2 20H30L28 6H4Z" stroke="#FFE066" stroke-width="0.8"/>
-                        <path d="M6 8L5 10H29L28 8H6Z" fill="#FFE066" opacity="0.4"/>
-                        <defs><linearGradient id="gUp" x1="2" y1="6" x2="30" y2="20" gradientUnits="userSpaceOnUse"><stop stop-color="#FFD700"/><stop offset="0.5" stop-color="#FFA500"/><stop offset="1" stop-color="#CC8800"/></linearGradient></defs>
-                    </svg>
-                    <span id="upgraderBalanceDisplay">5000</span>
+                    <span id="upgraderBalanceDisplay">5000</span> 🪙
                 </div>
             </div>
 
-            <div class="upgrader-circle" id="upgraderCircle">
-                <div class="upgrader-arrow"></div>
-                <div class="upgrader-tube left"></div>
-                <div class="upgrader-tube right"></div>
-                <img class="upgrader-center-img" id="upgraderCenterImg" src="" alt="">
-                <div class="upgrader-dots" id="upgraderDots">&lt; &nbsp; &gt;</div>
+            <!-- Круг с процентами и вращающейся стрелкой -->
+            <div class="wheel-wrapper">
+                <svg class="wheel-svg" viewBox="0 0 260 260">
+                    <circle class="wheel-bg-circle" cx="130" cy="130" r="100"></circle>
+                    <circle class="wheel-chance-circle" id="chanceCircle" cx="130" cy="130" r="100" 
+                            stroke-dasharray="0 628" stroke-dashoffset="0"></circle>
+                </svg>
+                <div class="wheel-center">
+                    <div class="wheel-center-emoji" id="wheelCenterEmoji">🎁</div>
+                    <div class="wheel-percent" id="wheelPercent">50%</div>
+                </div>
+                <div class="wheel-arrow" id="wheelArrow">
+                    <div class="wheel-pointer-line"></div>
+                </div>
             </div>
 
             <div class="upgrade-controls">
@@ -628,19 +631,18 @@
 
             <div class="upgrade-skins">
                 <div class="upgrade-skin" onclick="openInventoryModal('source')">
-                    <img id="upgradeSkinImg" src="" alt="" style="display: none;">
+                    <div class="skin-emoji" id="upgradeSkinEmoji">➕</div>
                     <div class="skin-label" id="upgradeSkinLabel">Выбрать скин</div>
                 </div>
                 <div class="upgrade-arrow">→</div>
                 <div class="upgrade-skin" onclick="openTargetModal()">
-                    <img id="targetSkinImg" src="" alt="" style="display: none;">
+                    <div class="skin-emoji" id="targetSkinEmoji">🎯</div>
                     <div class="skin-label" id="targetSkinLabel">Выбрать результат</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- === Модалка выбора скина === -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-box">
             <div class="modal-title" id="modalTitle">Выберите скин</div>
@@ -649,7 +651,6 @@
         </div>
     </div>
 
-    <!-- === Нижнее меню === -->
     <div class="bottom-nav">
         <button class="nav-item active" onclick="showScreen('cases')" id="navCases">
             <span class="nav-icon">📦</span><span>Кейсы</span>
@@ -662,6 +663,7 @@
         </button>
     </div>
         <script>
+        // === Данные (все скины с эмодзи, чтобы не ломались ссылки) ===
         const cases = [
             { id: 1, name: "Стартовый", price: 49, icon: "📦" },
             { id: 2, name: "Новичок", price: 99, icon: "🎁" },
@@ -672,16 +674,33 @@
         ];
 
         const possibleDrops = [
-            { name: "AK-47 | Redline", img: "https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/default_generated/weapon_ak47_cu_ak47_cobra_light_large.png", price: 250 },
-            { name: "AWP | Asiimov", img: "https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/default_generated/weapon_awp_cu_awp_asimov_light_large.png", price: 500 },
-            { name: "M4A4 | Howl", img: "https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/default_generated/weapon_m4a1_cu_m4a1_howl_light_large.png", price: 1200 },
-            { name: "Нож | Fade", img: "https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/default_generated/weapon_knife_cu_knife_fade_light_large.png", price: 2500 },
-            { name: "Перчатки | Pandora", img: "https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/default_generated/studded_bloodhound_gloves_bloodhound_gloves_pandora_light_large.png", price: 1800 },
-            { name: "USP-S | Neo-Noir", img: "https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/default_generated/weapon_usp_silencer_cu_usp_neonoir_light_large.png", price: 350 },
-            { name: "Glock-18 | Water Elemental", img: "https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/default_generated/weapon_glock_cu_glock18_water_elemental_light_large.png", price: 150 },
-            { name: "Desert Eagle | Blaze", img: "https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/default_generated/weapon_deagle_cu_deagle_blaze_light_large.png", price: 800 },
-            { name: "AWP | Dragon Lore", img: "https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/default_generated/weapon_awp_cu_awp_dragon_lore_light_large.png", price: 5000 }
+            { name: "AK-47 | Redline", emoji: "🔫", price: 250 },
+            { name: "AWP | Asiimov", emoji: "🎯", price: 500 },
+            { name: "M4A4 | Howl", emoji: "🔫", price: 1200 },
+            { name: "Нож | Fade", emoji: "🗡️", price: 2500 },
+            { name: "Перчатки | Pandora", emoji: "🧤", price: 1800 },
+            { name: "USP-S | Neo-Noir", emoji: "🔫", price: 350 },
+            { name: "Glock-18 | Water Elemental", emoji: "🔫", price: 150 },
+            { name: "Desert Eagle | Blaze", emoji: "🔫", price: 800 },
+            { name: "AWP | Dragon Lore", emoji: "🎯", price: 5000 },
+            { name: "Керамбит | Doppler", emoji: "🗡️", price: 3500 }
         ];
+
+        // === Автосохранение ===
+        function saveState() {
+            localStorage.setItem('ardrop_save', JSON.stringify({ balance, inventory }));
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem('ardrop_save');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    balance = data.balance ?? 5000;
+                    inventory = data.inventory ?? [];
+                } catch (e) { console.error(e); }
+            }
+        }
 
         let balance = 5000;
         let inventory = [];
@@ -694,10 +713,13 @@
         let selectedSourceIndex = null;
         let selectedTargetIndex = null;
 
+        loadState();
         updateBalance();
         renderCases();
         renderInventory();
+        updateWheel();
 
+        // === Кейсы ===
         function renderCases() {
             const grid = document.getElementById('casesGrid');
             grid.innerHTML = '';
@@ -708,14 +730,7 @@
                 card.innerHTML = `
                     <div class="case-image">${c.icon}</div>
                     <div class="case-title">${c.name}</div>
-                    <div class="case-price">Цена: <span class="price-val">${c.price}</span> 
-                        <svg class="gold-icon" style="width: 14px; height: 11px;" viewBox="0 0 32 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4 6L2 20H30L28 6H4Z" fill="url(#g1)"/>
-                            <path d="M2 20L1 24H31L30 20H2Z" fill="#8B6914"/>
-                            <path d="M4 6L2 20H30L28 6H4Z" stroke="#FFE066" stroke-width="0.8"/>
-                            <defs><linearGradient id="g1" x1="2" y1="6" x2="30" y2="20"><stop stop-color="#FFD700"/><stop offset="0.5" stop-color="#FFA500"/><stop offset="1" stop-color="#CC8800"/></linearGradient></defs>
-                        </svg>
-                    </div>`;
+                    <div class="case-price">Цена: <span class="price-val">${c.price}</span> 🪙</div>`;
                 grid.appendChild(card);
             });
         }
@@ -754,7 +769,7 @@
             possibleDrops.forEach(item => {
                 const el = document.createElement('div');
                 el.className = 'content-item';
-                el.innerHTML = `<img src="${item.img}" alt=""><div class="content-name">${item.name}</div><div class="content-price">${item.price} 🪙</div>`;
+                el.innerHTML = `<div class="content-emoji">${item.emoji}</div><div class="content-name">${item.name}</div><div class="content-price">${item.price} 🪙</div>`;
                 grid.appendChild(el);
             });
         }
@@ -783,7 +798,7 @@
                 const item = possibleDrops[Math.floor(Math.random() * possibleDrops.length)];
                 const el = document.createElement('div');
                 el.className = 'roulette-item' + (item.price > 1000 ? ' rare' : '');
-                el.innerHTML = `<img src="${item.img}" alt=""><span class="item-name">${item.name}</span>`;
+                el.innerHTML = `<span class="item-emoji">${item.emoji}</span><span class="item-name">${item.name}</span>`;
                 track.appendChild(el);
             }
         }
@@ -799,12 +814,14 @@
             document.getElementById('insufficientFunds').classList.remove('show');
             balance -= totalCost;
             updateBalance();
+            saveState();
             const droppedItem = possibleDrops[Math.floor(Math.random() * possibleDrops.length)];
             if (isFastOpen) {
                 setTimeout(() => {
                     inventory.push(droppedItem);
                     renderInventory();
-                    document.getElementById('dropIcon').src = droppedItem.img;
+                    saveState();
+                    document.getElementById('dropIcon').textContent = droppedItem.emoji;
                     document.getElementById('dropName').textContent = droppedItem.name;
                     document.getElementById('dropResult').classList.add('show');
                     isSpinning = false;
@@ -820,7 +837,7 @@
             const targetIndex = 40;
             const dropEl = document.createElement('div');
             dropEl.className = 'roulette-item' + (droppedItem.price > 1000 ? ' rare' : '');
-            dropEl.innerHTML = `<img src="${droppedItem.img}" alt=""><span class="item-name">${droppedItem.name}</span>`;
+            dropEl.innerHTML = `<span class="item-emoji">${droppedItem.emoji}</span><span class="item-name">${droppedItem.name}</span>`;
             track.replaceChild(dropEl, items[targetIndex]);
             const itemWidth = 100 + 8;
             const wrapperWidth = document.querySelector('.roulette-wrapper').offsetWidth;
@@ -834,11 +851,12 @@
                 isSpinning = false;
                 document.getElementById('openCaseBtn').disabled = false;
                 document.getElementById('openCaseBtn').textContent = 'Открыть ещё раз';
-                document.getElementById('dropIcon').src = droppedItem.img;
+                document.getElementById('dropIcon').textContent = droppedItem.emoji;
                 document.getElementById('dropName').textContent = droppedItem.name;
                 document.getElementById('dropResult').classList.add('show');
                 inventory.push(droppedItem);
                 renderInventory();
+                saveState();
                 checkBalance();
             }, 4200);
         }
@@ -847,14 +865,14 @@
             const grid = document.getElementById('inventoryGrid');
             grid.innerHTML = '';
             if (inventory.length === 0) {
-                grid.innerHTML = '<div class="empty-inv">Инвентарь пуст. Откройте кейс, чтобы получить предметы!</div>';
+                grid.innerHTML = '<div class="empty-inv">Инвентарь пуст. Откройте кейс!</div>';
                 return;
             }
             inventory.forEach((item, index) => {
                 const el = document.createElement('div');
                 el.className = 'inv-item';
                 el.innerHTML = `
-                    <img src="${item.img}" alt="">
+                    <div class="inv-emoji">${item.emoji}</div>
                     <div class="inv-name">${item.name}</div>
                     <div class="inv-price">${item.price} 🪙</div>
                     <button class="btn-sell" onclick="sellItem(${index})">Продать</button>`;
@@ -867,6 +885,7 @@
             inventory.splice(index, 1);
             updateBalance();
             renderInventory();
+            saveState();
         }
 
         // === Апгрейдер ===
@@ -876,6 +895,20 @@
                 btn.classList.remove('active');
                 if (btn.textContent === `x${mult}`) btn.classList.add('active');
             });
+            updateWheel();
+        }
+
+        function updateWheel() {
+            // Шанс = 100 / множитель (x2=50%, x3=33%, x5=20%, x10=10%, x25=4%)
+            const chance = Math.round(100 / currentMultiplier);
+            document.getElementById('wheelPercent').textContent = `${chance}%`;
+            
+            // Радиус 100, длина окружности = 2 * π * 100 ≈ 628
+            const circumference = 628;
+            const dashLength = (chance / 100) * circumference;
+            const circle = document.getElementById('chanceCircle');
+            circle.setAttribute('stroke-dasharray', `${dashLength} ${circumference - dashLength}`);
+            circle.setAttribute('stroke-dashoffset', '0');
         }
 
         function toggleFastUpgrade() {
@@ -883,7 +916,7 @@
             document.getElementById('fastUpgradeBtn').classList.toggle('active', isFastUpgrade);
         }
 
-        // === Модалка выбора ===
+        // === Модалка ===
         let modalMode = 'source';
 
         function openInventoryModal(mode) {
@@ -900,7 +933,7 @@
                     el.className = 'inv-item';
                     el.style.cursor = 'pointer';
                     el.innerHTML = `
-                        <img src="${item.img}" alt="">
+                        <div class="inv-emoji">${item.emoji}</div>
                         <div class="inv-name">${item.name}</div>
                         <div class="inv-price">${item.price} 🪙</div>`;
                     el.onclick = () => selectFromModal(mode, index);
@@ -916,14 +949,13 @@
             if (mode === 'source') {
                 selectedSourceIndex = index;
                 const item = inventory[index];
-                document.getElementById('upgradeSkinImg').src = item.img;
-                document.getElementById('upgradeSkinImg').style.display = 'block';
+                document.getElementById('upgradeSkinEmoji').textContent = item.emoji;
                 document.getElementById('upgradeSkinLabel').textContent = `${item.name} (${item.price} 🪙)`;
+                document.getElementById('wheelCenterEmoji').textContent = item.emoji;
             } else {
                 selectedTargetIndex = index;
                 const item = possibleDrops[index];
-                document.getElementById('targetSkinImg').src = item.img;
-                document.getElementById('targetSkinImg').style.display = 'block';
+                document.getElementById('targetSkinEmoji').textContent = item.emoji;
                 document.getElementById('targetSkinLabel').textContent = `${item.name} (${item.price} 🪙)`;
             }
             closeModal();
@@ -933,7 +965,7 @@
             document.getElementById('modalOverlay').classList.remove('show');
         }
 
-        // === Апгрейд ===
+        // === Апгрейд со стрелкой ===
         function doUpgrade() {
             if (selectedSourceIndex === null) { alert('Выберите свой скин'); return; }
             if (selectedTargetIndex === null) { alert('Выберите что получите'); return; }
@@ -946,54 +978,56 @@
                 return;
             }
 
-            // Шанс = (цена исходного / цена целевого) * 100
             const chance = (sourceItem.price / targetItem.price) * 100;
             const roll = Math.random() * 100;
 
-            const circle = document.getElementById('upgraderCircle');
-            const dots = document.getElementById('upgraderDots');
-            const centerImg = document.getElementById('upgraderCenterImg');
-
-            // Запуск анимации
             document.getElementById('improveBtn').disabled = true;
             document.getElementById('improveBtn').textContent = 'Крутим...';
-            circle.classList.add('spinning');
 
-            if (!isFastUpgrade) {
-                centerImg.src = sourceItem.img;
-                centerImg.style.display = 'block';
-                dots.style.display = 'none';
-            }
+            // Случайный угол для стрелки (0–360)
+            const randomAngle = Math.floor(Math.random() * 360);
+            // Угол, под которым находится "успешный" сектор
+            const chanceAngle = (chance / 100) * 360;
+            // Проверяем, попала ли стрелка в успешный сектор
+            // Успешный сектор начинается с 0 и идёт по часовой стрелке
+            const isWin = randomAngle <= chanceAngle;
 
-            const duration = isFastUpgrade ? 500 : 3000;
+            // Крутим стрелку
+            const arrow = document.getElementById('wheelArrow');
+            arrow.style.transition = 'transform 3s cubic-bezier(0.2, 0.8, 0.2, 1)';
+            // Полный оборот + случайный угол
+            const totalRotation = 360 * 3 + randomAngle;
+            arrow.style.transform = `rotate(${totalRotation}deg)`;
 
             setTimeout(() => {
-                circle.classList.remove('spinning');
-                centerImg.style.display = 'none';
-                dots.style.display = 'block';
-
-                if (roll < chance) {
-                    // Успех
+                if (isWin) {
                     inventory.splice(selectedSourceIndex, 1);
                     inventory.push(targetItem);
-                    alert(`Успех! Вы получили ${targetItem.name}`);
+                    alert(`🎉 Успех! Вы получили ${targetItem.name}`);
                 } else {
-                    // Провал
                     inventory.splice(selectedSourceIndex, 1);
-                    alert(`Провал! Скин ${sourceItem.name} сгорел.`);
+                    alert(`💀 Провал! Скин ${sourceItem.name} сгорел.`);
                 }
 
                 selectedSourceIndex = null;
                 selectedTargetIndex = null;
-                document.getElementById('upgradeSkinImg').style.display = 'none';
+                document.getElementById('upgradeSkinEmoji').textContent = '➕';
                 document.getElementById('upgradeSkinLabel').textContent = 'Выбрать скин';
-                document.getElementById('targetSkinImg').style.display = 'none';
+                document.getElementById('targetSkinEmoji').textContent = '🎯';
                 document.getElementById('targetSkinLabel').textContent = 'Выбрать результат';
+                document.getElementById('wheelCenterEmoji').textContent = '🎁';
                 document.getElementById('improveBtn').disabled = false;
                 document.getElementById('improveBtn').innerHTML = '<span style="font-size: 18px;">🛡</span> Улучшить';
+                
+                // Сброс стрелки
+                arrow.style.transition = 'none';
+                arrow.style.transform = 'rotate(0deg)';
+                setTimeout(() => { arrow.style.transition = 'transform 3s cubic-bezier(0.2, 0.8, 0.2, 1)'; }, 50);
+
                 renderInventory();
                 updateBalance();
-            }, duration);
+                saveState();
+            }, 3200);
         }
 
         // === Экраны ===
@@ -1014,6 +1048,7 @@
                 document.getElementById('screen-upgrader').classList.add('active');
                 document.getElementById('navUpgrader').classList.add('active');
                 updateBalance();
+                updateWheel();
             }
         }
 
