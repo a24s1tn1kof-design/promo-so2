@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Генератор промокодов в Standoff 2</title>
+    <title>Кейсы Standoff 2</title>
     <style>
         * {
             box-sizing: border-box;
@@ -12,328 +12,270 @@
         }
 
         body {
-            background-color: #0f1115;
+            background-color: #0b0e14;
             color: #e0e0e0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: 15px;
         }
 
-        .container {
-            background-color: #1a1d24;
-            border: 1px solid #2a2e38;
-            border-radius: 20px;
-            padding: 25px;
-            width: 100%;
-            max-width: 420px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Шапка */
         .header {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 25px;
+            justify-content: space-between;
+            padding: 10px 0 20px;
+            border-bottom: 1px solid #1f2530;
+            margin-bottom: 20px;
         }
 
-        .header-icon {
-            background-color: #f57c00;
-            color: #111;
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
+        .logo {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-
-        .header-title {
+            gap: 10px;
             font-size: 20px;
             font-weight: 700;
             color: #f57c00;
-            line-height: 1.2;
         }
 
-        /* Поля ввода */
-        .label {
+        .logo-icon {
+            background-color: #f57c00;
+            color: #0b0e14;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .balance {
+            background-color: #1a1d24;
+            padding: 8px 16px;
+            border-radius: 20px;
             font-size: 14px;
-            color: #8a919f;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-field {
-            width: 100%;
-            background-color: #0f1115;
+            color: #00bcd4;
+            font-weight: 600;
             border: 1px solid #2a2e38;
-            border-radius: 12px;
-            padding: 14px 16px;
-            color: #fff;
-            font-size: 16px;
-            outline: none;
-            transition: border-color 0.3s;
         }
 
-        .input-field:focus {
+        /* Сетка кейсов */
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 15px;
+        }
+
+        .case-card {
+            background-color: #151920;
+            border: 1px solid #1f2530;
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.2s, border-color 0.2s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .case-card:hover {
+            transform: translateY(-4px);
             border-color: #f57c00;
         }
 
-        /* Кнопка "Изменить награду" */
-        .btn-change {
+        .case-image {
             width: 100%;
-            background-color: #2a2e38;
-            color: #e0e0e0;
-            border: none;
+            height: 100px;
+            background: linear-gradient(135deg, #1f2530, #2a2e38);
             border-radius: 12px;
-            padding: 14px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-bottom: 8px;
-            transition: background-color 0.2s;
-            text-align: left;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            position: relative;
         }
 
-        .btn-change:hover {
-            background-color: #3a3f4d;
+        /* Заглушки для картинок (эмодзи, т.к. нет реальных изображений) */
+        .case-image span {
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
         }
 
-        .selected-reward {
-            color: #00bcd4;
+        .case-title {
             font-size: 14px;
-            margin-bottom: 20px;
-            display: block;
+            font-weight: 600;
+            color: #e0e0e0;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        /* Основная кнопка */
-        .btn-primary {
+        .case-price {
+            font-size: 13px;
+            color: #8a919f;
+        }
+
+        .case-price span {
+            color: #f57c00;
+            font-weight: 700;
+        }
+
+        /* Кнопка открытия (появляется при наведении) */
+        .case-open {
+            margin-top: 12px;
             width: 100%;
             background-color: #f57c00;
-            color: #111;
-            border: none;
-            border-radius: 12px;
-            padding: 16px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            margin-top: 5px;
-        }
-
-        .btn-primary:hover {
-            background-color: #e65100;
-        }
-
-        /* Блок результата */
-        .result-box {
-            margin-top: 25px;
-            background-color: #0f1115;
-            border: 1px solid #2a2e38;
-            border-radius: 12px;
-            padding: 15px;
-            display: none;
-        }
-
-        .result-box.active {
-            display: block;
-        }
-
-        .promo-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .promo-code {
-            font-family: monospace;
-            font-size: 18px;
-            color: #00bcd4;
-            letter-spacing: 1px;
-            word-break: break-all;
-        }
-
-        .btn-copy {
-            background-color: #2a2e38;
-            color: #fff;
+            color: #0b0e14;
             border: none;
             border-radius: 8px;
-            padding: 10px 16px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-            flex-shrink: 0;
-            transition: background-color 0.2s;
-        }
-
-        .btn-copy:hover {
-            background-color: #3a3f4d;
-        }
-
-        .promo-meta {
-            display: inline-block;
-            margin-top: 10px;
-            background-color: rgba(245, 124, 0, 0.15);
-            color: #f57c00;
+            padding: 10px;
             font-size: 13px;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-weight: 600;
+            font-weight: 700;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.2s, transform 0.2s;
         }
 
-        .error-text {
-            color: #ff5252;
+        .case-card:hover .case-open {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Сообщение об открытии */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background-color: #1a1d24;
+            border: 1px solid #f57c00;
+            color: #fff;
+            padding: 14px 24px;
+            border-radius: 12px;
             font-size: 14px;
-            margin-top: 8px;
-            display: none;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+            z-index: 100;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast span {
+            color: #f57c00;
+        }
+
+        /* Адаптив для очень маленьких экранов */
+        @media (max-width: 400px) {
+            .cases-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .case-image {
+                height: 80px;
+                font-size: 32px;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
     <!-- Шапка -->
     <div class="header">
-        <div class="header-icon">P</div>
-        <div class="header-title">Генератор промокодов в Standoff 2</div>
-    </div>
-
-    <!-- Награда -->
-    <div class="input-group">
-        <label class="label">Награда</label>
-        <button class="btn-change" onclick="changeReward()">Изменить награду</button>
-        <span class="selected-reward" id="selectedReward">Выбрано: Голда</span>
-    </div>
-
-    <!-- Количество голды -->
-    <div class="input-group">
-        <label class="label">Количество голды</label>
-        <input type="number" id="goldInput" class="input-field" value="100" min="1">
-    </div>
-
-    <!-- Скин (для проверки) -->
-    <div class="input-group">
-        <label class="label">Название скина (для проверки)</label>
-        <input type="text" id="skinInput" class="input-field" placeholder="Например: AK-47 | Redline" value="">
-        <div id="errorMsg" class="error-text">Такого скина не существует!</div>
-    </div>
-
-    <!-- Кнопка генерации -->
-    <button class="btn-primary" onclick="generatePromo()">Сгенерировать промокод</button>
-
-    <!-- Результат -->
-    <div id="resultBox" class="result-box">
-        <div class="promo-row">
-            <div id="promoCode" class="promo-code">----</div>
-            <button class="btn-copy" onclick="copyToClipboard()">Копировать</button>
+        <div class="logo">
+            <div class="logo-icon">B</div>
+            <span>BulDrop</span>
         </div>
-        <div id="promoMeta" class="promo-meta"></div>
+        <div class="balance" id="balanceDisplay">0 ₽</div>
     </div>
-</div>
 
-<script>
-    // Доступные награды (для кнопки "Изменить награду")
-    const rewards = ["Голда", "Скин", "Кейс", "Боевой пропуск"];
-    let currentReward = "Голда";
-    let rewardIndex = 0;
+    <!-- Сетка кейсов -->
+    <div class="cases-grid" id="casesGrid">
+        <!-- Кейсы будут добавлены через JS -->
+    </div>
 
-    // База "правдоподобных" скинов для проверки
-    const validSkins = [
-        "AK-47 | Redline", "AK-47 | Vulcan", "M4A4 | Howl", "AWP | Dragon Lore",
-        "AWP | Asiimov", "Desert Eagle | Blaze", "USP-S | Kill Confirmed",
-        "Glock-18 | Fade", "Karambit | Doppler", "M9 Bayonet | Crimson Web",
-        "AK-47 | Fire Serpent", "M4A1-S | Hyper Beast", "AWP | Medusa",
-        "Butterfly Knife | Fade", "Sport Gloves | Pandora's Box",
-        "AK-47 | Bloodsport", "M4A4 | The Emperor", "AWP | Wildfire",
-        "Desert Eagle | Printstream", "USP-S | Neo-Noir", "Glock-18 | Water Elemental"
-    ];
+    <!-- Всплывающее уведомление -->
+    <div class="toast" id="toast">Вы открыли кейс!</div>
 
-    // Смена награды
-    function changeReward() {
-        rewardIndex = (rewardIndex + 1) % rewards.length;
-        currentReward = rewards[rewardIndex];
-        document.getElementById('selectedReward').textContent = `Выбрано: ${currentReward}`;
-        
-        // Меняем подпись в зависимости от награды
-        const goldLabel = document.querySelector('label[for="goldInput"]') || document.querySelectorAll('.label')[1];
-        if (currentReward === "Голда") {
-            goldLabel.textContent = "Количество голды";
-        } else {
-            goldLabel.textContent = `Количество (${currentReward})`;
+    <script>
+        // Данные кейсов (пока что 6 штук, как вы просили — поменьше)
+        const cases = [
+            { id: 1, name: "Стартовый кейс", price: 49, icon: "📦" },
+            { id: 2, name: "Новичок", price: 99, icon: "🎁" },
+            { id: 3, name: "Любитель", price: 199, icon: "💎" },
+            { id: 4, name: "Профи", price: 499, icon: "🔥" },
+            { id: 5, name: "Элита", price: 999, icon: "👑" },
+            { id: 6, name: "Легенда", price: 1999, icon: "⭐" }
+        ];
+
+        let balance = 5000; // Стартовый баланс для теста
+
+        // Отрисовка кейсов
+        function renderCases() {
+            const grid = document.getElementById('casesGrid');
+            grid.innerHTML = '';
+            
+            cases.forEach(c => {
+                const card = document.createElement('div');
+                card.className = 'case-card';
+                card.innerHTML = `
+                    <div class="case-image"><span>${c.icon}</span></div>
+                    <div class="case-title">${c.name}</div>
+                    <div class="case-price">Цена: <span>${c.price} ₽</span></div>
+                    <button class="case-open" onclick="openCase(${c.id})">Открыть</button>
+                `;
+                grid.appendChild(card);
+            });
         }
-    }
 
-    // Генерация промокода
-    function generatePromo() {
-        const skinInput = document.getElementById('skinInput').value.trim();
-        const goldInput = document.getElementById('goldInput').value.trim();
-        const errorMsg = document.getElementById('errorMsg');
-        const resultBox = document.getElementById('resultBox');
-        
-        errorMsg.style.display = 'none';
+        // Логика открытия кейса
+        function openCase(id) {
+            const box = cases.find(c => c.id === id);
+            if (!box) return;
 
-        // Проверка скина (если поле заполнено)
-        if (skinInput) {
-            const isSkinValid = validSkins.some(skin => 
-                skin.toLowerCase().includes(skinInput.toLowerCase()) || 
-                skinInput.toLowerCase().includes(skin.toLowerCase())
-            );
-
-            if (!isSkinValid) {
-                errorMsg.textContent = `Скина "${skinInput}" не существует в Standoff 2.`;
-                errorMsg.style.display = 'block';
-                resultBox.classList.remove('active');
+            if (balance < box.price) {
+                showToast(`Недостаточно средств! Нужно ${box.price} ₽`);
                 return;
             }
+
+            // Списываем баланс
+            balance -= box.price;
+            updateBalance();
+
+            // Имитация выпадения скина
+            const skins = ["AK-47 | Redline", "AWP | Asiimov", "M4A4 | Howl", "Нож | Fade", "Перчатки | Pandora"];
+            const randomSkin = skins[Math.floor(Math.random() * skins.length)];
+
+            showToast(`Вы открыли <span>${box.name}</span> и получили: <br><b>${randomSkin}</b>`);
         }
 
-        // Проверка количества
-        let amount = parseInt(goldInput);
-        if (isNaN(amount) || amount < 1) {
-            amount = 1;
+        // Обновление баланса
+        function updateBalance() {
+            document.getElementById('balanceDisplay').textContent = `${balance.toLocaleString('ru-RU')} ₽`;
         }
 
-        // Генерация рандомного промокода
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        let promoCode = '';
-        for (let i = 0; i < 12; i++) {
-            promoCode += chars.charAt(Math.floor(Math.random() * chars.length));
+        // Показ уведомления
+        let toastTimeout;
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerHTML = message;
+            toast.classList.add('show');
+            
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
         }
 
-        // Вывод результата
-        document.getElementById('promoCode').textContent = promoCode;
-        document.getElementById('promoMeta').textContent = `${amount} ${currentReward.toLowerCase()} · ${currentReward === "Голда" ? "1 акт." : "1 акт."}`;
-        
-        resultBox.classList.add('active');
-    }
-
-    // Копирование
-    function copyToClipboard() {
-        const code = document.getElementById('promoCode').textContent;
-        navigator.clipboard.writeText(code).then(() => {
-            const btn = document.querySelector('.btn-copy');
-            const originalText = btn.textContent;
-            btn.textContent = 'Скопировано!';
-            setTimeout(() => {
-                btn.textContent = originalText;
-            }, 1500);
-        }).catch(err => {
-            console.error('Ошибка копирования: ', err);
-        });
-    }
-</script>
+        // Инициализация
+        updateBalance();
+        renderCases();
+    </script>
 
 </body>
-    </html>
+</html>
