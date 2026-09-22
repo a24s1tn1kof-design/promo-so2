@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BulDrop — Кейсы Standoff 2</title>
+    <title>ArDrop — Кейсы Standoff 2</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
@@ -37,24 +37,24 @@
         .screen.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* === Сетка кейсов === */
+        /* === Сетка кейсов 2x2 === */
         .section-title { font-size: 20px; font-weight: 700; margin-bottom: 15px; color: #fff; }
-        .cases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
+        .cases-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         .case-card {
             background-color: #151920; border: 1px solid #1f2530; border-radius: 16px;
-            padding: 15px; text-align: center; transition: transform 0.2s, border-color 0.2s;
+            padding: 12px; text-align: center; transition: transform 0.2s, border-color 0.2s;
             cursor: pointer; position: relative;
         }
         .case-card:hover { transform: translateY(-4px); border-color: #f57c00; }
         .case-image {
-            width: 100%; height: 100px;
+            width: 100%; height: 90px;
             background: linear-gradient(135deg, #1f2530, #2a2e38);
-            border-radius: 12px; margin-bottom: 12px;
+            border-radius: 12px; margin-bottom: 10px;
             display: flex; align-items: center; justify-content: center; font-size: 40px;
         }
-        .case-title { font-size: 14px; font-weight: 600; color: #e0e0e0; margin-bottom: 4px; }
+        .case-title { font-size: 13px; font-weight: 600; color: #e0e0e0; margin-bottom: 4px; }
         .case-price {
-            font-size: 13px; color: #8a919f;
+            font-size: 12px; color: #8a919f;
             display: flex; align-items: center; justify-content: center; gap: 4px;
         }
         .case-price .price-val { color: #ffb300; font-weight: 700; }
@@ -120,7 +120,7 @@
         .roulette-wrapper {
             position: relative; background-color: #11151c;
             border: 1px solid #1f2530; border-radius: 16px;
-            overflow: hidden; margin-bottom: 20px; height: 160px;
+            overflow: hidden; margin-bottom: 20px; height: 140px;
             display: flex; align-items: center;
         }
         .roulette-line {
@@ -136,19 +136,20 @@
         .roulette-line::after { bottom: -8px; border-bottom-color: #f57c00; }
 
         .roulette-track {
-            display: flex; gap: 10px; padding: 15px;
+            display: flex; gap: 8px; padding: 15px;
             transition: transform 4s cubic-bezier(0.2, 0.8, 0.2, 1); will-change: transform;
         }
         .roulette-item {
-            flex-shrink: 0; width: 110px; height: 110px;
+            flex-shrink: 0; width: 100px; height: 100px;
             background: linear-gradient(135deg, #1f2530, #2a2e38);
             border-radius: 12px; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; gap: 5px;
-            border: 1px solid #2a2e38; font-size: 28px;
+            align-items: center; justify-content: center; gap: 4px;
+            border: 1px solid #2a2e38; font-size: 28px; overflow: hidden;
         }
+        .roulette-item img { width: 70px; height: 70px; object-fit: contain; }
         .roulette-item .item-name {
-            font-size: 10px; color: #8a919f; text-align: center;
-            padding: 0 5px; white-space: nowrap; overflow: hidden;
+            font-size: 9px; color: #8a919f; text-align: center;
+            padding: 0 4px; white-space: nowrap; overflow: hidden;
             text-overflow: ellipsis; width: 100%;
         }
         .roulette-item.rare { border-color: #f57c00; box-shadow: 0 0 15px rgba(245, 124, 0, 0.3); }
@@ -182,87 +183,103 @@
         .drop-result.show { display: block; }
         @keyframes popIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
         .drop-result h3 { font-size: 16px; color: #8a919f; margin-bottom: 10px; font-weight: 500; }
-        .drop-item { font-size: 60px; margin-bottom: 10px; }
+        .drop-item-img { width: 100px; height: 100px; object-fit: contain; margin: 0 auto 10px; display: block; }
         .drop-name { font-size: 18px; font-weight: 700; color: #f57c00; }
 
-        /* === Содержимое кейса (1в) === */
+        /* === Содержимое кейса === */
         .case-contents { margin-top: 30px; border-top: 1px solid #1f2530; padding-top: 20px; }
         .contents-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 15px; }
-        .contents-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+        .contents-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
         .content-item {
             background-color: #151920; border: 1px solid #1f2530;
-            border-radius: 12px; padding: 12px; text-align: center;
+            border-radius: 12px; padding: 10px; text-align: center;
             transition: border-color 0.2s;
         }
         .content-item:hover { border-color: #f57c00; }
-        .content-item .content-icon { font-size: 32px; margin-bottom: 6px; }
+        .content-item img { width: 60px; height: 60px; object-fit: contain; margin-bottom: 6px; }
         .content-item .content-name {
-            font-size: 11px; color: #e0e0e0; font-weight: 600;
+            font-size: 10px; color: #e0e0e0; font-weight: 600;
             margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
-        .content-item .content-price { font-size: 11px; color: #ffb300; font-weight: 700; }
+        .content-item .content-price { font-size: 10px; color: #ffb300; font-weight: 700; }
 
         /* === Инвентарь === */
-        .inventory-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+        .inventory-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
         .inv-item {
             background-color: #151920; border: 1px solid #1f2530;
-            border-radius: 12px; padding: 15px; text-align: center;
+            border-radius: 12px; padding: 12px; text-align: center;
         }
-        .inv-item .inv-icon { font-size: 36px; margin-bottom: 8px; }
-        .inv-item .inv-name { font-size: 13px; font-weight: 600; color: #e0e0e0; margin-bottom: 4px; }
+        .inv-item img { width: 70px; height: 70px; object-fit: contain; margin-bottom: 6px; }
+        .inv-item .inv-name { font-size: 12px; font-weight: 600; color: #e0e0e0; margin-bottom: 4px; }
         .inv-item .inv-price {
             font-size: 12px; color: #ffb300; font-weight: 700;
             display: flex; align-items: center; justify-content: center; gap: 3px;
+            margin-bottom: 8px;
         }
+        .btn-sell {
+            width: 100%; background-color: #2a2e38; border: none;
+            color: #e0e0e0; border-radius: 8px; padding: 8px;
+            font-size: 12px; font-weight: 600; cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-sell:hover { background-color: #f57c00; color: #0b0e14; }
         .empty-inv { text-align: center; color: #8a919f; padding: 40px 20px; font-size: 14px; }
+
+        /* === Апгрейдер === */
+        .upgrader-box {
+            background-color: #11151c; border: 1px solid #1f2530;
+            border-radius: 16px; padding: 20px; text-align: center;
+        }
+        .upgrader-box h3 { font-size: 16px; color: #fff; margin-bottom: 15px; }
+        .upgrader-box select {
+            width: 100%; background-color: #1a1d24; border: 1px solid #2a2e38;
+            color: #fff; border-radius: 10px; padding: 12px;
+            font-size: 14px; margin-bottom: 15px; outline: none;
+        }
+        .upgrader-box select:focus { border-color: #f57c00; }
+        .btn-upgrade {
+            width: 100%; background-color: #f57c00; color: #0b0e14;
+            border: none; border-radius: 10px; padding: 14px;
+            font-size: 15px; font-weight: 700; cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-upgrade:hover { background-color: #e65100; }
 
         /* === Нижнее меню === */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0;
             background-color: #11151c; border-top: 1px solid #1f2530;
             display: flex; justify-content: space-around;
-            padding: 10px 0; z-index: 50;
+            padding: 8px 0; z-index: 50;
         }
         .nav-item {
-            display: flex; flex-direction: column; align-items: center; gap: 4px;
-            color: #8a919f; font-size: 12px; cursor: pointer;
-            padding: 5px 20px; border-radius: 10px;
+            display: flex; flex-direction: column; align-items: center; gap: 3px;
+            color: #8a919f; font-size: 11px; cursor: pointer;
+            padding: 5px 15px; border-radius: 10px;
             transition: color 0.2s; background: none; border: none;
         }
         .nav-item.active { color: #f57c00; }
-        .nav-item .nav-icon { font-size: 20px; }
-
-        /* === Уведомление === */
-        .toast {
-            position: fixed; bottom: 80px; left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background-color: #1a1d24; border: 1px solid #f57c00;
-            color: #fff; padding: 14px 24px; border-radius: 12px;
-            font-size: 14px; font-weight: 600; transition: transform 0.3s ease;
-            z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            max-width: 90%; text-align: center;
-        }
-        .toast.show { transform: translateX(-50%) translateY(0); }
-        .toast span { color: #f57c00; }
+        .nav-item .nav-icon { font-size: 18px; }
     </style>
 </head>
 <body>
-    <!-- === Шапка === -->
+   <!-- === Шапка === -->
 <div class="header">
     <div class="logo">
-        <div class="logo-icon">B</div>
-        <span>BulDrop</span>
+        <div class="logo-icon">A</div>
+        <span>ArDrop</span>
     </div>
     <div class="balance">
-        <svg class="gold-icon" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 2L2 16H22L20 2H4Z" fill="url(#goldGradient)"/>
-            <path d="M2 16L1 20H23L22 16H2Z" fill="#B8860B"/>
-            <path d="M4 2L2 16H22L20 2H4Z" stroke="#FFD700" stroke-width="0.5"/>
+        <svg class="gold-icon" viewBox="0 0 32 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 6L2 20H30L28 6H4Z" fill="url(#goldGrad)"/>
+            <path d="M2 20L1 24H31L30 20H2Z" fill="#8B6914"/>
+            <path d="M4 6L2 20H30L28 6H4Z" stroke="#FFE066" stroke-width="0.8"/>
+            <path d="M6 8L5 10H29L28 8H6Z" fill="#FFE066" opacity="0.4"/>
             <defs>
-                <linearGradient id="goldGradient" x1="2" y1="2" x2="22" y2="16" gradientUnits="userSpaceOnUse">
+                <linearGradient id="goldGrad" x1="2" y1="6" x2="30" y2="20" gradientUnits="userSpaceOnUse">
                     <stop stop-color="#FFD700"/>
                     <stop offset="0.5" stop-color="#FFA500"/>
-                    <stop offset="1" stop-color="#FF8C00"/>
+                    <stop offset="1" stop-color="#CC8800"/>
                 </linearGradient>
             </defs>
         </svg>
@@ -283,18 +300,6 @@
         <div class="case-header-info">
             <h2 id="caseTitle">Кейс</h2>
             <p>Цена: <span style="color: #ffb300; display: flex; align-items: center; gap: 3px;">
-                <svg class="gold-icon" style="width: 16px; height: 13px;" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 2L2 16H22L20 2H4Z" fill="url(#goldGradient2)"/>
-                    <path d="M2 16L1 20H23L22 16H2Z" fill="#B8860B"/>
-                    <path d="M4 2L2 16H22L20 2H4Z" stroke="#FFD700" stroke-width="0.5"/>
-                    <defs>
-                        <linearGradient id="goldGradient2" x1="2" y1="2" x2="22" y2="16" gradientUnits="userSpaceOnUse">
-                            <stop stop-color="#FFD700"/>
-                            <stop offset="0.5" stop-color="#FFA500"/>
-                            <stop offset="1" stop-color="#FF8C00"/>
-                        </linearGradient>
-                    </defs>
-                </svg>
                 <span id="casePrice">0</span>
             </span></p>
         </div>
@@ -340,19 +345,19 @@
 
     <!-- Сообщение о нехватке -->
     <div class="insufficient-funds" id="insufficientFunds">
-        <div>На балансе <span id="currentBalanceWarn">0</span> из <span id="requiredBalanceWarn">0</span> 🪙</div>
-        <div style="font-size: 12px; color: #8a919f; margin-top: 4px;">Пополните еще на <span id="missingBalance">0</span> 🪙</div>
+        <div>На балансе <span id="currentBalanceWarn">0</span> из <span id="requiredBalanceWarn">0</span></div>
+        <div style="font-size: 12px; color: #8a919f; margin-top: 4px;">Пополните еще на <span id="missingBalance">0</span></div>
     </div>
 
     <button class="btn-open-case" id="openCaseBtn" onclick="spinRoulette()">Открыть кейс</button>
 
     <div class="drop-result" id="dropResult">
         <h3>Вам выпало:</h3>
-        <div class="drop-item" id="dropIcon">🎁</div>
+        <img class="drop-item-img" id="dropIcon" src="" alt="">
         <div class="drop-name" id="dropName">Предмет</div>
     </div>
 
-    <!-- Содержимое кейса (1в) -->
+    <!-- Содержимое кейса -->
     <div class="case-contents">
         <h3 class="contents-title">Содержимое кейса <span id="contentsCaseName">Кейс</span></h3>
         <div class="contents-grid" id="contentsGrid"></div>
@@ -365,6 +370,18 @@
     <div class="inventory-grid" id="inventoryGrid"></div>
 </div>
 
+<!-- === Экран 4: Апгрейдер === -->
+<div class="screen" id="screen-upgrader">
+    <div class="section-title">Апгрейдер</div>
+    <div class="upgrader-box">
+        <h3>Выберите скин для апгрейда</h3>
+        <select id="upgradeSelect">
+            <option value="">-- Выберите скин из инвентаря --</option>
+        </select>
+        <button class="btn-upgrade" onclick="doUpgrade()">Апгрейднуть</button>
+    </div>
+</div>
+
 <!-- === Нижнее меню === -->
 <div class="bottom-nav">
     <button class="nav-item active" onclick="showScreen('cases')" id="navCases">
@@ -375,13 +392,15 @@
         <span class="nav-icon">🎒</span>
         <span>Инвентарь</span>
     </button>
-</div>
-
-<div class="toast" id="toast"></div>
-    <script>
-        // === Данные ===
+    <button class="nav-item" onclick="showScreen('upgrader')" id="navUpgrader">
+        <span class="nav-icon">⬆️</span>
+        <span>Апгрейд</span>
+    </button>
+                        </div>
+                        <script>
+        // === Данные кейсов ===
         const cases = [
-            { id: 1, name: "Стартовый кейс", price: 49, icon: "📦" },
+            { id: 1, name: "Стартовый", price: 49, icon: "📦" },
             { id: 2, name: "Новичок", price: 99, icon: "🎁" },
             { id: 3, name: "Любитель", price: 199, icon: "💎" },
             { id: 4, name: "Профи", price: 499, icon: "🔥" },
@@ -389,16 +408,17 @@
             { id: 6, name: "Легенда", price: 1999, icon: "⭐" }
         ];
 
+        // === Настоящие скины (ссылки на изображения) ===
         const possibleDrops = [
-            { name: "AK-47 | Redline", icon: "🔫", price: 250 },
-            { name: "AWP | Asiimov", icon: "🎯", price: 500 },
-            { name: "M4A4 | Howl", icon: "🔫", price: 1200 },
-            { name: "Нож | Fade", icon: "🗡️", price: 2500 },
-            { name: "Перчатки | Pandora", icon: "🧤", price: 1800 },
-            { name: "USP-S | Neo-Noir", icon: "🔫", price: 350 },
-            { name: "Glock-18 | Water Elemental", icon: "🔫", price: 150 },
-            { name: "Desert Eagle | Blaze", icon: "🔫", price: 800 },
-            { name: "AWP | Dragon Lore", icon: "🎯", price: 5000 }
+            { name: "AK-47 | Redline", img: "https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/default_generated/weapon_ak47_cu_ak47_cobra_light_large.png", price: 250 },
+            { name: "AWP | Asiimov", img: "https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/default_generated/weapon_awp_cu_awp_asimov_light_large.png", price: 500 },
+            { name: "M4A4 | Howl", img: "https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/default_generated/weapon_m4a1_cu_m4a1_howl_light_large.png", price: 1200 },
+            { name: "Нож | Fade", img: "https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/default_generated/weapon_knife_cu_knife_fade_light_large.png", price: 2500 },
+            { name: "Перчатки | Pandora", img: "https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/default_generated/studded_bloodhound_gloves_bloodhound_gloves_pandora_light_large.png", price: 1800 },
+            { name: "USP-S | Neo-Noir", img: "https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/default_generated/weapon_usp_silencer_cu_usp_neonoir_light_large.png", price: 350 },
+            { name: "Glock-18 | Water Elemental", img: "https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/default_generated/weapon_glock_cu_glock18_water_elemental_light_large.png", price: 150 },
+            { name: "Desert Eagle | Blaze", img: "https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/default_generated/weapon_deagle_cu_deagle_blaze_light_large.png", price: 800 },
+            { name: "AWP | Dragon Lore", img: "https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/default_generated/weapon_awp_cu_awp_dragon_lore_light_large.png", price: 5000 }
         ];
 
         // === Состояние ===
@@ -426,17 +446,11 @@
                     <div class="case-image">${c.icon}</div>
                     <div class="case-title">${c.name}</div>
                     <div class="case-price">Цена: <span class="price-val">${c.price}</span> 
-                        <svg class="gold-icon" style="width: 14px; height: 11px;" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4 2L2 16H22L20 2H4Z" fill="url(#goldGradient3)"/>
-                            <path d="M2 16L1 20H23L22 16H2Z" fill="#B8860B"/>
-                            <path d="M4 2L2 16H22L20 2H4Z" stroke="#FFD700" stroke-width="0.5"/>
-                            <defs>
-                                <linearGradient id="goldGradient3" x1="2" y1="2" x2="22" y2="16" gradientUnits="userSpaceOnUse">
-                                    <stop stop-color="#FFD700"/>
-                                    <stop offset="0.5" stop-color="#FFA500"/>
-                                    <stop offset="1" stop-color="#FF8C00"/>
-                                </linearGradient>
-                            </defs>
+                        <svg class="gold-icon" style="width: 14px; height: 11px;" viewBox="0 0 32 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 6L2 20H30L28 6H4Z" fill="url(#g1)"/>
+                            <path d="M2 20L1 24H31L30 20H2Z" fill="#8B6914"/>
+                            <path d="M4 6L2 20H30L28 6H4Z" stroke="#FFE066" stroke-width="0.8"/>
+                            <defs><linearGradient id="g1" x1="2" y1="6" x2="30" y2="20"><stop stop-color="#FFD700"/><stop offset="0.5" stop-color="#FFA500"/><stop offset="1" stop-color="#CC8800"/></linearGradient></defs>
                         </svg>
                     </div>
                 `;
@@ -444,7 +458,7 @@
             });
         }
 
-        // === Установка количества ===
+        // === Количество ===
         function setQuantity(qty) {
             selectedQuantity = qty;
             document.querySelectorAll('.qty-btn').forEach(btn => {
@@ -455,15 +469,12 @@
         }
 
         // === Быстрое открытие ===
-        document.getElementById('fastOpenCheckbox').addEventListener('change', (e) => {
-            isFastOpen = e.target.checked;
-        });
+        document.getElementById('fastOpenCheckbox').addEventListener('change', (e) => { isFastOpen = e.target.checked; });
 
         // === Переход на экран кейса ===
         function openCaseScreen(id) {
             currentCase = cases.find(c => c.id === id);
             if (!currentCase) return;
-
             document.getElementById('caseTitle').textContent = currentCase.name;
             document.getElementById('casePrice').textContent = currentCase.price;
             document.getElementById('contentsCaseName').textContent = currentCase.name;
@@ -471,7 +482,6 @@
             document.getElementById('openCaseBtn').disabled = false;
             document.getElementById('openCaseBtn').textContent = 'Открыть кейс';
             document.getElementById('insufficientFunds').classList.remove('show');
-
             setQuantity(1);
             renderCaseContents();
             buildRouletteTrack();
@@ -479,7 +489,7 @@
             showScreen('case');
         }
 
-        // === Содержимое кейса (1в) ===
+        // === Содержимое кейса ===
         function renderCaseContents() {
             const grid = document.getElementById('contentsGrid');
             grid.innerHTML = '';
@@ -487,7 +497,7 @@
                 const el = document.createElement('div');
                 el.className = 'content-item';
                 el.innerHTML = `
-                    <div class="content-icon">${item.icon}</div>
+                    <img src="${item.img}" alt="${item.name}">
                     <div class="content-name">${item.name}</div>
                     <div class="content-price">${item.price} 🪙</div>
                 `;
@@ -511,7 +521,7 @@
             }
         }
 
-        // === Построение ленты рулетки ===
+        // === Лента рулетки ===
         function buildRouletteTrack() {
             const track = document.getElementById('rouletteTrack');
             track.style.transition = 'none';
@@ -521,12 +531,12 @@
                 const item = possibleDrops[Math.floor(Math.random() * possibleDrops.length)];
                 const el = document.createElement('div');
                 el.className = 'roulette-item' + (item.price > 1000 ? ' rare' : '');
-                el.innerHTML = `<span>${item.icon}</span><span class="item-name">${item.name}</span>`;
+                el.innerHTML = `<img src="${item.img}" alt=""><span class="item-name">${item.name}</span>`;
                 track.appendChild(el);
             }
         }
 
-        // === Прокрутка рулетки ===
+        // === Прокрутка ===
         function spinRoulette() {
             if (isSpinning || !currentCase) return;
             const totalCost = currentCase.price * selectedQuantity;
@@ -537,40 +547,38 @@
             document.getElementById('openCaseBtn').textContent = 'Крутим...';
             document.getElementById('dropResult').classList.remove('show');
             document.getElementById('insufficientFunds').classList.remove('show');
-
             balance -= totalCost;
             updateBalance();
 
+            const droppedItem = possibleDrops[Math.floor(Math.random() * possibleDrops.length)];
+
             if (isFastOpen) {
                 setTimeout(() => {
-                    const droppedItem = possibleDrops[Math.floor(Math.random() * possibleDrops.length)];
                     inventory.push(droppedItem);
                     renderInventory();
-                    document.getElementById('dropIcon').textContent = droppedItem.icon;
+                    document.getElementById('dropIcon').src = droppedItem.img;
                     document.getElementById('dropName').textContent = droppedItem.name;
                     document.getElementById('dropResult').classList.add('show');
                     isSpinning = false;
                     document.getElementById('openCaseBtn').disabled = false;
                     document.getElementById('openCaseBtn').textContent = 'Открыть ещё раз';
                     checkBalance();
-                    showToast(`Вы получили: <span>${droppedItem.name}</span>`);
                 }, 300);
                 return;
             }
 
             buildRouletteTrack();
-            const droppedItem = possibleDrops[Math.floor(Math.random() * possibleDrops.length)];
             const track = document.getElementById('rouletteTrack');
             const items = track.children;
             const targetIndex = 40;
             const dropEl = document.createElement('div');
             dropEl.className = 'roulette-item' + (droppedItem.price > 1000 ? ' rare' : '');
-            dropEl.innerHTML = `<span>${droppedItem.icon}</span><span class="item-name">${droppedItem.name}</span>`;
+            dropEl.innerHTML = `<img src="${droppedItem.img}" alt=""><span class="item-name">${droppedItem.name}</span>`;
             track.replaceChild(dropEl, items[targetIndex]);
 
-            const itemWidth = 110 + 10;
+            const itemWidth = 100 + 8;
             const wrapperWidth = document.querySelector('.roulette-wrapper').offsetWidth;
-            const centerOffset = wrapperWidth / 2 - 110 / 2;
+            const centerOffset = wrapperWidth / 2 - 100 / 2;
             const targetPosition = targetIndex * itemWidth - centerOffset;
 
             setTimeout(() => {
@@ -582,47 +590,77 @@
                 isSpinning = false;
                 document.getElementById('openCaseBtn').disabled = false;
                 document.getElementById('openCaseBtn').textContent = 'Открыть ещё раз';
-                document.getElementById('dropIcon').textContent = droppedItem.icon;
+                document.getElementById('dropIcon').src = droppedItem.img;
                 document.getElementById('dropName').textContent = droppedItem.name;
                 document.getElementById('dropResult').classList.add('show');
                 inventory.push(droppedItem);
                 renderInventory();
                 checkBalance();
-                showToast(`Вы получили: <span>${droppedItem.name}</span>`);
             }, 4200);
         }
 
-        // === Отрисовка инвентаря ===
+        // === Инвентарь с продажей ===
         function renderInventory() {
             const grid = document.getElementById('inventoryGrid');
             grid.innerHTML = '';
             if (inventory.length === 0) {
                 grid.innerHTML = '<div class="empty-inv">Инвентарь пуст. Откройте кейс, чтобы получить предметы!</div>';
+                updateUpgradeSelect();
                 return;
             }
-            inventory.forEach(item => {
+            inventory.forEach((item, index) => {
                 const el = document.createElement('div');
                 el.className = 'inv-item';
                 el.innerHTML = `
-                    <div class="inv-icon">${item.icon}</div>
+                    <img src="${item.img}" alt="${item.name}">
                     <div class="inv-name">${item.name}</div>
-                    <div class="inv-price">${item.price} 
-                        <svg class="gold-icon" style="width: 12px; height: 10px;" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4 2L2 16H22L20 2H4Z" fill="url(#goldGradient4)"/>
-                            <path d="M2 16L1 20H23L22 16H2Z" fill="#B8860B"/>
-                            <path d="M4 2L2 16H22L20 2H4Z" stroke="#FFD700" stroke-width="0.5"/>
-                            <defs>
-                                <linearGradient id="goldGradient4" x1="2" y1="2" x2="22" y2="16" gradientUnits="userSpaceOnUse">
-                                    <stop stop-color="#FFD700"/>
-                                    <stop offset="0.5" stop-color="#FFA500"/>
-                                    <stop offset="1" stop-color="#FF8C00"/>
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                    </div>
+                    <div class="inv-price">${item.price} 🪙</div>
+                    <button class="btn-sell" onclick="sellItem(${index})">Продать</button>
                 `;
                 grid.appendChild(el);
             });
+            updateUpgradeSelect();
+        }
+
+        // === Продажа ===
+        function sellItem(index) {
+            const item = inventory[index];
+            balance += item.price;
+            inventory.splice(index, 1);
+            updateBalance();
+            renderInventory();
+        }
+
+        // === Апгрейдер ===
+        function updateUpgradeSelect() {
+            const select = document.getElementById('upgradeSelect');
+            select.innerHTML = '<option value="">-- Выберите скин из инвентаря --</option>';
+            inventory.forEach((item, index) => {
+                const opt = document.createElement('option');
+                opt.value = index;
+                opt.textContent = `${item.name} (${item.price} 🪙)`;
+                select.appendChild(opt);
+            });
+        }
+
+        function doUpgrade() {
+            const select = document.getElementById('upgradeSelect');
+            const index = select.value;
+            if (index === '') return;
+            const item = inventory[index];
+            
+            // Шанс апгрейда 40%
+            if (Math.random() < 0.4) {
+                // Успех: удваиваем цену
+                item.price *= 2;
+                alert(`Апгрейд успешен! Новый скин: ${item.name} (${item.price} 🪙)`);
+            } else {
+                // Провал: скин сгорает
+                alert(`Апгрейд не удался. Скин ${item.name} сгорел.`);
+                inventory.splice(index, 1);
+            }
+            renderInventory();
+            select.value = '';
         }
 
         // === Переключение экранов ===
@@ -638,24 +676,23 @@
             } else if (name === 'inventory') {
                 document.getElementById('screen-inventory').classList.add('active');
                 document.getElementById('navInventory').classList.add('active');
+                renderInventory();
+            } else if (name === 'upgrader') {
+                document.getElementById('screen-upgrader').classList.add('active');
+                document.getElementById('navUpgrader').classList.add('active');
+                updateUpgradeSelect();
             }
         }
 
-        // === Обновление баланса ===
+        // === Баланс ===
         function updateBalance() {
             document.getElementById('balanceDisplay').textContent = balance.toLocaleString('ru-RU');
         }
 
-        // === Уведомление ===
-        let toastTimeout;
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.innerHTML = message;
-            toast.classList.add('show');
-            clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => toast.classList.remove('show'), 3000);
+        // === Заглушка для пополнения ===
+        function showToast(msg) {
+            alert(msg);
         }
     </script>
-
 </body>
-</html>
+    </html>
