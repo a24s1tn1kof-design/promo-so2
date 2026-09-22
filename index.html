@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Standoff 2 — Генератор промокодов</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background: radial-gradient(circle at top, #1f2b3a, #0a0e14 70%);
+    color: #e6edf3;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 30px 15px;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 640px;
+    background: #131a24;
+    border: 1px solid #22303f;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.6);
+  }
+
+  header { text-align: center; margin-bottom: 22px; }
+  h1 { color: #ff9d2e; font-size: 28px; letter-spacing: 1px; }
+  .subtitle { color: #8a97a6; font-size: 13px; margin-top: 4px; }
+
+  .controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .controls label {
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+    color: #8a97a6;
+    gap: 6px;
+  }
+
+  input, select {
+    background: #0d131b;
+    border: 1px solid #2a3947;
+    color: #e6edf3;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+  }
+
+  input:focus, select:focus { border-color: #ff9d2e; }
+
+  button {
+    background: linear-gradient(135deg, #ff9d2e, #ff6a00);
+    border: none;
+    color: #131a24;
+    font-weight: 700;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: transform .15s, filter .15s;
+  }
+
+  button:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  button:active { transform: translateY(0); }
+
+  #generate { grid-column: 1 / -1; margin-top: 6px; }
+
+  .codes {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 340px;
+    overflow-y: auto;
+    margin-bottom: 16px;
+  }
+
+  .codes li {
+    background: #0d131b;
+    border: 1px solid #22303f;
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    animation: fade .25s ease;
+  }
+
+  @keyframes fade { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; } }
+
+  .code-text {
+    font-family: 'Consolas', monospace;
+    font-size: 15px;
+    color: #4dd0e1;
+    letter-spacing: 1px;
+  }
+
+  .reward-tag {
+    font-size: 11px;
+    color: #ff9d2e;
+    background: rgba(255,157,46,.1);
+    padding: 3px 8px;
+    border-radius: 12px;
+    display: inline-block;
+    margin-top: 4px;
+  }
+
+  .copy-btn {
+    background: #22303f;
+    color: #e6edf3;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .actions { display: flex; gap: 10px; margin-bottom: 18px; }
+  .secondary { background: #22303f; color: #e6edf3; flex: 1; }
+
+  .disclaimer {
+    font-size: 11px;
+    color: #586675;
+    text-align: center;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>🎯 Standoff 2</h1>
+      <p class="subtitle">Генератор промокодов (демо)</p>
+    </header>
+
+    <div class="controls">
+      <label>
+        Количество:
+        <input type="number" id="count" value="5" min="1" max="50">
+      </label>
+
+      <label>
+        Тип награды:
+        <select id="reward">
+          <option value="500 кредитов">500 кредитов</option>
+          <option value="1000 кредитов">1000 кредитов</option>
+          <option value="Скин AKR">Скин AKR</option>
+          <option value="Кейс">Кейс</option>
+          <option value="Gold">Gold</option>
+        </select>
+      </label>
+
+      <label>
+        Длина кода:
+        <input type="number" id="length" value="12" min="8" max="20">
+      </label>
+
+      <button id="generate">Сгенерировать</button>
+    </div>
+
+    <ul id="codes" class="codes"></ul>
+
+    <div class="actions">
+      <button id="copyAll" class="secondary">📋 Копировать все</button>
+      <button id="clear" class="secondary">🗑 Очистить</button>
+    </div>
+
+    <p class="disclaimer">
+      Демонстрационный генератор. Не связан с официальной игрой Standoff 2.
+      Реальные награды не выдаёт.
+    </p>
+  </div>
+
+<script>
+  // Алфавит без неоднозначных символов (0/O, 1/I/L)
+  const ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+
+  // Криптостойкий генератор случайных чисел
+  function randomInt(max) {
+    if (window.crypto && window.crypto.getRandomValues) {
+      const buf = new Uint32Array(1);
+      window.crypto.getRandomValues(buf);
+      return buf[0] % max;
+    }
+    return Math.floor(Math.random() * max);
+  }
+
+  // Генерация одного промокода формата SO2-XXXX-XXXX-XXXX
+  function generateCode(length, prefix = 'SO2') {
+    const clean = length - prefix.length - 1;
+    const groups = 3;
+    const perGroup = Math.floor(clean / groups);
+    const remainder = clean % groups;
+
+    const parts = [];
+    for (let g = 0; g < groups; g++) {
+      const size = perGroup + (g < remainder ? 1 : 0);
+      let part = '';
+      for (let i = 0; i < size; i++) {
+        part += ALPHABET[randomInt(ALPHABET.length)];
+      }
+      parts.push(part);
+    }
+    return `${prefix}-${parts.join('-')}`;
+  }
+
+  const usedCodes = new Set();
+
+  function generateUnique(length) {
+    let code, attempts = 0;
+    do {
+      code = generateCode(length);
+      attempts++;
+      if (attempts > 100) break;
+    } while (usedCodes.has(code));
+    usedCodes.add(code);
+    return code;
+  }
+
+  // ===== UI =====
+  const codesList = document.getElementById('codes');
+  const btnGenerate = document.getElementById('generate');
+  const btnCopyAll = document.getElementById('copyAll');
+  const btnClear = document.getElementById('clear');
+
+  function createCodeElement(code, reward) {
+    const li = document.createElement('li');
+
+    const left = document.createElement('div');
+    const spanCode = document.createElement('div');
+    spanCode.className = 'code-text';
+    spanCode.textContent = code;
+    const spanReward = document.createElement('span');
+    spanReward.className = 'reward-tag';
+    spanReward.textContent = reward;
+    left.appendChild(spanCode);
+    left.appendChild(spanReward);
+
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'copy-btn';
+    copyBtn.textContent = 'Копировать';
+    copyBtn.onclick = () => {
+      navigator.clipboard.writeText(code).then(() => {
+        copyBtn.textContent = '✓';
+        setTimeout(() => (copyBtn.textContent = 'Копировать'), 1200);
+      });
+    };
+
+    li.appendChild(left);
+    li.appendChild(copyBtn);
+    return li;
+  }
+
+  btnGenerate.addEventListener('click', () => {
+    const count = Math.min(50, Math.max(1, +document.getElementById('count').value || 1));
+    const length = Math.min(20, Math.max(8, +document.getElementById('length').value || 12));
+    const reward = document.getElementById('reward').value;
+
+    codesList.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      const code = generateUnique(length);
+      codesList.appendChild(createCodeElement(code, reward));
+    }
+  });
+
+  btnCopyAll.addEventListener('click', () => {
+    const items = [...codesList.querySelectorAll('.code-text')].map(el => el.textContent);
+    if (!items.length) return;
+    navigator.clipboard.writeText(items.join('\n')).then(() => {
+      btnCopyAll.textContent = '✓ Скопировано';
+      setTimeout(() => (btnCopyAll.textContent = '📋 Копировать все'), 1200);
+    });
+  });
+
+  btnClear.addEventListener('click', () => {
+    codesList.innerHTML = '';
+    usedCodes.clear();
+  });
+</script>
+</body>
+  </html>
