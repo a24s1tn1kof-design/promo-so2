@@ -14,7 +14,6 @@
             overflow-x: hidden;
         }
 
-        /* === Шапка === */
         .header {
             display: flex; align-items: center; justify-content: space-between;
             padding: 15px 20px; background-color: #11151c;
@@ -22,10 +21,19 @@
         }
         .logo { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 700; color: #f57c00; }
         .logo-icon {
-            background-color: #f57c00; color: #0b0e14; width: 36px; height: 36px;
-            border-radius: 8px; display: flex; align-items: center;
-            justify-content: center; font-size: 20px; font-weight: 900;
+            width: 40px; height: 40px; border-radius: 10px;
+            background: linear-gradient(135deg, #f57c00, #e65100);
+            display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
+            box-shadow: 0 4px 12px rgba(245, 124, 0, 0.4);
         }
+        .logo-icon::before {
+            content: ''; position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shine 3s infinite;
+        }
+        @keyframes shine { 0% { transform: translateX(-100%) translateY(-100%); } 100% { transform: translateX(100%) translateY(100%); } }
         .balance {
             background-color: #1a1d24; padding: 8px 16px; border-radius: 20px;
             font-size: 14px; color: #ffb300; font-weight: 700;
@@ -35,14 +43,12 @@
         .balance:active { transform: scale(0.96); }
         .gold-icon { width: 20px; height: 16px; flex-shrink: 0; }
 
-        /* === Экраны === */
         .screen { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
         .screen.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .section-title { font-size: 20px; font-weight: 700; margin-bottom: 15px; color: #fff; }
 
-        /* === Кейсы === */
         .cases-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         .case-card {
             background-color: #151920; border: 1px solid #1f2530; border-radius: 16px;
@@ -63,15 +69,13 @@
         }
         .case-price .price-val { color: #ffb300; font-weight: 700; }
 
-        /* === Экран кейса === */
         .case-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
         .back-btn {
             background-color: #1a1d24; border: 1px solid #2a2e38; color: #e0e0e0;
             width: 40px; height: 40px; border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 20px; cursor: pointer; transition: background-color 0.2s;
+            font-size: 20px; cursor: pointer;
         }
-        .back-btn:hover { background-color: #2a2e38; }
         .case-header-info h2 { font-size: 18px; color: #fff; margin-bottom: 4px; }
         .case-header-info p { font-size: 13px; color: #8a919f; display: flex; align-items: center; gap: 4px; }
 
@@ -83,11 +87,9 @@
         .qty-btn {
             flex: 1; min-width: 45px; background-color: #1a1d24;
             border: 1px solid #2a2e38; color: #8a919f; border-radius: 10px;
-            padding: 12px 0; font-size: 15px; font-weight: 600;
-            cursor: pointer; transition: all 0.2s;
+            padding: 12px 0; font-size: 15px; font-weight: 600; cursor: pointer;
         }
         .qty-btn.active { background-color: #2a2e38; color: #fff; border-color: #f57c00; }
-        .qty-btn:hover { background-color: #2a2e38; color: #fff; }
 
         .fast-open-toggle {
             display: flex; align-items: center; justify-content: space-between;
@@ -104,13 +106,11 @@
         }
         .slider:before {
             position: absolute; content: ""; height: 18px; width: 18px;
-            left: 3px; bottom: 3px; background-color: white;
-            transition: .3s; border-radius: 50%;
+            left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%;
         }
         input:checked + .slider { background-color: #f57c00; }
         input:checked + .slider:before { transform: translateX(22px); }
 
-        /* === Рулетка === */
         .roulette-wrapper {
             position: relative; background-color: #11151c;
             border: 1px solid #1f2530; border-radius: 16px;
@@ -138,7 +138,7 @@
             background: linear-gradient(135deg, #1f2530, #2a2e38);
             border-radius: 12px; display: flex; flex-direction: column;
             align-items: center; justify-content: center; gap: 4px;
-            border: 1px solid #2a2e38; font-size: 28px; overflow: hidden;
+            border: 1px solid #2a2e38; overflow: hidden;
         }
         .roulette-item .item-emoji { font-size: 40px; }
         .roulette-item .item-name {
@@ -159,13 +159,10 @@
         .btn-open-case {
             width: 100%; background-color: #f57c00; color: #0b0e14;
             border: none; border-radius: 12px; padding: 16px;
-            font-size: 16px; font-weight: 700; cursor: pointer;
-            transition: background-color 0.2s; margin-bottom: 20px;
+            font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 20px;
         }
-        .btn-open-case:hover:not(:disabled) { background-color: #e65100; }
         .btn-open-case:disabled { background-color: #2a2e38; color: #8a919f; cursor: not-allowed; }
 
-        /* === Содержимое === */
         .case-contents { margin-top: 20px; border-top: 1px solid #1f2530; padding-top: 20px; }
         .contents-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 15px; }
         .contents-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
@@ -180,31 +177,33 @@
         }
         .content-item .content-price { font-size: 10px; color: #ffb300; font-weight: 700; }
 
-        /* === Инвентарь === */
-        .inventory-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+        .inventory-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         .inv-item {
             background-color: #151920; border: 1px solid #1f2530;
             border-radius: 12px; padding: 12px; text-align: center;
+            display: flex; flex-direction: column;
+            justify-content: space-between;
+            min-height: 210px;
         }
         .inv-item .inv-emoji { font-size: 40px; margin-bottom: 6px; }
-        .inv-item .inv-name { font-size: 12px; font-weight: 600; color: #e0e0e0; margin-bottom: 4px; }
+        .inv-item .inv-name {
+            font-size: 12px; font-weight: 600; color: #e0e0e0;
+            margin-bottom: 4px; word-break: break-word; line-height: 1.3;
+        }
         .inv-item .inv-price {
             font-size: 12px; color: #ffb300; font-weight: 700;
-            display: flex; align-items: center; justify-content: center; gap: 3px;
             margin-bottom: 8px;
         }
         .btn-sell {
             width: 100%; background-color: #2a2e38; border: none;
             color: #e0e0e0; border-radius: 8px; padding: 8px;
             font-size: 12px; font-weight: 600; cursor: pointer;
-            transition: background-color 0.2s;
         }
         .btn-sell:hover { background-color: #f57c00; color: #0b0e14; }
         .btn-withdraw-item {
             width: 100%; background-color: #2a2e38; border: none;
             color: #e0e0e0; border-radius: 8px; padding: 8px;
-            font-size: 12px; font-weight: 600; cursor: pointer;
-            transition: background-color 0.2s; margin-top: 4px;
+            font-size: 12px; font-weight: 600; cursor: pointer; margin-top: 4px;
         }
         .btn-withdraw-item:hover { background-color: #21a038; color: #fff; }
         .empty-inv { text-align: center; color: #8a919f; padding: 40px 20px; font-size: 14px; }
@@ -227,21 +226,21 @@
         .wheel-percent { font-size: 34px; font-weight: 900; color: #00ff88; text-shadow: 0 0 10px rgba(0, 255, 136, 0.6); }
         .wheel-center-emoji { font-size: 44px; margin-bottom: 4px; line-height: 1; }
         .wheel-result-icon { font-size: 50px; font-weight: 900; line-height: 1; }
-        .wheel-result-icon.win { color: #00ff88; text-shadow: 0 0 15px rgba(0,255,136,0.8); }
-        .wheel-result-icon.lose { color: #ff3b30; text-shadow: 0 0 15px rgba(255,59,48,0.8); }
+        .wheel-result-icon.win { color: #00ff88; }
+        .wheel-result-icon.lose { color: #ff3b30; }
 
         .wheel-arrow-wrapper { position: absolute; width: 280px; height: 280px; z-index: 4; pointer-events: none; transition: transform 3.2s cubic-bezier(0.15, 0.7, 0.2, 1); }
         .wheel-arrow {
             position: absolute; left: 50%; top: 6px; transform: translateX(-50%);
             width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent;
-            border-top: 18px solid #f57c00; filter: drop-shadow(0 0 6px rgba(245, 124, 0, 0.9));
+            border-top: 18px solid #f57c00;
         }
 
         .upgrade-controls { display: flex; align-items: center; gap: 12px; width: 90%; max-width: 380px; margin-bottom: 15px; }
         .btn-fast-upgrade {
             width: 50px; height: 50px; min-width: 50px; border-radius: 50%;
             background-color: #1a1d24; border: 1px solid #2a2e38; color: #f57c00; font-size: 22px;
-            display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
         }
         .btn-fast-upgrade.active { background-color: #f57c00; color: #0b0e14; }
 
@@ -249,15 +248,14 @@
             flex: 1; background-color: #1a1d24; border: 1px solid #2a2e38;
             color: #fff; border-radius: 14px; padding: 16px;
             font-size: 16px; font-weight: 700; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
         }
         .btn-improve:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .upgrader-chances { display: flex; gap: 8px; margin-bottom: 20px; width: 100%; justify-content: center; flex-wrap: wrap; }
         .chance-btn {
             background-color: #1a1d24; border: 1px solid #2a2e38; color: #8a919f;
-            border-radius: 10px; padding: 8px 14px; font-size: 13px; font-weight: 700;
-            cursor: pointer; transition: all 0.2s;
+            border-radius: 10px; padding: 8px 14px; font-size: 13px; font-weight: 700; cursor: pointer;
         }
         .chance-btn.active { background-color: #2a2e38; color: #f57c00; border-color: #f57c00; }
 
@@ -290,7 +288,7 @@
         .upload-photo-btn {
             width: 100%; background-color: #2a2e38; border: 1px dashed #4a4f5d;
             color: #8a919f; border-radius: 12px; padding: 20px;
-            font-size: 14px; cursor: pointer; transition: all 0.2s;
+            font-size: 14px; cursor: pointer;
             display: flex; flex-direction: column; align-items: center; gap: 6px;
         }
         .upload-photo-btn .upload-icon { font-size: 28px; }
@@ -340,13 +338,16 @@
         .history-emoji { font-size: 32px; }
         .history-info { flex: 1; }
         .history-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 2px; }
-        .history-price { font-size: 12px; color: #ffb300; font-weight: 700; }
-        .history-status { font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 700; text-transform: uppercase; }
+        .history-price { font-size: 11px; color: #ffb300; font-weight: 700; }
+        .history-status {
+            font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 700;
+            text-transform: uppercase; cursor: pointer;
+        }
         .history-status.processing { background: rgba(245, 124, 0, 0.15); color: #f57c00; }
         .history-status.done { background: rgba(33, 160, 56, 0.15); color: #21a038; }
         .history-empty { text-align: center; color: #8a919f; padding: 20px; font-size: 13px; }
 
-        /* === МОДАЛКИ (все всплывающие окна) === */
+        /* === МОДАЛКИ === */
         .modal-overlay, .pay-overlay, .drop-modal, .custom-alert {
             position: fixed; inset: 0; background-color: rgba(0,0,0,0.85);
             z-index: 200; display: none; align-items: center; justify-content: center;
@@ -367,7 +368,6 @@
         }
         .modal-close:hover { background-color: #f57c00; color: #0b0e14; }
 
-        /* Окно оплаты (Сбер) */
         .pay-overlay { align-items: flex-end; padding: 0; z-index: 300; }
         .pay-window {
             background-color: #1a1d24;
@@ -398,7 +398,6 @@
         }
         .pay-hint { text-align: center; font-size: 12px; color: #8a919f; margin-top: 12px; }
 
-        /* Модалка дропа */
         .drop-modal-box {
             background-color: #151920; border: 1px solid #1f2530;
             border-radius: 20px; padding: 25px 20px; width: 100%; max-width: 400px;
@@ -417,7 +416,6 @@
         .drop-modal-item .emoji { font-size: 22px; }
         .drop-modal-item .name { font-size: 8px; color: #8a919f; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* Кастомное уведомление */
         .custom-alert { z-index: 600; }
         .custom-alert-box {
             background-color: #151920; border: 1px solid #1f2530;
@@ -426,14 +424,13 @@
         }
         .custom-alert-box .alert-icon { font-size: 42px; margin-bottom: 12px; }
         .custom-alert-box .alert-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 8px; }
-        .custom-alert-box .alert-text { font-size: 14px; color: #8a919f; margin-bottom: 20px; line-height: 1.5; }
+        .custom-alert-box .alert-text { font-size: 14px; color: #8a919f; margin-bottom: 20px; line-height: 1.5; text-align: left; }
         .custom-alert-box .alert-btn {
             width: 100%; background-color: #f57c00; color: #0b0e14;
             border: none; border-radius: 12px; padding: 14px;
             font-size: 15px; font-weight: 700; cursor: pointer;
         }
 
-        /* Push-уведомление */
         .push-notification {
             position: fixed; top: -140px; left: 50%; transform: translateX(-50%);
             width: calc(100% - 20px); max-width: 460px;
@@ -456,7 +453,6 @@
         .push-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 2px; }
         .push-text { font-size: 12px; color: #b0b6c0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* Нижнее меню */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0;
             background-color: #11151c; border-top: 1px solid #1f2530;
@@ -467,7 +463,7 @@
             display: flex; flex-direction: column; align-items: center; gap: 3px;
             color: #8a919f; font-size: 11px; cursor: pointer;
             padding: 5px 12px; border-radius: 10px;
-            transition: color 0.2s; background: none; border: none;
+            background: none; border: none;
         }
         .nav-item.active { color: #f57c00; }
         .nav-item .nav-icon { font-size: 18px; }
@@ -476,7 +472,13 @@
 <body>
     <div class="header">
     <div class="logo">
-        <div class="logo-icon">A</div>
+        <div class="logo-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 3L4 20H8L9.5 16H14.5L16 20H20L12 3Z" fill="#0b0e14"/>
+                <path d="M12 3L9 10H15L12 3Z" fill="#fff" opacity="0.3"/>
+                <circle cx="18" cy="6" r="2" fill="#fff"/>
+            </svg>
+        </div>
         <span>ArDrop</span>
     </div>
     <div class="balance" onclick="openDepositModal()">
@@ -546,7 +548,6 @@
     <div class="inventory-grid" id="inventoryGrid"></div>
 </div>
 
-<!-- === Экран вывода в игру === -->
 <div class="screen" id="screen-withdraw">
     <div class="section-title">Вывод в игру</div>
     <div class="withdraw-container">
@@ -557,7 +558,7 @@
         </div>
 
         <div class="withdraw-step">
-            <div class="withdraw-step-title"><span class="withdraw-step-num">1</span> Выберите скин из инвентаря</div>
+            <div class="withdraw-step-title"><span class="withdraw-step-num">1</span> Выберите скин</div>
             <div class="withdraw-preview empty" id="withdrawItemPreview">Нажмите, чтобы выбрать скин</div>
             <button class="btn-withdraw" style="background-color: #2a2e38; color: #e0e0e0; margin-top: 0;" onclick="openWithdrawItemModal()">Выбрать скин</button>
         </div>
@@ -574,7 +575,7 @@
         </div>
 
         <div class="withdraw-step">
-            <div class="withdraw-step-title"><span class="withdraw-step-num">3</span> Загрузите фото выставленного скина</div>
+            <div class="withdraw-step-title"><span class="withdraw-step-num">3</span> Фото выставленного скина</div>
             <label for="withdrawPhotoInput" class="upload-photo-btn">
                 <div class="upload-icon">📷</div>
                 <div>Нажмите, чтобы загрузить фото</div>
@@ -589,16 +590,16 @@
 
             <div class="commission-info">
                 <div class="commission-row">
-                    <div class="label">Выставляете</div>
+                    <div class="label">Скин</div>
                     <div class="value" id="withdrawItemName">—</div>
                 </div>
                 <div class="commission-row">
-                    <div class="label">Комиссия ArDrop</div>
-                    <div class="value green">20%</div>
+                    <div class="label">Выставите за</div>
+                    <div class="value gold" id="withdrawItemPrice">0 🪙</div>
                 </div>
                 <div class="commission-row">
-                    <div class="label">Цена в игре</div>
-                    <div class="value gold" id="withdrawItemPrice">0 🪙</div>
+                    <div class="label">Комиссия 20% покрывает</div>
+                    <div class="value green">ArDrop</div>
                 </div>
                 <div class="commission-row">
                     <div class="label">Получаете</div>
@@ -606,23 +607,15 @@
                 </div>
             </div>
 
-            <div style="font-size: 12px; color: #8a919f; margin-bottom: 15px; line-height: 1.5; text-align: center;">
-                Выставите скин в Standoff 2 за указанную цену.<br>
-                После проверки ArDrop выплатит вам голду на баланс.
-            </div>
-
-            <button class="btn-withdraw" id="btnWithdrawFinal" onclick="confirmWithdraw()">Вывести</button>
+            <button class="btn-withdraw" onclick="confirmWithdraw()">Вывести</button>
         </div>
-
     </div>
 </div>
 
 <div class="screen" id="screen-upgrader">
     <div class="upgrader-container">
         <div class="upgrader-top">
-            <div class="upgrader-balance">
-                <span id="upgraderBalanceDisplay">5 000</span> 🪙
-            </div>
+            <div class="upgrader-balance"><span id="upgraderBalanceDisplay">5 000</span> 🪙</div>
         </div>
 
         <div class="wheel-wrapper">
@@ -668,14 +661,15 @@
     </div>
 </div>
 
-<!-- === Профиль === -->
 <div class="screen" id="screen-profile">
     <div class="section-title">Профиль</div>
 
     <div class="profile-header">
-        <div class="profile-avatar">A</div>
-        <div class="profile-name">Игрок</div>
+        <div class="profile-avatar" id="profileAvatarDisplay">A</div>
+        <div class="profile-name" id="profileNameDisplay">Игрок</div>
         <div class="profile-id">ID: #000001</div>
+        <button class="btn-sell" style="margin-top: 12px;" onclick="openEditProfile()">Редактировать профиль</button>
+        <button class="btn-sell" style="margin-top: 8px; background-color: #ff3b30; color: #fff;" onclick="resetBalance()">Обнулить баланс</button>
     </div>
 
     <div class="profile-stats">
@@ -732,7 +726,6 @@
     </div>
 </div>
 
-<!-- Модалка дропа -->
 <div class="drop-modal" id="dropModal">
     <div class="drop-modal-box">
         <h3>Вам выпало:</h3>
@@ -743,7 +736,6 @@
     </div>
 </div>
 
-<!-- Кастомное уведомление -->
 <div class="custom-alert" id="customAlert">
     <div class="custom-alert-box">
         <div class="alert-icon" id="alertIcon">⚠️</div>
@@ -754,7 +746,11 @@
 </div>
 
 <div class="push-notification" id="pushNotification">
-    <div class="push-icon">✓</div>
+    <div class="push-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3L4 20H8L9.5 16H14.5L16 20H20L12 3Z" fill="#fff"/>
+        </svg>
+    </div>
     <div class="push-content">
         <div class="push-title">ArDrop</div>
         <div class="push-text" id="pushText">Заявка создана</div>
@@ -768,14 +764,14 @@
     <button class="nav-item" onclick="showScreen('withdraw')" id="navWithdraw"><span class="nav-icon">📤</span><span>Вывод</span></button>
     <button class="nav-item" onclick="showScreen('profile')" id="navProfile"><span class="nav-icon">👤</span><span>Профиль</span></button>
             </div>
-    <script>
+                    <script>
     const cases = [
-        { id: 1, name: "Стартовый", price: 49, icon: "📦" },
-        { id: 2, name: "Новичок", price: 99, icon: "🎁" },
-        { id: 3, name: "Любитель", price: 199, icon: "💎" },
-        { id: 4, name: "Профи", price: 499, icon: "🔥" },
-        { id: 5, name: "Элита", price: 999, icon: "👑" },
-        { id: 6, name: "Легенда", price: 1999, icon: "⭐" }
+        { id: 1, name: "Neon Rush", price: 49, icon: "🎁" },
+        { id: 2, name: "Cyber Blaze", price: 99, icon: "💠" },
+        { id: 3, name: "Shadow Strike", price: 199, icon: "🌀" },
+        { id: 4, name: "Dragon's Hoard", price: 499, icon: "🐉" },
+        { id: 5, name: "Quantum Core", price: 999, icon: "⚛️" },
+        { id: 6, name: "Eternal Legend", price: 1999, icon: "👑" }
     ];
 
     const possibleDrops = [
@@ -792,7 +788,8 @@
         { name: "Charm | Gold", emoji: "🪙", price: 1500 }
     ];
 
-    const COMMISSION = 0.20; // 20% комиссия ArDrop
+    const COMMISSION = 0.20;
+    const WITHDRAW_STAGES = ["Ждёт просмотра", "Просмотр получен", "Идёт проверка", "Проверка проведена", "Идёт поиск скина", "Голда выведена"];
 
     let balance = 5000;
     let inventory = [];
@@ -809,7 +806,6 @@
     let withdrawPhotoData = null;
     let withdrawAvatarData = null;
     let withdrawHistory = [];
-    let lastDroppedItems = [];
 
     function formatNumber(num) {
         return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
@@ -837,18 +833,23 @@
     updateWheelChance();
     renderWithdrawHistory();
 
-    // Кастомное уведомление
+    // Имя из localStorage
+    const savedName = localStorage.getItem('ardrop_name');
+    if (savedName) document.getElementById('profileNameDisplay').textContent = savedName;
+
     function showAlert(icon, title, text) {
         document.getElementById('alertIcon').textContent = icon;
         document.getElementById('alertTitle').textContent = title;
-        document.getElementById('alertText').textContent = text;
+        document.getElementById('alertText').innerHTML = text;
         document.getElementById('customAlert').classList.add('show');
     }
     function closeCustomAlert() {
         document.getElementById('customAlert').classList.remove('show');
+        const btn = document.querySelector('.custom-alert-box .alert-btn');
+        btn.textContent = 'Понятно';
+        btn.onclick = closeCustomAlert;
     }
 
-    // Push-уведомление (как от мессенджера)
     function showPush(title, text) {
         document.querySelector('.push-title').textContent = title;
         document.getElementById('pushText').textContent = text;
@@ -944,9 +945,7 @@
         }
     }
 
-    // Показ модалки дропа
     function showDropModal(items) {
-        lastDroppedItems = items;
         const main = items[0];
         document.getElementById('dropMainEmoji').textContent = main.emoji;
         document.getElementById('dropMainName').textContent = main.name;
@@ -958,15 +957,12 @@
         else if (items.length === 2) list.classList.add('cols-2');
         else if (items.length === 3) list.classList.add('cols-3');
         else list.classList.add('cols-5');
-        
-        // Если > 1, показываем все
+
         if (items.length > 1) {
             items.forEach(item => {
                 const el = document.createElement('div');
                 el.className = 'drop-modal-item';
-                el.innerHTML = `
-                    <div class="emoji">${item.emoji}</div>
-                    <div class="name">${item.name}</div>`;
+                el.innerHTML = `<div class="emoji">${item.emoji}</div><div class="name">${item.name}</div>`;
                 list.appendChild(el);
             });
         }
@@ -976,7 +972,7 @@
     function closeDropModal() {
         document.getElementById('dropModal').classList.remove('show');
     }
-        function spinRoulette() {
+     function spinRoulette() {
     if (isSpinning || !currentCase) return;
     const totalCost = currentCase.price * selectedQuantity;
     if (balance < totalCost) { checkBalance(); return; }
@@ -988,9 +984,18 @@
     updateBalance();
     saveState();
 
+    // Генерация с ограничением: максимум 2 дорогих скина
+    const cheapDrops = possibleDrops.filter(d => d.price <= 1000);
     const droppedItems = [];
+    let rareCount = 0;
+    const maxRare = Math.min(2, selectedQuantity);
+
     for (let i = 0; i < selectedQuantity; i++) {
-        droppedItems.push(possibleDrops[Math.floor(Math.random() * possibleDrops.length)]);
+        const canDropRare = rareCount < maxRare;
+        const pool = canDropRare ? possibleDrops : cheapDrops;
+        const item = pool[Math.floor(Math.random() * pool.length)];
+        if (item.price > 1000) rareCount++;
+        droppedItems.push(item);
     }
 
     if (isFastOpen) {
@@ -1171,8 +1176,8 @@ function selectFromModal(mode, index) {
 
 function closeModal() {
     document.getElementById('modalOverlay').classList.remove('show');
-        }
-                function doUpgrade() {
+                        }
+                                function doUpgrade() {
             if (selectedSourceIndex === null) { showAlert('⚠️', 'Ошибка', 'Выберите свой скин'); return; }
             if (selectedTargetIndex === null) { showAlert('⚠️', 'Ошибка', 'Выберите что получите'); return; }
             const sourceItem = inventory[selectedSourceIndex];
@@ -1265,7 +1270,7 @@ function closeModal() {
             showPush('Оплата прошла', `Зачислено ${formatNumber(amount)} ₽ на баланс`);
         }
 
-        // === Вывод в игру ===
+        // === Вывод ===
         function openWithdrawItemModal() {
             if (inventory.length === 0) { showAlert('⚠️', 'Инвентарь пуст', 'У вас нет скинов для вывода'); return; }
             document.getElementById('modalTitle').textContent = 'Выберите скин для вывода';
@@ -1290,9 +1295,7 @@ function closeModal() {
             const item = inventory[index];
             const preview = document.getElementById('withdrawItemPreview');
             preview.classList.remove('empty');
-            preview.innerHTML = `
-                <div class="preview-emoji">${item.emoji}</div>
-                <div class="preview-name">${item.name}</div>`;
+            preview.innerHTML = `<div class="preview-emoji">${item.emoji}</div><div class="preview-name">${item.name}</div>`;
             document.getElementById('withdrawItemName').textContent = item.name;
             updateWithdrawInfo();
             showScreen('withdraw');
@@ -1303,22 +1306,17 @@ function closeModal() {
             const item = inventory[index];
             const preview = document.getElementById('withdrawItemPreview');
             preview.classList.remove('empty');
-            preview.innerHTML = `
-                <div class="preview-emoji">${item.emoji}</div>
-                <div class="preview-name">${item.name}</div>`;
+            preview.innerHTML = `<div class="preview-emoji">${item.emoji}</div><div class="preview-name">${item.name}</div>`;
             document.getElementById('withdrawItemName').textContent = item.name;
             updateWithdrawInfo();
         }
 
-        // Автоматический расчёт цены с комиссией 20%
         function updateWithdrawInfo() {
             if (withdrawSelectedIndex === null) return;
             const item = inventory[withdrawSelectedIndex];
-            // Цена в игре = цена скина / (1 - комиссия)
-            const gamePrice = Math.round(item.price / (1 - COMMISSION));
-            const youGet = item.price;
-            document.getElementById('withdrawItemPrice').textContent = `${formatNumber(gamePrice)} 🪙`;
-            document.getElementById('withdrawItemResult').textContent = `${formatNumber(youGet)} 🪙`;
+            const listPrice = Math.round(item.price / (1 - COMMISSION));
+            document.getElementById('withdrawItemPrice').textContent = `${formatNumber(listPrice)} 🪙`;
+            document.getElementById('withdrawItemResult').textContent = `${formatNumber(item.price)} 🪙`;
         }
 
         function previewAvatarPhoto(event) {
@@ -1353,18 +1351,20 @@ function closeModal() {
             if (!withdrawPhotoData) { showAlert('⚠️', 'Ошибка', 'Загрузите фото выставленного скина'); return; }
 
             const item = inventory[withdrawSelectedIndex];
-            const gamePrice = Math.round(item.price / (1 - COMMISSION));
+            const listPrice = Math.round(item.price / (1 - COMMISSION));
 
-            // Добавляем в историю
-            const withdrawEntry = {
+            const entry = {
                 emoji: item.emoji,
                 name: item.name,
                 price: item.price,
-                gamePrice: gamePrice,
+                listPrice: listPrice,
                 status: 'processing',
-                date: new Date().toLocaleDateString('ru-RU')
+                stage: 0,
+                date: new Date().toLocaleDateString('ru-RU'),
+                createdAt: Date.now(),
+                finishAt: Date.now() + (5 * 60 * 1000) + Math.random() * (5 * 24 * 60 * 60 * 1000 - 5 * 60 * 1000)
             };
-            withdrawHistory.unshift(withdrawEntry);
+            withdrawHistory.unshift(entry);
 
             inventory.splice(withdrawSelectedIndex, 1);
             renderInventory();
@@ -1382,32 +1382,102 @@ function closeModal() {
             document.getElementById('avatarPhotoPreview').classList.remove('show');
             document.getElementById('withdrawPhotoPreview').classList.remove('show');
 
-            showPush('ArDrop', `Заявка на вывод ${item.name} создана. Обработка 15–5 дней.`);
+            showPush('ArDrop', `Выставите ${item.name} по цене ${formatNumber(listPrice)} 🪙. Комиссию 20% покрывает ArDrop.`);
         }
 
         // === История выводов ===
         function renderWithdrawHistory() {
             const container = document.getElementById('withdrawHistory');
+            // Обновляем статусы по времени
+            withdrawHistory.forEach(entry => {
+                if (entry.finishAt && Date.now() >= entry.finishAt) {
+                    entry.status = 'done';
+                }
+            });
+            saveState();
+
             if (withdrawHistory.length === 0) {
                 container.innerHTML = '<div class="history-empty">Пока нет выводов</div>';
             } else {
                 container.innerHTML = '';
-                withdrawHistory.forEach(entry => {
+                withdrawHistory.forEach((entry, i) => {
                     const el = document.createElement('div');
                     el.className = 'history-item';
                     el.innerHTML = `
                         <div class="history-emoji">${entry.emoji}</div>
                         <div class="history-info">
                             <div class="history-name">${entry.name}</div>
-                            <div class="history-price">Выставили за ${formatNumber(entry.gamePrice)} 🪙 · Получите ${formatNumber(entry.price)} 🪙</div>
+                            <div class="history-price">Выставили за ${formatNumber(entry.listPrice)} 🪙 · Получите ${formatNumber(entry.price)} 🪙</div>
                         </div>
-                        <div class="history-status ${entry.status}">${entry.status === 'processing' ? 'В обработке' : 'Выведено'}</div>`;
+                        <div class="history-status ${entry.status}" onclick="openWithdrawStatus(${i})">${entry.status === 'processing' ? 'Обработка' : 'Выведено'}</div>`;
                     container.appendChild(el);
                 });
             }
-            // Обновляем счётчик в профиле
             const statEl = document.getElementById('statWithdraws');
             if (statEl) statEl.textContent = withdrawHistory.length;
+        }
+
+        function openWithdrawStatus(index) {
+            const entry = withdrawHistory[index];
+            if (!entry) return;
+            let stage = entry.stage;
+            // Авто-прогресс по времени
+            if (entry.status === 'done') stage = 5;
+            else {
+                const elapsed = Date.now() - entry.createdAt;
+                const total = entry.finishAt - entry.createdAt;
+                stage = Math.min(4, Math.floor((elapsed / total) * 5));
+                entry.stage = stage;
+            }
+
+            let html = '';
+            WITHDRAW_STAGES.forEach((s, i) => {
+                const done = i <= stage;
+                html += `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;${done ? '' : 'opacity:0.4;'}">
+                    <div style="width:20px;height:20px;border-radius:50%;background:${done ? '#21a038' : '#2a2e38'};display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;flex-shrink:0;">${done ? '✓' : i+1}</div>
+                    <div style="font-size:13px;color:${done ? '#fff' : '#8a919f'};">${s}</div>
+                </div>`;
+            });
+
+            document.getElementById('alertIcon').textContent = '📦';
+            document.getElementById('alertTitle').textContent = `${entry.name} — Статус`;
+            document.getElementById('alertText').innerHTML = html;
+            const btn = document.querySelector('.custom-alert-box .alert-btn');
+            btn.textContent = 'Отменить вывод';
+            btn.onclick = () => cancelWithdraw(index);
+            document.getElementById('customAlert').classList.add('show');
+        }
+
+        function cancelWithdraw(index) {
+            const entry = withdrawHistory[index];
+            if (!entry) return;
+            if (confirm(`Отменить вывод ${entry.name}? Скин вернётся в инвентарь.`)) {
+                inventory.push({ name: entry.name, emoji: entry.emoji, price: entry.price });
+                withdrawHistory.splice(index, 1);
+                renderInventory();
+                renderWithdrawHistory();
+                saveState();
+                closeCustomAlert();
+                showPush('ArDrop', `Вывод ${entry.name} отменён. Скин возвращён.`);
+            }
+        }
+
+        // === Профиль ===
+        function resetBalance() {
+            if (confirm('Обнулить баланс? Это действие нельзя отменить.')) {
+                balance = 0;
+                updateBalance();
+                saveState();
+                showPush('ArDrop', 'Баланс обнулён');
+            }
+        }
+
+        function openEditProfile() {
+            const newName = prompt('Введите новое имя:', document.getElementById('profileNameDisplay').textContent);
+            if (newName && newName.trim()) {
+                document.getElementById('profileNameDisplay').textContent = newName.trim();
+                localStorage.setItem('ardrop_name', newName.trim());
+            }
         }
 
         function showScreen(name) {
@@ -1459,6 +1529,19 @@ function closeModal() {
             const statEl = document.getElementById('statBalance');
             if (statEl) statEl.textContent = formatted;
         }
+
+        // Автообновление статуса выводов каждые 30 секунд
+        setInterval(() => {
+            let changed = false;
+            withdrawHistory.forEach(entry => {
+                if (entry.status === 'processing' && entry.finishAt && Date.now() >= entry.finishAt) {
+                    entry.status = 'done';
+                    entry.stage = 5;
+                    changed = true;
+                }
+            });
+            if (changed) { renderWithdrawHistory(); saveState(); }
+        }, 30000);
     </script>
 </body>
 </html>
