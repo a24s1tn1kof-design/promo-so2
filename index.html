@@ -185,6 +185,10 @@
             justify-content: space-between;
             min-height: 210px;
         }
+        .inv-item.rare {
+            border-color: #f57c00;
+            box-shadow: 0 0 12px rgba(245, 124, 0, 0.3);
+        }
         .inv-item .inv-emoji { font-size: 40px; margin-bottom: 6px; }
         .inv-item .inv-name {
             font-size: 12px; font-weight: 600; color: #e0e0e0;
@@ -206,9 +210,12 @@
             font-size: 12px; font-weight: 600; cursor: pointer; margin-top: 4px;
         }
         .btn-withdraw-item:hover { background-color: #21a038; color: #fff; }
-        .empty-inv { text-align: center; color: #8a919f; padding: 40px 20px; font-size: 14px; }
-                /* === Апгрейдер === */
-        .upgrader-container { background-color: #0b0e14; min-height: calc(100vh - 140px); display: flex; flex-direction: column; align-items: center; padding: 10px 0; }
+        .empty-inv {
+            text-align: center; color: #8a919f; padding: 60px 20px; font-size: 14px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 300px; width: 100%; line-height: 1.6;
+        }
+                .upgrader-container { background-color: #0b0e14; min-height: calc(100vh - 140px); display: flex; flex-direction: column; align-items: center; padding: 10px 0; }
         .upgrader-top { width: 100%; display: flex; justify-content: flex-end; margin-bottom: 10px; }
         .upgrader-balance { background-color: #1a1d24; padding: 6px 14px; border-radius: 20px; font-size: 14px; color: #ffb300; font-weight: 700; border: 1px solid #2a2e38; display: flex; align-items: center; gap: 6px; }
 
@@ -269,7 +276,6 @@
         .upgrade-skin .skin-label { font-size: 11px; color: #8a919f; margin-top: 6px; }
         .upgrade-arrow { color: #f57c00; font-size: 22px; font-weight: 700; }
 
-        /* === Вывод === */
         .withdraw-container { display: flex; flex-direction: column; align-items: center; padding: 10px 0; }
         .withdraw-header { background-color: #11151c; border: 1px solid #1f2530; border-radius: 16px; padding: 16px; width: 100%; margin-bottom: 20px; text-align: center; }
         .withdraw-header h3 { font-size: 16px; color: #fff; margin-bottom: 6px; }
@@ -312,7 +318,6 @@
         }
         .btn-withdraw:disabled { background-color: #2a2e38; color: #8a919f; cursor: not-allowed; }
 
-        /* === Профиль === */
         .profile-header {
             background: linear-gradient(135deg, #1a1d24, #232830);
             border: 1px solid #1f2530; border-radius: 20px; padding: 20px;
@@ -347,13 +352,13 @@
         .history-status.done { background: rgba(33, 160, 56, 0.15); color: #21a038; }
         .history-empty { text-align: center; color: #8a919f; padding: 20px; font-size: 13px; }
 
-        /* === МОДАЛКИ === */
         .modal-overlay, .pay-overlay, .drop-modal, .custom-alert {
             position: fixed; inset: 0; background-color: rgba(0,0,0,0.85);
             z-index: 200; display: none; align-items: center; justify-content: center;
             padding: 20px;
         }
         .modal-overlay.show, .pay-overlay.show, .drop-modal.show, .custom-alert.show { display: flex; }
+        .custom-alert { z-index: 600; }
 
         .modal-box {
             background-color: #151920; border: 1px solid #1f2530;
@@ -373,7 +378,7 @@
             background-color: #1a1d24;
             border-top-left-radius: 24px; border-top-right-radius: 24px;
             width: 100%; max-width: 480px; padding: 25px 20px 30px;
-            cursor: pointer; animation: slideUp 0.3s ease;
+            animation: slideUp 0.3s ease;
         }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         .pay-logo { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px; }
@@ -395,8 +400,8 @@
             width: 100%; background-color: #21a038; color: #fff;
             border: none; border-radius: 14px; padding: 16px;
             font-size: 16px; font-weight: 700; text-align: center;
+            cursor: pointer;
         }
-        .pay-hint { text-align: center; font-size: 12px; color: #8a919f; margin-top: 12px; }
 
         .drop-modal-box {
             background-color: #151920; border: 1px solid #1f2530;
@@ -416,12 +421,20 @@
         .drop-modal-item .emoji { font-size: 22px; }
         .drop-modal-item .name { font-size: 8px; color: #8a919f; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        .custom-alert { z-index: 600; }
         .custom-alert-box {
+            position: relative;
             background-color: #151920; border: 1px solid #1f2530;
             border-radius: 20px; padding: 25px 20px; width: 100%; max-width: 340px;
             text-align: center; animation: popIn 0.3s ease;
         }
+        .alert-close {
+            position: absolute; top: 12px; right: 14px;
+            width: 28px; height: 28px; border-radius: 50%;
+            background-color: #2a2e38; color: #8a919f;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; cursor: pointer; z-index: 2;
+        }
+        .alert-close:hover { background-color: #f57c00; color: #0b0e14; }
         .custom-alert-box .alert-icon { font-size: 42px; margin-bottom: 12px; }
         .custom-alert-box .alert-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 8px; }
         .custom-alert-box .alert-text { font-size: 14px; color: #8a919f; margin-bottom: 20px; line-height: 1.5; text-align: left; }
@@ -551,7 +564,6 @@
 <div class="screen" id="screen-withdraw">
     <div class="section-title">Вывод в игру</div>
     <div class="withdraw-container">
-
         <div class="withdraw-header">
             <h3>Вывод скина в Standoff 2</h3>
             <p>Выберите скин, аватарку и подтвердите</p>
@@ -708,7 +720,7 @@
 </div>
 
 <div class="pay-overlay" id="payOverlay">
-    <div class="pay-window" id="payWindow" onclick="confirmPayment()">
+    <div class="pay-window" id="payWindow">
         <div class="pay-logo">
             <div class="pay-logo-circle">С</div>
             <div class="pay-logo-text">СберБанк</div>
@@ -717,12 +729,11 @@
         <div class="pay-amount" id="payAmount">500 ₽</div>
         <div class="pay-amount-sub" id="payAmountGold">Зачислится: 500 🪙</div>
         <div class="pay-card">
-            <div class="pay-card-row"><div class="pay-card-label">Способ оплаты</div><div class="pay-card-value">•••• 1234</div></div>
+            <div class="pay-card-row"><div class="pay-card-label">Способ оплаты</div><div class="pay-card-value">Карта</div></div>
             <div class="pay-card-row"><div class="pay-card-label">Комиссия</div><div class="pay-card-value">0 ₽</div></div>
             <div class="pay-card-row"><div class="pay-card-label">Курс</div><div class="pay-card-value">1 ₽ = 1 🪙</div></div>
         </div>
-        <div class="pay-button">Оплатить <span id="payButtonAmount">500 ₽</span></div>
-        <div class="pay-hint">Нажмите в любом месте, чтобы подтвердить оплату</div>
+        <div class="pay-button" onclick="confirmPayment()">Оплатить <span id="payButtonAmount">500 ₽</span></div>
     </div>
 </div>
 
@@ -738,10 +749,11 @@
 
 <div class="custom-alert" id="customAlert">
     <div class="custom-alert-box">
+        <div class="alert-close" onclick="closeCustomAlert()">✕</div>
         <div class="alert-icon" id="alertIcon">⚠️</div>
         <div class="alert-title" id="alertTitle">Внимание</div>
         <div class="alert-text" id="alertText">Текст уведомления</div>
-        <button class="alert-btn" onclick="closeCustomAlert()">Понятно</button>
+        <button class="alert-btn" id="customAlertBtn">Понятно</button>
     </div>
 </div>
 
@@ -763,8 +775,8 @@
     <button class="nav-item" onclick="showScreen('upgrader')" id="navUpgrader"><span class="nav-icon">⬆️</span><span>Апгрейд</span></button>
     <button class="nav-item" onclick="showScreen('withdraw')" id="navWithdraw"><span class="nav-icon">📤</span><span>Вывод</span></button>
     <button class="nav-item" onclick="showScreen('profile')" id="navProfile"><span class="nav-icon">👤</span><span>Профиль</span></button>
-            </div>
-                    <script>
+    </div>
+    <script>
     const cases = [
         { id: 1, name: "Neon Rush", price: 49, icon: "🎁" },
         { id: 2, name: "Cyber Blaze", price: 99, icon: "💠" },
@@ -789,7 +801,7 @@
     ];
 
     const COMMISSION = 0.20;
-    const WITHDRAW_STAGES = ["Ждёт просмотра", "Просмотр получен", "Идёт проверка", "Проверка проведена", "Идёт поиск скина", "Голда выведена"];
+    const WITHDRAW_STAGES = ["Ждёт просмотра", "Просмотр получен", "Идёт проверка", "Проверка проведена", "Идёт поиск скина", "Скин выведен"];
 
     let balance = 5000;
     let inventory = [];
@@ -833,21 +845,23 @@
     updateWheelChance();
     renderWithdrawHistory();
 
-    // Имя из localStorage
     const savedName = localStorage.getItem('ardrop_name');
     if (savedName) document.getElementById('profileNameDisplay').textContent = savedName;
 
-    function showAlert(icon, title, text) {
+    function closeCustomAlert() {
+        document.getElementById('customAlert').classList.remove('show');
+        const btn = document.getElementById('customAlertBtn');
+        btn.textContent = 'Понятно';
+        btn.onclick = closeCustomAlert;
+    }
+    function showAlert(icon, title, text, btnText, btnAction) {
         document.getElementById('alertIcon').textContent = icon;
         document.getElementById('alertTitle').textContent = title;
         document.getElementById('alertText').innerHTML = text;
+        const btn = document.getElementById('customAlertBtn');
+        btn.textContent = btnText || 'Понятно';
+        btn.onclick = btnAction || closeCustomAlert;
         document.getElementById('customAlert').classList.add('show');
-    }
-    function closeCustomAlert() {
-        document.getElementById('customAlert').classList.remove('show');
-        const btn = document.querySelector('.custom-alert-box .alert-btn');
-        btn.textContent = 'Понятно';
-        btn.onclick = closeCustomAlert;
     }
 
     function showPush(title, text) {
@@ -939,7 +953,7 @@
         for (let i = 0; i < 50; i++) {
             const item = possibleDrops[Math.floor(Math.random() * possibleDrops.length)];
             const el = document.createElement('div');
-            el.className = 'roulette-item' + (item.price > 1000 ? ' rare' : '');
+            el.className = 'roulette-item' + (item.price >= 5000 ? ' rare' : '');
             el.innerHTML = `<span class="item-emoji">${item.emoji}</span><span class="item-name">${item.name}</span>`;
             track.appendChild(el);
         }
@@ -972,7 +986,7 @@
     function closeDropModal() {
         document.getElementById('dropModal').classList.remove('show');
     }
-     function spinRoulette() {
+        function spinRoulette() {
     if (isSpinning || !currentCase) return;
     const totalCost = currentCase.price * selectedQuantity;
     if (balance < totalCost) { checkBalance(); return; }
@@ -984,7 +998,6 @@
     updateBalance();
     saveState();
 
-    // Генерация с ограничением: максимум 2 дорогих скина
     const cheapDrops = possibleDrops.filter(d => d.price <= 1000);
     const droppedItems = [];
     let rareCount = 0;
@@ -1018,7 +1031,7 @@
     const items = track.children;
     const targetIndex = 40;
     const dropEl = document.createElement('div');
-    dropEl.className = 'roulette-item' + (mainDrop.price > 1000 ? ' rare' : '');
+    dropEl.className = 'roulette-item' + (mainDrop.price >= 5000 ? ' rare' : '');
     dropEl.innerHTML = `<span class="item-emoji">${mainDrop.emoji}</span><span class="item-name">${mainDrop.name}</span>`;
     track.replaceChild(dropEl, items[targetIndex]);
     const itemWidth = 100 + 8;
@@ -1045,12 +1058,15 @@ function renderInventory() {
     const grid = document.getElementById('inventoryGrid');
     grid.innerHTML = '';
     if (inventory.length === 0) {
-        grid.innerHTML = '<div class="empty-inv">Инвентарь пуст. Откройте кейс!</div>';
+        grid.innerHTML = '<div class="empty-inv">Инвентарь пуст<br><span style="font-size:12px;opacity:0.7;">Откройте кейс, чтобы получить скины</span></div>';
+        grid.style.display = 'block';
         return;
+    } else {
+        grid.style.display = 'grid';
     }
     inventory.forEach((item, index) => {
         const el = document.createElement('div');
-        el.className = 'inv-item';
+        el.className = 'inv-item' + (item.price >= 5000 ? ' rare' : '');
         el.innerHTML = `
             <div class="inv-emoji">${item.emoji}</div>
             <div class="inv-name">${item.name}</div>
@@ -1176,8 +1192,8 @@ function selectFromModal(mode, index) {
 
 function closeModal() {
     document.getElementById('modalOverlay').classList.remove('show');
-                        }
-                                function doUpgrade() {
+    }
+                function doUpgrade() {
             if (selectedSourceIndex === null) { showAlert('⚠️', 'Ошибка', 'Выберите свой скин'); return; }
             if (selectedTargetIndex === null) { showAlert('⚠️', 'Ошибка', 'Выберите что получите'); return; }
             const sourceItem = inventory[selectedSourceIndex];
@@ -1242,7 +1258,6 @@ function closeModal() {
             }, 3400);
         }
 
-        // === Пополнение ===
         function openDepositModal() {
             document.getElementById('depositAmount').value = 500;
             document.getElementById('depositModal').classList.add('show');
@@ -1270,7 +1285,6 @@ function closeModal() {
             showPush('Оплата прошла', `Зачислено ${formatNumber(amount)} ₽ на баланс`);
         }
 
-        // === Вывод ===
         function openWithdrawItemModal() {
             if (inventory.length === 0) { showAlert('⚠️', 'Инвентарь пуст', 'У вас нет скинов для вывода'); return; }
             document.getElementById('modalTitle').textContent = 'Выберите скин для вывода';
@@ -1362,7 +1376,7 @@ function closeModal() {
                 stage: 0,
                 date: new Date().toLocaleDateString('ru-RU'),
                 createdAt: Date.now(),
-                finishAt: Date.now() + (5 * 60 * 1000) + Math.random() * (5 * 24 * 60 * 60 * 1000 - 5 * 60 * 1000)
+                finishAt: Date.now() + (5 * 60 * 1000) + Math.random() * (10 * 24 * 60 * 60 * 1000 - 5 * 60 * 1000)
             };
             withdrawHistory.unshift(entry);
 
@@ -1382,17 +1396,13 @@ function closeModal() {
             document.getElementById('avatarPhotoPreview').classList.remove('show');
             document.getElementById('withdrawPhotoPreview').classList.remove('show');
 
-            showPush('ArDrop', `Выставите ${item.name} по цене ${formatNumber(listPrice)} 🪙. Комиссию 20% покрывает ArDrop.`);
+            showPush('ArDrop', `Заявка на вывод ${item.name} создана. Цена выставления: ${formatNumber(listPrice)} 🪙.`);
         }
 
-        // === История выводов ===
         function renderWithdrawHistory() {
             const container = document.getElementById('withdrawHistory');
-            // Обновляем статусы по времени
             withdrawHistory.forEach(entry => {
-                if (entry.finishAt && Date.now() >= entry.finishAt) {
-                    entry.status = 'done';
-                }
+                if (entry.finishAt && Date.now() >= entry.finishAt) entry.status = 'done';
             });
             saveState();
 
@@ -1421,7 +1431,6 @@ function closeModal() {
             const entry = withdrawHistory[index];
             if (!entry) return;
             let stage = entry.stage;
-            // Авто-прогресс по времени
             if (entry.status === 'done') stage = 5;
             else {
                 const elapsed = Date.now() - entry.createdAt;
@@ -1442,7 +1451,7 @@ function closeModal() {
             document.getElementById('alertIcon').textContent = '📦';
             document.getElementById('alertTitle').textContent = `${entry.name} — Статус`;
             document.getElementById('alertText').innerHTML = html;
-            const btn = document.querySelector('.custom-alert-box .alert-btn');
+            const btn = document.getElementById('customAlertBtn');
             btn.textContent = 'Отменить вывод';
             btn.onclick = () => cancelWithdraw(index);
             document.getElementById('customAlert').classList.add('show');
@@ -1462,7 +1471,6 @@ function closeModal() {
             }
         }
 
-        // === Профиль ===
         function resetBalance() {
             if (confirm('Обнулить баланс? Это действие нельзя отменить.')) {
                 balance = 0;
@@ -1530,7 +1538,6 @@ function closeModal() {
             if (statEl) statEl.textContent = formatted;
         }
 
-        // Автообновление статуса выводов каждые 30 секунд
         setInterval(() => {
             let changed = false;
             withdrawHistory.forEach(entry => {
@@ -1538,6 +1545,7 @@ function closeModal() {
                     entry.status = 'done';
                     entry.stage = 5;
                     changed = true;
+                    showPush('ArDrop', `Скин «${entry.name}» выведен в игру`);
                 }
             });
             if (changed) { renderWithdrawHistory(); saveState(); }
