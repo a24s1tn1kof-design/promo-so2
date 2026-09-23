@@ -159,36 +159,35 @@
         .btn-open-case:active:not(:disabled) { transform: scale(0.98); }
         .btn-open-case:disabled { background-color: #2a2e38; color: #8a919f; cursor: not-allowed; }
 
-        .drop-result {
+        /* Модалка дропа (всплывает поверх экрана кейса) */
+        .drop-modal {
+            position: fixed; inset: 0; background-color: rgba(0,0,0,0.85);
+            z-index: 400; display: none; align-items: center; justify-content: center;
+            padding: 20px;
+        }
+        .drop-modal.show { display: flex; }
+        .drop-modal-box {
             background-color: #151920; border: 1px solid #1f2530;
-            border-radius: 16px; padding: 20px; text-align: center;
-            display: none; animation: popIn 0.4s ease; margin-bottom: 20px;
+            border-radius: 20px; padding: 25px 20px; width: 100%; max-width: 400px;
+            text-align: center; animation: popIn 0.4s ease;
         }
-        .drop-result.show { display: block; }
-        @keyframes popIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-        .drop-result h3 { font-size: 16px; color: #8a919f; margin-bottom: 15px; font-weight: 500; }
-
-        .drops-grid {
-            display: grid; gap: 10px;
-            justify-content: center; justify-items: center;
+        .drop-modal-box h3 { font-size: 16px; color: #8a919f; margin-bottom: 15px; font-weight: 500; }
+        .drop-modal-box .main-drop { font-size: 70px; margin-bottom: 10px; }
+        .drop-modal-box .main-name { font-size: 18px; font-weight: 700; color: #f57c00; margin-bottom: 15px; }
+        .drop-modal-list {
+            display: grid; gap: 8px; margin-bottom: 15px;
+            max-height: 200px; overflow-y: auto;
         }
-        .drops-grid.cols-1 { grid-template-columns: repeat(1, 1fr); }
-        .drops-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
-        .drops-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
-        .drops-grid.cols-5 { grid-template-columns: repeat(5, 1fr); }
-
-        .drop-cell {
+        .drop-modal-list.cols-1 { grid-template-columns: 1fr; }
+        .drop-modal-list.cols-2 { grid-template-columns: repeat(2, 1fr); }
+        .drop-modal-list.cols-3 { grid-template-columns: repeat(3, 1fr); }
+        .drop-modal-list.cols-5 { grid-template-columns: repeat(5, 1fr); }
+        .drop-modal-item {
             background-color: #0f1115; border: 1px solid #1f2530;
-            border-radius: 10px; padding: 8px;
-            display: flex; flex-direction: column; align-items: center;
-            gap: 4px; width: 100%; max-width: 90px;
+            border-radius: 8px; padding: 6px; text-align: center;
         }
-        .drop-cell .drop-cell-emoji { font-size: 26px; line-height: 1; }
-        .drop-cell .drop-cell-name {
-            font-size: 8px; color: #8a919f; text-align: center;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;
-        }
-        .drop-cell.rare { border-color: #f57c00; box-shadow: 0 0 8px rgba(245,124,0,0.3); }
+        .drop-modal-item .emoji { font-size: 22px; }
+        .drop-modal-item .name { font-size: 8px; color: #8a919f; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
         .case-contents { margin-top: 20px; border-top: 1px solid #1f2530; padding-top: 20px; }
         .contents-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 15px; }
@@ -233,7 +232,7 @@
         }
         .btn-withdraw-item:hover { background-color: #21a038; color: #fff; }
         .empty-inv { text-align: center; color: #8a919f; padding: 40px 20px; font-size: 14px; }
-                /* === Апгрейдер === */
+            /* === Апгрейдер === */
         .upgrader-container {
             background-color: #0b0e14;
             min-height: calc(100vh - 140px);
@@ -344,10 +343,7 @@
         .upgrade-arrow { color: #f57c00; font-size: 22px; font-weight: 700; }
 
         /* === Экран вывода === */
-        .withdraw-container {
-            display: flex; flex-direction: column; align-items: center;
-            padding: 10px 0;
-        }
+        .withdraw-container { display: flex; flex-direction: column; align-items: center; padding: 10px 0; }
         .withdraw-header {
             background-color: #11151c; border: 1px solid #1f2530;
             border-radius: 16px; padding: 16px; width: 100%;
@@ -355,7 +351,6 @@
         }
         .withdraw-header h3 { font-size: 16px; color: #fff; margin-bottom: 6px; }
         .withdraw-header p { font-size: 13px; color: #8a919f; }
-
         .withdraw-step {
             background-color: #11151c; border: 1px solid #1f2530;
             border-radius: 16px; padding: 16px; width: 100%;
@@ -371,27 +366,14 @@
             display: flex; align-items: center; justify-content: center;
             font-size: 12px; font-weight: 900;
         }
-
         .withdraw-preview {
-            background-color: #0f1115;
-            border: 1px dashed #2a2e38;
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
+            background-color: #0f1115; border: 1px dashed #2a2e38;
+            border-radius: 12px; padding: 15px; text-align: center;
             margin-bottom: 10px;
         }
         .withdraw-preview .preview-emoji { font-size: 50px; margin-bottom: 8px; }
         .withdraw-preview .preview-name { font-size: 14px; font-weight: 700; color: #fff; }
-        .withdraw-preview .preview-price { font-size: 12px; color: #ffb300; font-weight: 700; margin-top: 4px; }
         .withdraw-preview.empty { color: #8a919f; font-size: 13px; padding: 25px 15px; }
-
-        .withdraw-input {
-            width: 100%; background-color: #0f1115;
-            border: 1px solid #2a2e38; border-radius: 12px;
-            padding: 14px 16px; color: #fff; font-size: 16px;
-            outline: none; transition: border-color 0.2s;
-        }
-        .withdraw-input:focus { border-color: #f57c00; }
 
         .upload-photo-btn {
             width: 100%; background-color: #2a2e38; border: 1px dashed #4a4f5d;
@@ -402,16 +384,11 @@
         .upload-photo-btn:hover { border-color: #f57c00; color: #f57c00; }
         .upload-photo-btn .upload-icon { font-size: 28px; }
 
-        .upload-preview {
-            width: 100%; border-radius: 12px;
-            margin-top: 10px; display: none;
-        }
+        .upload-preview { width: 100%; border-radius: 12px; margin-top: 10px; display: none; }
         .upload-preview.show { display: block; }
-
         #avatarPhotoPreview {
-            width: 100px; height: 100px;
-            border-radius: 50%; object-fit: cover;
-            margin: 10px auto 0;
+            width: 100px; height: 100px; border-radius: 50%;
+            object-fit: cover; margin: 10px auto 0;
             border: 2px solid #f57c00;
         }
         #avatarPhotoPreview.show { display: block; }
@@ -438,103 +415,84 @@
         .btn-withdraw:hover { background-color: #1a7d2b; }
         .btn-withdraw:disabled { background-color: #2a2e38; color: #8a919f; cursor: not-allowed; }
 
-        /* === Модалки === */
-        .modal-overlay {
-            position: fixed; inset: 0; background-color: rgba(0,0,0,0.8);
-            z-index: 200; display: none; align-items: center; justify-content: center;
-            padding: 20px;
+        /* === Профиль === */
+        .profile-header {
+            background: linear-gradient(135deg, #1a1d24, #232830);
+            border: 1px solid #1f2530;
+            border-radius: 20px; padding: 20px; text-align: center;
+            margin-bottom: 20px;
         }
-        .modal-overlay.show { display: flex; }
-        .modal-box {
-            background-color: #151920; border: 1px solid #1f2530;
-            border-radius: 20px; width: 100%; max-width: 420px;
-            max-height: 80vh; overflow-y: auto; padding: 20px;
-        }
-        .modal-title {
-            font-size: 18px; font-weight: 700; color: #fff;
-            margin-bottom: 15px; text-align: center;
-        }
-        .modal-close {
-            background-color: #2a2e38; border: none; color: #e0e0e0;
-            border-radius: 8px; padding: 8px 16px; font-size: 14px;
-            cursor: pointer; margin-top: 15px; width: 100%;
-        }
-        .modal-close:hover { background-color: #f57c00; color: #0b0e14; }
-
-        .pay-overlay {
-            position: fixed; inset: 0; background-color: rgba(0,0,0,0.85);
-            z-index: 300; display: none; align-items: flex-end; justify-content: center;
-        }
-        .pay-overlay.show { display: flex; }
-        .pay-window {
-            background-color: #1a1d24;
-            border-top-left-radius: 24px; border-top-right-radius: 24px;
-            width: 100%; max-width: 480px; padding: 25px 20px 30px;
-            animation: slideUp 0.3s ease; cursor: pointer;
-        }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        .pay-logo {
+        .profile-avatar {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: linear-gradient(135deg, #f57c00, #e65100);
             display: flex; align-items: center; justify-content: center;
+            font-size: 36px; color: #fff; font-weight: 900;
+            margin: 0 auto 12px;
+            border: 3px solid #f57c00;
+        }
+        .profile-name { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+        .profile-id { font-size: 12px; color: #8a919f; }
+
+        .profile-stats {
+            display: grid; grid-template-columns: repeat(2, 1fr);
             gap: 10px; margin-bottom: 20px;
         }
-        .pay-logo-circle {
-            width: 44px; height: 44px;
-            background: linear-gradient(135deg, #21a038, #1a7d2b);
-            border-radius: 12px; display: flex; align-items: center; justify-content: center;
-            color: #fff; font-size: 24px; font-weight: 900;
+        .profile-stat {
+            background-color: #11151c; border: 1px solid #1f2530;
+            border-radius: 12px; padding: 12px; text-align: center;
         }
-        .pay-logo-text { font-size: 18px; font-weight: 700; color: #fff; }
-        .pay-amount-label { font-size: 13px; color: #8a919f; text-align: center; margin-bottom: 6px; }
-        .pay-amount {
-            font-size: 36px; font-weight: 900; color: #fff;
-            text-align: center; margin-bottom: 6px;
-        }
-        .pay-amount-sub { font-size: 14px; color: #ffb300; text-align: center; margin-bottom: 25px; }
-        .pay-card {
-            background-color: #0f1115; border-radius: 14px;
-            padding: 15px; margin-bottom: 20px;
-        }
-        .pay-card-row {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 10px;
-        }
-        .pay-card-row:last-child { margin-bottom: 0; }
-        .pay-card-label { font-size: 12px; color: #8a919f; }
-        .pay-card-value { font-size: 14px; color: #e0e0e0; font-weight: 600; }
-        .pay-button {
-            width: 100%; background-color: #21a038; color: #fff;
-            border: none; border-radius: 14px; padding: 16px;
-            font-size: 16px; font-weight: 700; cursor: pointer;
-            transition: background-color 0.2s; text-align: center;
-        }
-        .pay-button:hover { background-color: #1a7d2b; }
-        .pay-hint { text-align: center; font-size: 12px; color: #8a919f; margin-top: 12px; }
+        .profile-stat .stat-value { font-size: 20px; font-weight: 900; color: #ffb300; }
+        .profile-stat .stat-label { font-size: 11px; color: #8a919f; margin-top: 4px; }
 
-        .push-notification {
-            position: fixed; top: -140px; left: 50%; transform: translateX(-50%);
-            width: calc(100% - 20px); max-width: 460px;
-            background: rgba(30, 34, 42, 0.98);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 18px;
-            padding: 12px 16px; display: flex; align-items: center; gap: 12px;
-            z-index: 500; box-shadow: 0 15px 50px rgba(0,0,0,0.7);
-            transition: top 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
+        .profile-section-title {
+            font-size: 16px; font-weight: 700; color: #fff;
+            margin-bottom: 12px; margin-top: 20px;
         }
-        .push-notification.show { top: 12px; }
-        .push-icon {
-            width: 42px; height: 42px; min-width: 42px;
-            background: linear-gradient(135deg, #f57c00, #e65100);
-            border-radius: 12px; display: flex; align-items: center; justify-content: center;
-            color: #fff; font-size: 22px; font-weight: 900;
-            box-shadow: 0 4px 12px rgba(245, 124, 0, 0.4);
+
+        .withdraw-history {
+            background-color: #11151c; border: 1px solid #1f2530;
+            border-radius: 16px; padding: 15px;
         }
-        .push-content { flex: 1; min-width: 0; }
-        .push-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 2px; }
-        .push-text {
-            font-size: 12px; color: #b0b6c0;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        .history-item {
+            background-color: #0f1115; border-radius: 12px;
+            padding: 12px; margin-bottom: 10px;
+            display: flex; align-items: center; gap: 12px;
         }
+        .history-item:last-child { margin-bottom: 0; }
+        .history-emoji { font-size: 32px; }
+        .history-info { flex: 1; }
+        .history-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+        .history-price { font-size: 12px; color: #ffb300; font-weight: 700; }
+        .history-status {
+            font-size: 10px; padding: 4px 8px; border-radius: 6px;
+            font-weight: 700; text-transform: uppercase;
+        }
+        .history-status.processing { background: rgba(245, 124, 0, 0.15); color: #f57c00; }
+        .history-status.done { background: rgba(33, 160, 56, 0.15); color: #21a038; }
+        .history-empty { text-align: center; color: #8a919f; padding: 20px; font-size: 13px; }
+
+        /* === Кастомное уведомление === */
+        .custom-alert {
+            position: fixed; inset: 0; background-color: rgba(0,0,0,0.8);
+            z-index: 600; display: none; align-items: center; justify-content: center;
+            padding: 20px;
+        }
+        .custom-alert.show { display: flex; }
+        .custom-alert-box {
+            background-color: #151920; border: 1px solid #1f2530;
+            border-radius: 20px; padding: 25px 20px; width: 100%; max-width: 340px;
+            text-align: center; animation: popIn 0.3s ease;
+        }
+        .custom-alert-box .alert-icon { font-size: 42px; margin-bottom: 12px; }
+        .custom-alert-box .alert-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+        .custom-alert-box .alert-text { font-size: 14px; color: #8a919f; margin-bottom: 20px; line-height: 1.5; }
+        .custom-alert-box .alert-btn {
+            width: 100%; background-color: #f57c00; color: #0b0e14;
+            border: none; border-radius: 12px; padding: 14px;
+            font-size: 15px; font-weight: 700; cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .custom-alert-box .alert-btn:hover { background-color: #e65100; }
 
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0;
@@ -545,7 +503,7 @@
         .nav-item {
             display: flex; flex-direction: column; align-items: center; gap: 3px;
             color: #8a919f; font-size: 11px; cursor: pointer;
-            padding: 5px 15px; border-radius: 10px;
+            padding: 5px 12px; border-radius: 10px;
             transition: color 0.2s; background: none; border: none;
         }
         .nav-item.active { color: #f57c00; }
@@ -614,11 +572,6 @@
 
     <button class="btn-open-case" id="openCaseBtn" onclick="spinRoulette()">Открыть кейс</button>
 
-    <div class="drop-result" id="dropResult">
-        <h3>Вам выпало:</h3>
-        <div class="drops-grid" id="dropsGrid"></div>
-    </div>
-
     <div class="case-contents">
         <h3 class="contents-title">Содержимое кейса <span id="contentsCaseName">Кейс</span></h3>
         <div class="contents-grid" id="contentsGrid"></div>
@@ -637,19 +590,15 @@
 
         <div class="withdraw-header">
             <h3>Вывод скина в Standoff 2</h3>
-            <p>Выберите скин, аватарку и укажите цену</p>
+            <p>Выберите скин, аватарку и подтвердите</p>
         </div>
 
-        <!-- Шаг 1: выбор скина -->
         <div class="withdraw-step">
             <div class="withdraw-step-title"><span class="withdraw-step-num">1</span> Выберите скин из инвентаря</div>
-            <div class="withdraw-preview empty" id="withdrawItemPreview">
-                Нажмите, чтобы выбрать скин
-            </div>
+            <div class="withdraw-preview empty" id="withdrawItemPreview">Нажмите, чтобы выбрать скин</div>
             <button class="btn-withdraw" style="background-color: #2a2e38; color: #e0e0e0; margin-top: 0;" onclick="openWithdrawItemModal()">Выбрать скин</button>
         </div>
 
-        <!-- Шаг 2: аватарка из галереи -->
         <div class="withdraw-step">
             <div class="withdraw-step-title"><span class="withdraw-step-num">2</span> Загрузите вашу аватарку</div>
             <label for="avatarPhotoInput" class="upload-photo-btn">
@@ -661,7 +610,6 @@
             <img id="avatarPhotoPreview" class="upload-preview" alt="Аватарка">
         </div>
 
-        <!-- Шаг 3: фото выставленного скина -->
         <div class="withdraw-step">
             <div class="withdraw-step-title"><span class="withdraw-step-num">3</span> Загрузите фото выставленного скина</div>
             <label for="withdrawPhotoInput" class="upload-photo-btn">
@@ -673,14 +621,8 @@
             <img id="withdrawPhotoPreview" class="upload-preview" alt="Превью">
         </div>
 
-        <!-- Шаг 4: цена и вывод -->
         <div class="withdraw-step">
-            <div class="withdraw-step-title"><span class="withdraw-step-num">4</span> Проверьте данные и выведите</div>
-
-            <div class="withdraw-input-group" style="width: 100%; margin-bottom: 15px;">
-                <label style="font-size: 13px; color: #8a919f; margin-bottom: 8px; display: block;">Цена, за которую выставляете в игре (голда)</label>
-                <input type="number" id="withdrawPrice" class="withdraw-input" placeholder="Например: 1500" value="1500" min="1" oninput="updateWithdrawInfo()">
-            </div>
+            <div class="withdraw-step-title"><span class="withdraw-step-num">4</span> Проверьте и выведите</div>
 
             <div class="commission-info">
                 <div class="commission-row">
@@ -688,13 +630,22 @@
                     <div class="value" id="withdrawItemName">—</div>
                 </div>
                 <div class="commission-row">
+                    <div class="label">Комиссия ArDrop</div>
+                    <div class="value green">20%</div>
+                </div>
+                <div class="commission-row">
                     <div class="label">Цена в игре</div>
                     <div class="value gold" id="withdrawItemPrice">0 🪙</div>
                 </div>
                 <div class="commission-row">
-                    <div class="label">Комиссия</div>
-                    <div class="value green">За счёт ArDrop</div>
+                    <div class="label">Получаете</div>
+                    <div class="value gold" id="withdrawItemResult">0 🪙</div>
                 </div>
+            </div>
+
+            <div style="font-size: 12px; color: #8a919f; margin-bottom: 15px; line-height: 1.5; text-align: center;">
+                Выставите скин в Standoff 2 за указанную цену.<br>
+                После проверки ArDrop выплатит вам голду на баланс.
             </div>
 
             <button class="btn-withdraw" id="btnWithdrawFinal" onclick="confirmWithdraw()">Вывести</button>
@@ -754,6 +705,33 @@
     </div>
 </div>
 
+<!-- === Профиль === -->
+<div class="screen" id="screen-profile">
+    <div class="section-title">Профиль</div>
+
+    <div class="profile-header">
+        <div class="profile-avatar">A</div>
+        <div class="profile-name">Игрок</div>
+        <div class="profile-id">ID: #000001</div>
+    </div>
+
+    <div class="profile-stats">
+        <div class="profile-stat">
+            <div class="stat-value" id="statBalance">5 000</div>
+            <div class="stat-label">Баланс 🪙</div>
+        </div>
+        <div class="profile-stat">
+            <div class="stat-value" id="statWithdraws">0</div>
+            <div class="stat-label">Выводов</div>
+        </div>
+    </div>
+
+    <div class="profile-section-title">История выводов</div>
+    <div class="withdraw-history" id="withdrawHistory">
+        <div class="history-empty">Пока нет выводов</div>
+    </div>
+</div>
+
 <div class="modal-overlay" id="modalOverlay">
     <div class="modal-box">
         <div class="modal-title" id="modalTitle">Выберите скин</div>
@@ -791,6 +769,27 @@
     </div>
 </div>
 
+<!-- Модалка дропа -->
+<div class="drop-modal" id="dropModal">
+    <div class="drop-modal-box">
+        <h3>Вам выпало:</h3>
+        <div class="main-drop" id="dropMainEmoji">🎁</div>
+        <div class="main-name" id="dropMainName">Предмет</div>
+        <div class="drop-modal-list" id="dropModalList"></div>
+        <button class="btn-withdraw" style="background-color: #f57c00;" onclick="closeDropModal()">Забрать</button>
+    </div>
+</div>
+
+<!-- Кастомное уведомление -->
+<div class="custom-alert" id="customAlert">
+    <div class="custom-alert-box">
+        <div class="alert-icon" id="alertIcon">⚠️</div>
+        <div class="alert-title" id="alertTitle">Внимание</div>
+        <div class="alert-text" id="alertText">Текст уведомления</div>
+        <button class="alert-btn" onclick="closeCustomAlert()">Понятно</button>
+    </div>
+</div>
+
 <div class="push-notification" id="pushNotification">
     <div class="push-icon">✓</div>
     <div class="push-content">
@@ -804,6 +803,7 @@
     <button class="nav-item" onclick="showScreen('inventory')" id="navInventory"><span class="nav-icon">🎒</span><span>Инвентарь</span></button>
     <button class="nav-item" onclick="showScreen('upgrader')" id="navUpgrader"><span class="nav-icon">⬆️</span><span>Апгрейд</span></button>
     <button class="nav-item" onclick="showScreen('withdraw')" id="navWithdraw"><span class="nav-icon">📤</span><span>Вывод</span></button>
+    <button class="nav-item" onclick="showScreen('profile')" id="navProfile"><span class="nav-icon">👤</span><span>Профиль</span></button>
                 </div>
                 <script>
     const cases = [
@@ -829,6 +829,8 @@
         { name: "Charm | Gold", emoji: "🪙", price: 1500 }
     ];
 
+    const COMMISSION = 0.20; // 20% комиссия ArDrop
+
     let balance = 5000;
     let inventory = [];
     let currentCase = null;
@@ -843,13 +845,15 @@
     let withdrawSelectedIndex = null;
     let withdrawPhotoData = null;
     let withdrawAvatarData = null;
+    let withdrawHistory = [];
+    let lastDroppedItems = [];
 
     function formatNumber(num) {
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+        return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     }
 
     function saveState() {
-        localStorage.setItem('ardrop_save', JSON.stringify({ balance, inventory }));
+        localStorage.setItem('ardrop_save', JSON.stringify({ balance, inventory, withdrawHistory }));
     }
     function loadState() {
         const saved = localStorage.getItem('ardrop_save');
@@ -858,6 +862,7 @@
                 const data = JSON.parse(saved);
                 balance = data.balance ?? 5000;
                 inventory = data.inventory ?? [];
+                withdrawHistory = data.withdrawHistory ?? [];
             } catch (e) { console.error(e); }
         }
     }
@@ -867,6 +872,27 @@
     renderCases();
     renderInventory();
     updateWheelChance();
+    renderWithdrawHistory();
+
+    // Кастомное уведомление
+    function showAlert(icon, title, text) {
+        document.getElementById('alertIcon').textContent = icon;
+        document.getElementById('alertTitle').textContent = title;
+        document.getElementById('alertText').textContent = text;
+        document.getElementById('customAlert').classList.add('show');
+    }
+    function closeCustomAlert() {
+        document.getElementById('customAlert').classList.remove('show');
+    }
+
+    // Push-уведомление (как от мессенджера)
+    function showPush(title, text) {
+        document.querySelector('.push-title').textContent = title;
+        document.getElementById('pushText').textContent = text;
+        const push = document.getElementById('pushNotification');
+        push.classList.add('show');
+        setTimeout(() => push.classList.remove('show'), 4000);
+    }
 
     function renderCases() {
         const grid = document.getElementById('casesGrid');
@@ -902,7 +928,6 @@
         document.getElementById('caseTitle').textContent = currentCase.name;
         document.getElementById('casePrice').textContent = formatNumber(currentCase.price);
         document.getElementById('contentsCaseName').textContent = currentCase.name;
-        document.getElementById('dropResult').classList.remove('show');
         document.getElementById('openCaseBtn').disabled = false;
         document.getElementById('openCaseBtn').textContent = 'Открыть кейс';
         document.getElementById('insufficientFunds').classList.remove('show');
@@ -956,47 +981,61 @@
         }
     }
 
-    function showDropResults(items) {
-        const result = document.getElementById('dropResult');
-        const grid = document.getElementById('dropsGrid');
-        grid.innerHTML = '';
-        grid.className = 'drops-grid';
-        if (items.length === 1) grid.classList.add('cols-1');
-        else if (items.length === 2) grid.classList.add('cols-2');
-        else if (items.length === 3) grid.classList.add('cols-3');
-        else grid.classList.add('cols-5');
-        items.forEach(item => {
-            const cell = document.createElement('div');
-            cell.className = 'drop-cell' + (item.price > 1000 ? ' rare' : '');
-            cell.innerHTML = `
-                <div class="drop-cell-emoji">${item.emoji}</div>
-                <div class="drop-cell-name">${item.name}</div>`;
-            grid.appendChild(cell);
-        });
-        result.classList.add('show');
+    // Показ модалки дропа
+    function showDropModal(items) {
+        lastDroppedItems = items;
+        const main = items[0];
+        document.getElementById('dropMainEmoji').textContent = main.emoji;
+        document.getElementById('dropMainName').textContent = main.name;
+
+        const list = document.getElementById('dropModalList');
+        list.innerHTML = '';
+        list.className = 'drop-modal-list';
+        if (items.length === 1) list.classList.add('cols-1');
+        else if (items.length === 2) list.classList.add('cols-2');
+        else if (items.length === 3) list.classList.add('cols-3');
+        else list.classList.add('cols-5');
+        
+        // Если > 1, показываем все
+        if (items.length > 1) {
+            items.forEach(item => {
+                const el = document.createElement('div');
+                el.className = 'drop-modal-item';
+                el.innerHTML = `
+                    <div class="emoji">${item.emoji}</div>
+                    <div class="name">${item.name}</div>`;
+                list.appendChild(el);
+            });
+        }
+        document.getElementById('dropModal').classList.add('show');
     }
-                 function spinRoulette() {
+
+    function closeDropModal() {
+        document.getElementById('dropModal').classList.remove('show');
+    }
+    function spinRoulette() {
     if (isSpinning || !currentCase) return;
     const totalCost = currentCase.price * selectedQuantity;
     if (balance < totalCost) { checkBalance(); return; }
     isSpinning = true;
     document.getElementById('openCaseBtn').disabled = true;
     document.getElementById('openCaseBtn').textContent = 'Крутим...';
-    document.getElementById('dropResult').classList.remove('show');
     document.getElementById('insufficientFunds').classList.remove('show');
     balance -= totalCost;
     updateBalance();
     saveState();
+
     const droppedItems = [];
     for (let i = 0; i < selectedQuantity; i++) {
         droppedItems.push(possibleDrops[Math.floor(Math.random() * possibleDrops.length)]);
     }
+
     if (isFastOpen) {
         setTimeout(() => {
             droppedItems.forEach(item => inventory.push(item));
             renderInventory();
             saveState();
-            showDropResults(droppedItems);
+            showDropModal(droppedItems);
             isSpinning = false;
             document.getElementById('openCaseBtn').disabled = false;
             document.getElementById('openCaseBtn').textContent = 'Открыть ещё раз';
@@ -1004,6 +1043,7 @@
         }, 300);
         return;
     }
+
     const mainDrop = droppedItems[0];
     buildRouletteTrack();
     const track = document.getElementById('rouletteTrack');
@@ -1028,7 +1068,7 @@
         droppedItems.forEach(item => inventory.push(item));
         renderInventory();
         saveState();
-        showDropResults(droppedItems);
+        showDropModal(droppedItems);
         checkBalance();
     }, 4200);
 }
@@ -1170,11 +1210,14 @@ function closeModal() {
     document.getElementById('modalOverlay').classList.remove('show');
                     }
                             function doUpgrade() {
-            if (selectedSourceIndex === null) { alert('Выберите свой скин'); return; }
-            if (selectedTargetIndex === null) { alert('Выберите что получите'); return; }
+            if (selectedSourceIndex === null) { showAlert('⚠️', 'Ошибка', 'Выберите свой скин'); return; }
+            if (selectedTargetIndex === null) { showAlert('⚠️', 'Ошибка', 'Выберите что получите'); return; }
             const sourceItem = inventory[selectedSourceIndex];
             const targetItem = possibleDrops[selectedTargetIndex];
-            if (targetItem.price <= sourceItem.price) { alert('Целевой скин должен быть дороже исходного!'); return; }
+            if (targetItem.price <= sourceItem.price) {
+                showAlert('⚠️', 'Ошибка', 'Целевой скин должен быть дороже исходного!');
+                return;
+            }
             const chance = (sourceItem.price / targetItem.price) * 100;
             const roll = Math.random() * 100;
             const isWin = roll < chance;
@@ -1241,7 +1284,7 @@ function closeModal() {
         }
         function openPayWindow() {
             const amount = parseInt(document.getElementById('depositAmount').value);
-            if (!amount || amount < 1) { alert('Введите сумму больше 0'); return; }
+            if (!amount || amount < 1) { showAlert('⚠️', 'Ошибка', 'Введите сумму больше 0'); return; }
             const formatted = formatNumber(amount);
             document.getElementById('payAmount').textContent = `${formatted} ₽`;
             document.getElementById('payAmountGold').textContent = `Зачислится: ${formatted} 🪙`;
@@ -1256,17 +1299,12 @@ function closeModal() {
             updateBalance();
             saveState();
             document.getElementById('payOverlay').classList.remove('show');
-            const formatted = formatNumber(amount);
-            document.getElementById('pushText').textContent = `Зачислено ${formatted} ₽ на баланс`;
-            document.querySelector('.push-title').textContent = 'Оплата прошла';
-            const push = document.getElementById('pushNotification');
-            push.classList.add('show');
-            setTimeout(() => push.classList.remove('show'), 4000);
+            showPush('Оплата прошла', `Зачислено ${formatNumber(amount)} ₽ на баланс`);
         }
 
         // === Вывод в игру ===
         function openWithdrawItemModal() {
-            if (inventory.length === 0) { alert('У вас нет скинов'); return; }
+            if (inventory.length === 0) { showAlert('⚠️', 'Инвентарь пуст', 'У вас нет скинов для вывода'); return; }
             document.getElementById('modalTitle').textContent = 'Выберите скин для вывода';
             const grid = document.getElementById('modalGrid');
             grid.innerHTML = '';
@@ -1293,7 +1331,6 @@ function closeModal() {
                 <div class="preview-emoji">${item.emoji}</div>
                 <div class="preview-name">${item.name}</div>`;
             document.getElementById('withdrawItemName').textContent = item.name;
-            document.getElementById('withdrawPrice').value = item.price;
             updateWithdrawInfo();
             showScreen('withdraw');
         }
@@ -1307,16 +1344,19 @@ function closeModal() {
                 <div class="preview-emoji">${item.emoji}</div>
                 <div class="preview-name">${item.name}</div>`;
             document.getElementById('withdrawItemName').textContent = item.name;
-            document.getElementById('withdrawPrice').value = item.price;
             updateWithdrawInfo();
         }
 
+        // Автоматический расчёт цены с комиссией 20%
         function updateWithdrawInfo() {
-            const price = parseInt(document.getElementById('withdrawPrice').value) || 0;
-            document.getElementById('withdrawItemPrice').textContent = `${formatNumber(price)} 🪙`;
+            if (withdrawSelectedIndex === null) return;
+            const item = inventory[withdrawSelectedIndex];
+            const gamePrice = Math.round(item.price / (1 - COMMISSION));
+            const youGet = item.price;
+            document.getElementById('withdrawItemPrice').textContent = `${formatNumber(gamePrice)} 🪙`;
+            document.getElementById('withdrawItemResult').textContent = `${formatNumber(youGet)} 🪙`;
         }
 
-        // Загрузка аватарки
         function previewAvatarPhoto(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -1330,7 +1370,6 @@ function closeModal() {
             reader.readAsDataURL(file);
         }
 
-        // Загрузка фото скина
         function previewWithdrawPhoto(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -1345,16 +1384,26 @@ function closeModal() {
         }
 
         function confirmWithdraw() {
-            if (withdrawSelectedIndex === null) { alert('Выберите скин для вывода'); return; }
-            if (!withdrawAvatarData) { alert('Загрузите вашу аватарку'); return; }
-            if (!withdrawPhotoData) { alert('Загрузите фото выставленного скина'); return; }
-
-            const price = parseInt(document.getElementById('withdrawPrice').value) || 0;
-            if (price < 1) { alert('Укажите цену больше 0'); return; }
+            if (withdrawSelectedIndex === null) { showAlert('⚠️', 'Ошибка', 'Выберите скин для вывода'); return; }
+            if (!withdrawAvatarData) { showAlert('⚠️', 'Ошибка', 'Загрузите вашу аватарку'); return; }
+            if (!withdrawPhotoData) { showAlert('⚠️', 'Ошибка', 'Загрузите фото выставленного скина'); return; }
 
             const item = inventory[withdrawSelectedIndex];
+            const gamePrice = Math.round(item.price / (1 - COMMISSION));
+
+            const withdrawEntry = {
+                emoji: item.emoji,
+                name: item.name,
+                price: item.price,
+                gamePrice: gamePrice,
+                status: 'processing',
+                date: new Date().toLocaleDateString('ru-RU')
+            };
+            withdrawHistory.unshift(withdrawEntry);
+
             inventory.splice(withdrawSelectedIndex, 1);
             renderInventory();
+            renderWithdrawHistory();
             saveState();
 
             withdrawSelectedIndex = null;
@@ -1364,14 +1413,35 @@ function closeModal() {
             document.getElementById('withdrawItemPreview').innerHTML = 'Нажмите, чтобы выбрать скин';
             document.getElementById('withdrawItemName').textContent = '—';
             document.getElementById('withdrawItemPrice').textContent = '0 🪙';
+            document.getElementById('withdrawItemResult').textContent = '0 🪙';
             document.getElementById('avatarPhotoPreview').classList.remove('show');
             document.getElementById('withdrawPhotoPreview').classList.remove('show');
 
-            document.querySelector('.push-title').textContent = 'ArDrop';
-            document.getElementById('pushText').textContent = `Заявка на вывод ${item.name} (${formatNumber(price)} 🪙) создана.`;
-            const push = document.getElementById('pushNotification');
-            push.classList.add('show');
-            setTimeout(() => push.classList.remove('show'), 4000);
+            showPush('ArDrop', `Заявка на вывод ${item.name} создана. Обработка от 15 минут до 5 дней.`);
+        }
+
+        // === История выводов ===
+        function renderWithdrawHistory() {
+            const container = document.getElementById('withdrawHistory');
+            if (withdrawHistory.length === 0) {
+                container.innerHTML = '<div class="history-empty">Пока нет выводов</div>';
+            } else {
+                container.innerHTML = '';
+                withdrawHistory.forEach(entry => {
+                    const el = document.createElement('div');
+                    el.className = 'history-item';
+                    el.innerHTML = `
+                        <div class="history-emoji">${entry.emoji}</div>
+                        <div class="history-info">
+                            <div class="history-name">${entry.name}</div>
+                            <div class="history-price">Выставили за ${formatNumber(entry.gamePrice)} 🪙 · Получите ${formatNumber(entry.price)} 🪙</div>
+                        </div>
+                        <div class="history-status ${entry.status}">${entry.status === 'processing' ? 'В обработке' : 'Выведено'}</div>`;
+                    container.appendChild(el);
+                });
+            }
+            const statEl = document.getElementById('statWithdraws');
+            if (statEl) statEl.textContent = withdrawHistory.length;
         }
 
         function showScreen(name) {
@@ -1407,6 +1477,11 @@ function closeModal() {
                 document.getElementById('screen-withdraw').classList.add('active');
                 document.getElementById('navWithdraw').classList.add('active');
                 updateBalance();
+            } else if (name === 'profile') {
+                document.getElementById('screen-profile').classList.add('active');
+                document.getElementById('navProfile').classList.add('active');
+                document.getElementById('statBalance').textContent = formatNumber(balance);
+                renderWithdrawHistory();
             }
         }
 
@@ -1415,6 +1490,8 @@ function closeModal() {
             document.getElementById('balanceDisplay').textContent = formatted;
             const upgBal = document.getElementById('upgraderBalanceDisplay');
             if (upgBal) upgBal.textContent = formatted;
+            const statEl = document.getElementById('statBalance');
+            if (statEl) statEl.textContent = formatted;
         }
     </script>
 </body>
