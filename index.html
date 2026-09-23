@@ -7,12 +7,14 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-        body {
+        html, body {
             background-color: #0b0e14; color: #e0e0e0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             min-height: 100vh; padding-bottom: 70px;
+            overflow-x: hidden;
         }
 
+        /* === Шапка === */
         .header {
             display: flex; align-items: center; justify-content: space-between;
             padding: 15px 20px; background-color: #11151c;
@@ -33,16 +35,19 @@
         .balance:active { transform: scale(0.96); }
         .gold-icon { width: 20px; height: 16px; flex-shrink: 0; }
 
+        /* === Экраны === */
         .screen { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
         .screen.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .section-title { font-size: 20px; font-weight: 700; margin-bottom: 15px; color: #fff; }
+
+        /* === Кейсы === */
         .cases-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         .case-card {
             background-color: #151920; border: 1px solid #1f2530; border-radius: 16px;
             padding: 12px; text-align: center; transition: transform 0.2s, border-color 0.2s;
-            cursor: pointer; position: relative;
+            cursor: pointer;
         }
         .case-card:hover { transform: translateY(-4px); border-color: #f57c00; }
         .case-image {
@@ -58,6 +63,7 @@
         }
         .case-price .price-val { color: #ffb300; font-weight: 700; }
 
+        /* === Экран кейса === */
         .case-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
         .back-btn {
             background-color: #1a1d24; border: 1px solid #2a2e38; color: #e0e0e0;
@@ -104,6 +110,7 @@
         input:checked + .slider { background-color: #f57c00; }
         input:checked + .slider:before { transform: translateX(22px); }
 
+        /* === Рулетка === */
         .roulette-wrapper {
             position: relative; background-color: #11151c;
             border: 1px solid #1f2530; border-radius: 16px;
@@ -153,51 +160,19 @@
             width: 100%; background-color: #f57c00; color: #0b0e14;
             border: none; border-radius: 12px; padding: 16px;
             font-size: 16px; font-weight: 700; cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s; margin-bottom: 20px;
+            transition: background-color 0.2s; margin-bottom: 20px;
         }
         .btn-open-case:hover:not(:disabled) { background-color: #e65100; }
-        .btn-open-case:active:not(:disabled) { transform: scale(0.98); }
         .btn-open-case:disabled { background-color: #2a2e38; color: #8a919f; cursor: not-allowed; }
 
-        /* Модалка дропа (всплывает поверх экрана кейса) */
-        .drop-modal {
-            position: fixed; inset: 0; background-color: rgba(0,0,0,0.85);
-            z-index: 400; display: none; align-items: center; justify-content: center;
-            padding: 20px;
-        }
-        .drop-modal.show { display: flex; }
-        .drop-modal-box {
-            background-color: #151920; border: 1px solid #1f2530;
-            border-radius: 20px; padding: 25px 20px; width: 100%; max-width: 400px;
-            text-align: center; animation: popIn 0.4s ease;
-        }
-        .drop-modal-box h3 { font-size: 16px; color: #8a919f; margin-bottom: 15px; font-weight: 500; }
-        .drop-modal-box .main-drop { font-size: 70px; margin-bottom: 10px; }
-        .drop-modal-box .main-name { font-size: 18px; font-weight: 700; color: #f57c00; margin-bottom: 15px; }
-        .drop-modal-list {
-            display: grid; gap: 8px; margin-bottom: 15px;
-            max-height: 200px; overflow-y: auto;
-        }
-        .drop-modal-list.cols-1 { grid-template-columns: 1fr; }
-        .drop-modal-list.cols-2 { grid-template-columns: repeat(2, 1fr); }
-        .drop-modal-list.cols-3 { grid-template-columns: repeat(3, 1fr); }
-        .drop-modal-list.cols-5 { grid-template-columns: repeat(5, 1fr); }
-        .drop-modal-item {
-            background-color: #0f1115; border: 1px solid #1f2530;
-            border-radius: 8px; padding: 6px; text-align: center;
-        }
-        .drop-modal-item .emoji { font-size: 22px; }
-        .drop-modal-item .name { font-size: 8px; color: #8a919f; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
+        /* === Содержимое === */
         .case-contents { margin-top: 20px; border-top: 1px solid #1f2530; padding-top: 20px; }
         .contents-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 15px; }
         .contents-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
         .content-item {
             background-color: #151920; border: 1px solid #1f2530;
             border-radius: 12px; padding: 10px; text-align: center;
-            transition: border-color 0.2s;
         }
-        .content-item:hover { border-color: #f57c00; }
         .content-item .content-emoji { font-size: 40px; margin-bottom: 6px; }
         .content-item .content-name {
             font-size: 10px; color: #e0e0e0; font-weight: 600;
@@ -205,6 +180,7 @@
         }
         .content-item .content-price { font-size: 10px; color: #ffb300; font-weight: 700; }
 
+        /* === Инвентарь === */
         .inventory-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
         .inv-item {
             background-color: #151920; border: 1px solid #1f2530;
@@ -232,145 +208,81 @@
         }
         .btn-withdraw-item:hover { background-color: #21a038; color: #fff; }
         .empty-inv { text-align: center; color: #8a919f; padding: 40px 20px; font-size: 14px; }
-            /* === Апгрейдер === */
-        .upgrader-container {
-            background-color: #0b0e14;
-            min-height: calc(100vh - 140px);
-            display: flex; flex-direction: column; align-items: center;
-            padding: 10px 0;
-        }
+                /* === Апгрейдер === */
+        .upgrader-container { background-color: #0b0e14; min-height: calc(100vh - 140px); display: flex; flex-direction: column; align-items: center; padding: 10px 0; }
         .upgrader-top { width: 100%; display: flex; justify-content: flex-end; margin-bottom: 10px; }
-        .upgrader-balance {
-            background-color: #1a1d24; padding: 6px 14px; border-radius: 20px;
-            font-size: 14px; color: #ffb300; font-weight: 700;
-            border: 1px solid #2a2e38; display: flex; align-items: center; gap: 6px;
-        }
+        .upgrader-balance { background-color: #1a1d24; padding: 6px 14px; border-radius: 20px; font-size: 14px; color: #ffb300; font-weight: 700; border: 1px solid #2a2e38; display: flex; align-items: center; gap: 6px; }
 
-        .wheel-wrapper {
-            position: relative; width: 280px; height: 280px;
-            margin: 10px 0 20px; display: flex; align-items: center; justify-content: center;
-        }
-        .wheel-svg {
-            width: 100%; height: 100%; transform: rotate(-90deg);
-            position: absolute; top: 0; left: 0; z-index: 2; pointer-events: none;
-        }
+        .wheel-wrapper { position: relative; width: 280px; height: 280px; margin: 10px 0 20px; display: flex; align-items: center; justify-content: center; }
+        .wheel-svg { width: 100%; height: 100%; transform: rotate(-90deg); position: absolute; top: 0; left: 0; z-index: 2; pointer-events: none; }
         .wheel-bg-circle { fill: none; stroke: #1f2530; stroke-width: 24; }
-        .wheel-chance-circle {
-            fill: none; stroke: #ff3b30; stroke-width: 24; stroke-linecap: butt;
-            transition: stroke-dasharray 0.4s ease;
-        }
+        .wheel-chance-circle { fill: none; stroke: #ff3b30; stroke-width: 24; stroke-linecap: butt; transition: stroke-dasharray 0.4s ease; }
         .wheel-center {
             position: absolute; width: 180px; height: 180px; border-radius: 50%;
             background: radial-gradient(circle at 50% 40%, #2a2e38 0%, #151920 70%, #0b0e14 100%);
             border: 4px solid #1f2530;
             box-shadow: inset 0 0 30px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.6);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 3;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 3;
         }
-        .wheel-percent {
-            font-size: 34px; font-weight: 900; color: #00ff88;
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
-        }
+        .wheel-percent { font-size: 34px; font-weight: 900; color: #00ff88; text-shadow: 0 0 10px rgba(0, 255, 136, 0.6); }
         .wheel-center-emoji { font-size: 44px; margin-bottom: 4px; line-height: 1; }
         .wheel-result-icon { font-size: 50px; font-weight: 900; line-height: 1; }
         .wheel-result-icon.win { color: #00ff88; text-shadow: 0 0 15px rgba(0,255,136,0.8); }
         .wheel-result-icon.lose { color: #ff3b30; text-shadow: 0 0 15px rgba(255,59,48,0.8); }
 
-        .wheel-arrow-wrapper {
-            position: absolute; width: 280px; height: 280px; z-index: 4;
-            pointer-events: none; transition: transform 3.2s cubic-bezier(0.15, 0.7, 0.2, 1);
-        }
+        .wheel-arrow-wrapper { position: absolute; width: 280px; height: 280px; z-index: 4; pointer-events: none; transition: transform 3.2s cubic-bezier(0.15, 0.7, 0.2, 1); }
         .wheel-arrow {
             position: absolute; left: 50%; top: 6px; transform: translateX(-50%);
-            width: 0; height: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-top: 18px solid #f57c00;
-            filter: drop-shadow(0 0 6px rgba(245, 124, 0, 0.9));
+            width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent;
+            border-top: 18px solid #f57c00; filter: drop-shadow(0 0 6px rgba(245, 124, 0, 0.9));
         }
 
-        .upgrade-controls {
-            display: flex; align-items: center; gap: 12px;
-            width: 90%; max-width: 380px; margin-bottom: 15px;
-        }
+        .upgrade-controls { display: flex; align-items: center; gap: 12px; width: 90%; max-width: 380px; margin-bottom: 15px; }
         .btn-fast-upgrade {
             width: 50px; height: 50px; min-width: 50px; border-radius: 50%;
-            background-color: #1a1d24; border: 1px solid #2a2e38;
-            color: #f57c00; font-size: 22px;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.2s;
+            background-color: #1a1d24; border: 1px solid #2a2e38; color: #f57c00; font-size: 22px;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;
         }
-        .btn-fast-upgrade:hover { background-color: #2a2e38; border-color: #f57c00; }
         .btn-fast-upgrade.active { background-color: #f57c00; color: #0b0e14; }
 
         .btn-improve {
             flex: 1; background-color: #1a1d24; border: 1px solid #2a2e38;
             color: #fff; border-radius: 14px; padding: 16px;
             font-size: 16px; font-weight: 700; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.2s;
         }
-        .btn-improve:hover { background-color: #2a2e38; border-color: #f57c00; }
         .btn-improve:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .upgrader-chances {
-            display: flex; gap: 8px; margin-bottom: 20px;
-            width: 100%; justify-content: center; flex-wrap: wrap;
-        }
+        .upgrader-chances { display: flex; gap: 8px; margin-bottom: 20px; width: 100%; justify-content: center; flex-wrap: wrap; }
         .chance-btn {
-            background-color: #1a1d24; border: 1px solid #2a2e38;
-            color: #8a919f; border-radius: 10px; padding: 8px 14px;
-            font-size: 13px; font-weight: 700; cursor: pointer;
-            transition: all 0.2s;
+            background-color: #1a1d24; border: 1px solid #2a2e38; color: #8a919f;
+            border-radius: 10px; padding: 8px 14px; font-size: 13px; font-weight: 700;
+            cursor: pointer; transition: all 0.2s;
         }
         .chance-btn.active { background-color: #2a2e38; color: #f57c00; border-color: #f57c00; }
 
-        .upgrade-skins {
-            display: flex; justify-content: space-between; align-items: center;
-            width: 100%; max-width: 400px; padding: 0 20px;
-            margin-bottom: 15px; gap: 15px;
-        }
+        .upgrade-skins { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 400px; padding: 0 20px; margin-bottom: 15px; gap: 15px; }
         .upgrade-skin {
-            flex: 1; text-align: center;
-            background-color: #151920; border: 1px solid #1f2530;
+            flex: 1; text-align: center; background-color: #151920; border: 1px solid #1f2530;
             border-radius: 12px; padding: 12px; min-height: 120px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            cursor: pointer; transition: border-color 0.2s;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;
         }
-        .upgrade-skin:hover { border-color: #f57c00; }
         .upgrade-skin .skin-emoji { font-size: 40px; }
         .upgrade-skin .skin-label { font-size: 11px; color: #8a919f; margin-top: 6px; }
         .upgrade-arrow { color: #f57c00; font-size: 22px; font-weight: 700; }
 
-        /* === Экран вывода === */
+        /* === Вывод === */
         .withdraw-container { display: flex; flex-direction: column; align-items: center; padding: 10px 0; }
-        .withdraw-header {
-            background-color: #11151c; border: 1px solid #1f2530;
-            border-radius: 16px; padding: 16px; width: 100%;
-            margin-bottom: 20px; text-align: center;
-        }
+        .withdraw-header { background-color: #11151c; border: 1px solid #1f2530; border-radius: 16px; padding: 16px; width: 100%; margin-bottom: 20px; text-align: center; }
         .withdraw-header h3 { font-size: 16px; color: #fff; margin-bottom: 6px; }
         .withdraw-header p { font-size: 13px; color: #8a919f; }
-        .withdraw-step {
-            background-color: #11151c; border: 1px solid #1f2530;
-            border-radius: 16px; padding: 16px; width: 100%;
-            margin-bottom: 15px;
-        }
-        .withdraw-step-title {
-            font-size: 14px; font-weight: 700; color: #fff;
-            margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
-        }
+        .withdraw-step { background-color: #11151c; border: 1px solid #1f2530; border-radius: 16px; padding: 16px; width: 100%; margin-bottom: 15px; }
+        .withdraw-step-title { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         .withdraw-step-num {
-            width: 22px; height: 22px; border-radius: 50%;
-            background-color: #f57c00; color: #0b0e14;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 12px; font-weight: 900;
+            width: 22px; height: 22px; border-radius: 50%; background-color: #f57c00; color: #0b0e14;
+            display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900;
         }
-        .withdraw-preview {
-            background-color: #0f1115; border: 1px dashed #2a2e38;
-            border-radius: 12px; padding: 15px; text-align: center;
-            margin-bottom: 10px;
-        }
+        .withdraw-preview { background-color: #0f1115; border: 1px dashed #2a2e38; border-radius: 12px; padding: 15px; text-align: center; margin-bottom: 10px; }
         .withdraw-preview .preview-emoji { font-size: 50px; margin-bottom: 8px; }
         .withdraw-preview .preview-name { font-size: 14px; font-weight: 700; color: #fff; }
         .withdraw-preview.empty { color: #8a919f; font-size: 13px; padding: 25px 15px; }
@@ -381,26 +293,15 @@
             font-size: 14px; cursor: pointer; transition: all 0.2s;
             display: flex; flex-direction: column; align-items: center; gap: 6px;
         }
-        .upload-photo-btn:hover { border-color: #f57c00; color: #f57c00; }
         .upload-photo-btn .upload-icon { font-size: 28px; }
 
         .upload-preview { width: 100%; border-radius: 12px; margin-top: 10px; display: none; }
         .upload-preview.show { display: block; }
-        #avatarPhotoPreview {
-            width: 100px; height: 100px; border-radius: 50%;
-            object-fit: cover; margin: 10px auto 0;
-            border: 2px solid #f57c00;
-        }
+        #avatarPhotoPreview { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 10px auto 0; border: 2px solid #f57c00; }
         #avatarPhotoPreview.show { display: block; }
 
-        .commission-info {
-            background-color: #0f1115; border-radius: 12px;
-            padding: 12px 14px; margin-bottom: 15px;
-        }
-        .commission-row {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 5px 0; font-size: 13px;
-        }
+        .commission-info { background-color: #0f1115; border-radius: 12px; padding: 12px 14px; margin-bottom: 15px; }
+        .commission-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; font-size: 13px; }
         .commission-row .label { color: #8a919f; }
         .commission-row .value { color: #fff; font-weight: 700; }
         .commission-row .value.gold { color: #ffb300; }
@@ -409,75 +310,115 @@
         .btn-withdraw {
             width: 100%; background-color: #21a038; color: #fff;
             border: none; border-radius: 12px; padding: 16px;
-            font-size: 16px; font-weight: 700; cursor: pointer;
-            transition: background-color 0.2s; margin-top: 5px;
+            font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 5px;
         }
-        .btn-withdraw:hover { background-color: #1a7d2b; }
         .btn-withdraw:disabled { background-color: #2a2e38; color: #8a919f; cursor: not-allowed; }
 
         /* === Профиль === */
         .profile-header {
             background: linear-gradient(135deg, #1a1d24, #232830);
-            border: 1px solid #1f2530;
-            border-radius: 20px; padding: 20px; text-align: center;
-            margin-bottom: 20px;
+            border: 1px solid #1f2530; border-radius: 20px; padding: 20px;
+            text-align: center; margin-bottom: 20px;
         }
         .profile-avatar {
             width: 80px; height: 80px; border-radius: 50%;
             background: linear-gradient(135deg, #f57c00, #e65100);
             display: flex; align-items: center; justify-content: center;
             font-size: 36px; color: #fff; font-weight: 900;
-            margin: 0 auto 12px;
-            border: 3px solid #f57c00;
+            margin: 0 auto 12px; border: 3px solid #f57c00;
         }
         .profile-name { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 4px; }
         .profile-id { font-size: 12px; color: #8a919f; }
-
-        .profile-stats {
-            display: grid; grid-template-columns: repeat(2, 1fr);
-            gap: 10px; margin-bottom: 20px;
-        }
-        .profile-stat {
-            background-color: #11151c; border: 1px solid #1f2530;
-            border-radius: 12px; padding: 12px; text-align: center;
-        }
+        .profile-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+        .profile-stat { background-color: #11151c; border: 1px solid #1f2530; border-radius: 12px; padding: 12px; text-align: center; }
         .profile-stat .stat-value { font-size: 20px; font-weight: 900; color: #ffb300; }
         .profile-stat .stat-label { font-size: 11px; color: #8a919f; margin-top: 4px; }
-
-        .profile-section-title {
-            font-size: 16px; font-weight: 700; color: #fff;
-            margin-bottom: 12px; margin-top: 20px;
-        }
-
-        .withdraw-history {
-            background-color: #11151c; border: 1px solid #1f2530;
-            border-radius: 16px; padding: 15px;
-        }
-        .history-item {
-            background-color: #0f1115; border-radius: 12px;
-            padding: 12px; margin-bottom: 10px;
-            display: flex; align-items: center; gap: 12px;
-        }
+        .profile-section-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 12px; margin-top: 20px; }
+        .withdraw-history { background-color: #11151c; border: 1px solid #1f2530; border-radius: 16px; padding: 15px; }
+        .history-item { background-color: #0f1115; border-radius: 12px; padding: 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; }
         .history-item:last-child { margin-bottom: 0; }
         .history-emoji { font-size: 32px; }
         .history-info { flex: 1; }
         .history-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 2px; }
         .history-price { font-size: 12px; color: #ffb300; font-weight: 700; }
-        .history-status {
-            font-size: 10px; padding: 4px 8px; border-radius: 6px;
-            font-weight: 700; text-transform: uppercase;
-        }
+        .history-status { font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 700; text-transform: uppercase; }
         .history-status.processing { background: rgba(245, 124, 0, 0.15); color: #f57c00; }
         .history-status.done { background: rgba(33, 160, 56, 0.15); color: #21a038; }
         .history-empty { text-align: center; color: #8a919f; padding: 20px; font-size: 13px; }
 
-        /* === Кастомное уведомление === */
-        .custom-alert {
-            position: fixed; inset: 0; background-color: rgba(0,0,0,0.8);
-            z-index: 600; display: none; align-items: center; justify-content: center;
+        /* === МОДАЛКИ (все всплывающие окна) === */
+        .modal-overlay, .pay-overlay, .drop-modal, .custom-alert {
+            position: fixed; inset: 0; background-color: rgba(0,0,0,0.85);
+            z-index: 200; display: none; align-items: center; justify-content: center;
             padding: 20px;
         }
-        .custom-alert.show { display: flex; }
+        .modal-overlay.show, .pay-overlay.show, .drop-modal.show, .custom-alert.show { display: flex; }
+
+        .modal-box {
+            background-color: #151920; border: 1px solid #1f2530;
+            border-radius: 20px; width: 100%; max-width: 420px;
+            max-height: 80vh; overflow-y: auto; padding: 20px;
+        }
+        .modal-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 15px; text-align: center; }
+        .modal-close {
+            background-color: #2a2e38; border: none; color: #e0e0e0;
+            border-radius: 8px; padding: 8px 16px; font-size: 14px;
+            cursor: pointer; margin-top: 15px; width: 100%;
+        }
+        .modal-close:hover { background-color: #f57c00; color: #0b0e14; }
+
+        /* Окно оплаты (Сбер) */
+        .pay-overlay { align-items: flex-end; padding: 0; z-index: 300; }
+        .pay-window {
+            background-color: #1a1d24;
+            border-top-left-radius: 24px; border-top-right-radius: 24px;
+            width: 100%; max-width: 480px; padding: 25px 20px 30px;
+            cursor: pointer; animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .pay-logo { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px; }
+        .pay-logo-circle {
+            width: 44px; height: 44px; background: linear-gradient(135deg, #21a038, #1a7d2b);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 24px; font-weight: 900;
+        }
+        .pay-logo-text { font-size: 18px; font-weight: 700; color: #fff; }
+        .pay-amount-label { font-size: 13px; color: #8a919f; text-align: center; margin-bottom: 6px; }
+        .pay-amount { font-size: 36px; font-weight: 900; color: #fff; text-align: center; margin-bottom: 6px; }
+        .pay-amount-sub { font-size: 14px; color: #ffb300; text-align: center; margin-bottom: 25px; }
+        .pay-card { background-color: #0f1115; border-radius: 14px; padding: 15px; margin-bottom: 20px; }
+        .pay-card-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .pay-card-row:last-child { margin-bottom: 0; }
+        .pay-card-label { font-size: 12px; color: #8a919f; }
+        .pay-card-value { font-size: 14px; color: #e0e0e0; font-weight: 600; }
+        .pay-button {
+            width: 100%; background-color: #21a038; color: #fff;
+            border: none; border-radius: 14px; padding: 16px;
+            font-size: 16px; font-weight: 700; text-align: center;
+        }
+        .pay-hint { text-align: center; font-size: 12px; color: #8a919f; margin-top: 12px; }
+
+        /* Модалка дропа */
+        .drop-modal-box {
+            background-color: #151920; border: 1px solid #1f2530;
+            border-radius: 20px; padding: 25px 20px; width: 100%; max-width: 400px;
+            text-align: center; animation: popIn 0.4s ease;
+        }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        .drop-modal-box h3 { font-size: 16px; color: #8a919f; margin-bottom: 15px; font-weight: 500; }
+        .drop-modal-box .main-drop { font-size: 70px; margin-bottom: 10px; }
+        .drop-modal-box .main-name { font-size: 18px; font-weight: 700; color: #f57c00; margin-bottom: 15px; }
+        .drop-modal-list { display: grid; gap: 8px; margin-bottom: 15px; max-height: 200px; overflow-y: auto; }
+        .drop-modal-list.cols-1 { grid-template-columns: 1fr; }
+        .drop-modal-list.cols-2 { grid-template-columns: repeat(2, 1fr); }
+        .drop-modal-list.cols-3 { grid-template-columns: repeat(3, 1fr); }
+        .drop-modal-list.cols-5 { grid-template-columns: repeat(5, 1fr); }
+        .drop-modal-item { background-color: #0f1115; border: 1px solid #1f2530; border-radius: 8px; padding: 6px; text-align: center; }
+        .drop-modal-item .emoji { font-size: 22px; }
+        .drop-modal-item .name { font-size: 8px; color: #8a919f; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* Кастомное уведомление */
+        .custom-alert { z-index: 600; }
         .custom-alert-box {
             background-color: #151920; border: 1px solid #1f2530;
             border-radius: 20px; padding: 25px 20px; width: 100%; max-width: 340px;
@@ -490,10 +431,32 @@
             width: 100%; background-color: #f57c00; color: #0b0e14;
             border: none; border-radius: 12px; padding: 14px;
             font-size: 15px; font-weight: 700; cursor: pointer;
-            transition: background-color 0.2s;
         }
-        .custom-alert-box .alert-btn:hover { background-color: #e65100; }
 
+        /* Push-уведомление */
+        .push-notification {
+            position: fixed; top: -140px; left: 50%; transform: translateX(-50%);
+            width: calc(100% - 20px); max-width: 460px;
+            background: rgba(30, 34, 42, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 18px; padding: 12px 16px;
+            display: flex; align-items: center; gap: 12px;
+            z-index: 500; box-shadow: 0 15px 50px rgba(0,0,0,0.7);
+            transition: top 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
+        }
+        .push-notification.show { top: 12px; }
+        .push-icon {
+            width: 42px; height: 42px; min-width: 42px;
+            background: linear-gradient(135deg, #f57c00, #e65100);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 22px; font-weight: 900;
+        }
+        .push-content { flex: 1; min-width: 0; }
+        .push-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+        .push-text { font-size: 12px; color: #b0b6c0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* Нижнее меню */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0;
             background-color: #11151c; border-top: 1px solid #1f2530;
@@ -804,8 +767,8 @@
     <button class="nav-item" onclick="showScreen('upgrader')" id="navUpgrader"><span class="nav-icon">⬆️</span><span>Апгрейд</span></button>
     <button class="nav-item" onclick="showScreen('withdraw')" id="navWithdraw"><span class="nav-icon">📤</span><span>Вывод</span></button>
     <button class="nav-item" onclick="showScreen('profile')" id="navProfile"><span class="nav-icon">👤</span><span>Профиль</span></button>
-                </div>
-                <script>
+            </div>
+    <script>
     const cases = [
         { id: 1, name: "Стартовый", price: 49, icon: "📦" },
         { id: 2, name: "Новичок", price: 99, icon: "🎁" },
@@ -1013,7 +976,7 @@
     function closeDropModal() {
         document.getElementById('dropModal').classList.remove('show');
     }
-    function spinRoulette() {
+        function spinRoulette() {
     if (isSpinning || !currentCase) return;
     const totalCost = currentCase.price * selectedQuantity;
     if (balance < totalCost) { checkBalance(); return; }
@@ -1208,8 +1171,8 @@ function selectFromModal(mode, index) {
 
 function closeModal() {
     document.getElementById('modalOverlay').classList.remove('show');
-                    }
-                            function doUpgrade() {
+        }
+                function doUpgrade() {
             if (selectedSourceIndex === null) { showAlert('⚠️', 'Ошибка', 'Выберите свой скин'); return; }
             if (selectedTargetIndex === null) { showAlert('⚠️', 'Ошибка', 'Выберите что получите'); return; }
             const sourceItem = inventory[selectedSourceIndex];
@@ -1351,6 +1314,7 @@ function closeModal() {
         function updateWithdrawInfo() {
             if (withdrawSelectedIndex === null) return;
             const item = inventory[withdrawSelectedIndex];
+            // Цена в игре = цена скина / (1 - комиссия)
             const gamePrice = Math.round(item.price / (1 - COMMISSION));
             const youGet = item.price;
             document.getElementById('withdrawItemPrice').textContent = `${formatNumber(gamePrice)} 🪙`;
@@ -1391,6 +1355,7 @@ function closeModal() {
             const item = inventory[withdrawSelectedIndex];
             const gamePrice = Math.round(item.price / (1 - COMMISSION));
 
+            // Добавляем в историю
             const withdrawEntry = {
                 emoji: item.emoji,
                 name: item.name,
@@ -1417,7 +1382,7 @@ function closeModal() {
             document.getElementById('avatarPhotoPreview').classList.remove('show');
             document.getElementById('withdrawPhotoPreview').classList.remove('show');
 
-            showPush('ArDrop', `Заявка на вывод ${item.name} создана. Обработка от 15 минут до 5 дней.`);
+            showPush('ArDrop', `Заявка на вывод ${item.name} создана. Обработка 15–5 дней.`);
         }
 
         // === История выводов ===
@@ -1440,6 +1405,7 @@ function closeModal() {
                     container.appendChild(el);
                 });
             }
+            // Обновляем счётчик в профиле
             const statEl = document.getElementById('statWithdraws');
             if (statEl) statEl.textContent = withdrawHistory.length;
         }
