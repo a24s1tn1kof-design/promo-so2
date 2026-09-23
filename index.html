@@ -243,7 +243,6 @@
             gap: 6px;
         }
 
-        /* Колесо с процентами */
         .wheel-wrapper {
             position: relative;
             width: 280px;
@@ -279,7 +278,6 @@
             transition: stroke-dasharray 0.4s ease;
         }
 
-        /* Центральный шар */
         .wheel-center {
             position: absolute;
             width: 180px;
@@ -308,7 +306,6 @@
             line-height: 1;
         }
 
-        /* Знак результата (галочка / крестик) */
         .wheel-result-icon {
             font-size: 50px;
             font-weight: 900;
@@ -317,7 +314,6 @@
         .wheel-result-icon.win { color: #00ff88; text-shadow: 0 0 15px rgba(0,255,136,0.8); }
         .wheel-result-icon.lose { color: #ff3b30; text-shadow: 0 0 15px rgba(255,59,48,0.8); }
 
-        /* Вращающаяся стрелка */
         .wheel-arrow-wrapper {
             position: absolute;
             width: 280px;
@@ -340,7 +336,6 @@
             filter: drop-shadow(0 0 6px rgba(245, 124, 0, 0.9));
         }
 
-        /* Панель управления */
         .upgrade-controls {
             display: flex;
             align-items: center;
@@ -637,7 +632,7 @@
                 <div class="upgrade-arrow">→</div>
                 <div class="upgrade-skin" onclick="openTargetModal()">
                     <div class="skin-emoji" id="targetSkinEmoji">🎯</div>
-                    <div class="skin-label" id="targetSkinLabel">Выбрать результат</div>
+                    <div class="skin-label" id="targetSkinLabel">Подбирается автоматически</div>
                 </div>
             </div>
         </div>
@@ -663,7 +658,6 @@
         </button>
     </div>
     <script>
-    // === Данные кейсов ===
     const cases = [
         { id: 1, name: "Стартовый", price: 49, icon: "📦" },
         { id: 2, name: "Новичок", price: 99, icon: "🎁" },
@@ -673,7 +667,6 @@
         { id: 6, name: "Легенда", price: 1999, icon: "⭐" }
     ];
 
-    // === Скины (эмодзи, чтобы точно работало) ===
     const possibleDrops = [
         { name: "AK-47 | Redline", emoji: "🔫", price: 250 },
         { name: "AWP | Asiimov", emoji: "🎯", price: 500 },
@@ -713,6 +706,7 @@
     let isFastUpgrade = false;
     let selectedSourceIndex = null;
     let selectedTargetIndex = null;
+    let manualTargetSelected = false;
 
     loadState();
     updateBalance();
@@ -720,7 +714,6 @@
     renderInventory();
     updateWheelChance();
 
-    // === Отрисовка кейсов ===
     function renderCases() {
         const grid = document.getElementById('casesGrid');
         grid.innerHTML = '';
@@ -736,7 +729,6 @@
         });
     }
 
-    // === Количество открытий ===
     function setQuantity(qty) {
         selectedQuantity = qty;
         document.querySelectorAll('.qty-btn').forEach(btn => {
@@ -750,7 +742,6 @@
         isFastOpen = e.target.checked;
     });
 
-    // === Переход на экран кейса ===
     function openCaseScreen(id) {
         currentCase = cases.find(c => c.id === id);
         if (!currentCase) return;
@@ -768,7 +759,6 @@
         showScreen('case');
     }
 
-    // === Содержимое кейса ===
     function renderCaseContents() {
         const grid = document.getElementById('contentsGrid');
         grid.innerHTML = '';
@@ -783,7 +773,6 @@
         });
     }
 
-    // === Проверка баланса ===
     function checkBalance() {
         if (!currentCase) return;
         const totalCost = currentCase.price * selectedQuantity;
@@ -799,7 +788,6 @@
         }
     }
 
-    // === Лента рулетки ===
     function buildRouletteTrack() {
         const track = document.getElementById('rouletteTrack');
         track.style.transition = 'none';
@@ -814,7 +802,6 @@
         }
     }
 
-    // === Прокрутка рулетки ===
     function spinRoulette() {
         if (isSpinning || !currentCase) return;
         const totalCost = currentCase.price * selectedQuantity;
@@ -832,7 +819,6 @@
 
         const droppedItem = possibleDrops[Math.floor(Math.random() * possibleDrops.length)];
 
-        // Быстрое открытие
         if (isFastOpen) {
             setTimeout(() => {
                 inventory.push(droppedItem);
@@ -849,7 +835,6 @@
             return;
         }
 
-        // Обычная рулетка
         buildRouletteTrack();
         const track = document.getElementById('rouletteTrack');
         const items = track.children;
@@ -884,7 +869,6 @@
         }, 4200);
     }
 
-    // === Отрисовка инвентаря ===
     function renderInventory() {
         const grid = document.getElementById('inventoryGrid');
         grid.innerHTML = '';
@@ -904,7 +888,6 @@
         });
     }
 
-    // === Продажа скина ===
     function sellItem(index) {
         balance += inventory[index].price;
         inventory.splice(index, 1);
@@ -913,33 +896,55 @@
         saveState();
     }
 
-    // === Апгрейдер: множители ===
     function setMultiplier(mult) {
         currentMultiplier = mult;
         document.querySelectorAll('.chance-btn').forEach(btn => {
             btn.classList.remove('active');
             if (btn.textContent === `x${mult}`) btn.classList.add('active');
         });
-        if (selectedSourceIndex !== null && selectedTargetIndex !== null) {
+
+        if (selectedSourceIndex !== null && !manualTargetSelected) {
+            autoPickTarget();
+        } else if (selectedSourceIndex !== null && selectedTargetIndex !== null) {
             updateWheelChance();
-        } else {
-            const baseChance = Math.round(100 / mult);
-            document.getElementById('wheelPercent').textContent = `${baseChance}%`;
-            updateCircleArc(baseChance);
         }
     }
 
-    // === Обновление красной дуги ===
+    function autoPickTarget() {
+        if (selectedSourceIndex === null) return;
+        const src = inventory[selectedSourceIndex];
+        if (!src) return;
+
+        const targetPrice = src.price * currentMultiplier;
+
+        let bestIndex = 0;
+        let bestDiff = Infinity;
+        possibleDrops.forEach((drop, i) => {
+            const diff = Math.abs(drop.price - targetPrice);
+            if (diff < bestDiff) {
+                bestDiff = diff;
+                bestIndex = i;
+            }
+        });
+
+        selectedTargetIndex = bestIndex;
+        const tgt = possibleDrops[bestIndex];
+
+        document.getElementById('targetSkinEmoji').textContent = tgt.emoji;
+        document.getElementById('targetSkinLabel').textContent = `${tgt.name} (${tgt.price} 🪙)`;
+
+        updateWheelChance();
+    }
+
     function updateCircleArc(chancePercent) {
         const radius = 110;
-        const circumference = 2 * Math.PI * radius; // ≈ 691
+        const circumference = 2 * Math.PI * radius;
         const arcLength = (chancePercent / 100) * circumference;
         const circle = document.getElementById('chanceCircle');
         circle.setAttribute('stroke-dasharray', `${arcLength} ${circumference - arcLength}`);
         circle.setAttribute('stroke-dashoffset', '0');
     }
 
-    // === Пересчёт шанса по цене ===
     function updateWheelChance() {
         if (selectedSourceIndex === null || selectedTargetIndex === null) return;
         const src = inventory[selectedSourceIndex];
@@ -955,13 +960,11 @@
         updateCircleArc(chance);
     }
 
-    // === Быстрый апгрейд ===
     function toggleFastUpgrade() {
         isFastUpgrade = !isFastUpgrade;
         document.getElementById('fastUpgradeBtn').classList.toggle('active', isFastUpgrade);
     }
-                // === Модалка выбора скина ===
-        let modalMode = 'source';
+                let modalMode = 'source';
 
         function openInventoryModal(mode) {
             modalMode = mode;
@@ -992,18 +995,21 @@
         function selectFromModal(mode, index) {
             if (mode === 'source') {
                 selectedSourceIndex = index;
+                manualTargetSelected = false;
                 const item = inventory[index];
                 document.getElementById('upgradeSkinEmoji').textContent = item.emoji;
                 document.getElementById('upgradeSkinLabel').textContent = `${item.name} (${item.price} 🪙)`;
                 document.getElementById('wheelCenterEmoji').textContent = item.emoji;
                 document.getElementById('wheelCenterEmoji').style.display = 'block';
+                autoPickTarget();
             } else {
                 selectedTargetIndex = index;
+                manualTargetSelected = true;
                 const item = possibleDrops[index];
                 document.getElementById('targetSkinEmoji').textContent = item.emoji;
                 document.getElementById('targetSkinLabel').textContent = `${item.name} (${item.price} 🪙)`;
+                updateWheelChance();
             }
-            updateWheelChance();
             closeModal();
         }
 
@@ -1011,7 +1017,6 @@
             document.getElementById('modalOverlay').classList.remove('show');
         }
 
-        // === Запуск апгрейда ===
         function doUpgrade() {
             if (selectedSourceIndex === null) { alert('Выберите свой скин'); return; }
             if (selectedTargetIndex === null) { alert('Выберите что получите'); return; }
@@ -1024,7 +1029,6 @@
                 return;
             }
 
-            // Шанс = цена исходного / цена целевого × 100
             const chance = (sourceItem.price / targetItem.price) * 100;
             const roll = Math.random() * 100;
             const isWin = roll < chance;
@@ -1032,21 +1036,15 @@
             document.getElementById('improveBtn').disabled = true;
             document.getElementById('improveBtn').textContent = 'Крутим...';
 
-            // Скрываем проценты и эмодзи на время анимации
             document.getElementById('wheelPercent').style.display = 'none';
             document.getElementById('wheelCenterEmoji').style.display = 'none';
 
-            // Стрелка останавливается на случайном угле от 0° до 360°
-            // Успех, если угол попадает в диапазон [0; chance% от 360°]
             const chanceAngle = (chance / 100) * 360;
             let finalAngle = Math.random() * 360;
 
-            // Корректируем результат, чтобы визуал совпадал с шансом
             if (isWin) {
-                // Если выигрыш — ставим угол внутри красного сектора
                 finalAngle = Math.random() * chanceAngle;
             } else {
-                // Если проигрыш — ставим угол вне красного сектора
                 finalAngle = chanceAngle + Math.random() * (360 - chanceAngle);
             }
 
@@ -1057,7 +1055,6 @@
             wrapper.style.transform = `rotate(${totalRotation}deg)`;
 
             setTimeout(() => {
-                // Показываем результат — галочка или крестик
                 const resultIcon = document.createElement('div');
                 resultIcon.className = 'wheel-result-icon ' + (isWin ? 'win' : 'lose');
                 resultIcon.textContent = isWin ? '✓' : '✕';
@@ -1074,13 +1071,13 @@
                     inventory.splice(selectedSourceIndex, 1);
                 }
 
-                // Сброс выбора
                 selectedSourceIndex = null;
                 selectedTargetIndex = null;
+                manualTargetSelected = false;
                 document.getElementById('upgradeSkinEmoji').textContent = '➕';
                 document.getElementById('upgradeSkinLabel').textContent = 'Выбрать скин';
                 document.getElementById('targetSkinEmoji').textContent = '🎯';
-                document.getElementById('targetSkinLabel').textContent = 'Выбрать результат';
+                document.getElementById('targetSkinLabel').textContent = 'Подбирается автоматически';
                 document.getElementById('improveBtn').disabled = false;
                 document.getElementById('improveBtn').innerHTML = '<span style="font-size: 18px;">🛡</span> Улучшить';
 
@@ -1088,7 +1085,6 @@
                 updateBalance();
                 saveState();
 
-                // Возврат через 2 секунды — убираем крестик/галочку, показываем 🎁 и 50%
                 setTimeout(() => {
                     if (resultIcon.parentNode) resultIcon.remove();
                     document.getElementById('wheelPercent').style.display = 'block';
@@ -1107,7 +1103,6 @@
             }, 3400);
         }
 
-        // === Переключение экранов ===
         function showScreen(name) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1126,7 +1121,6 @@
                 document.getElementById('navUpgrader').classList.add('active');
                 updateBalance();
 
-                // Сброс апгрейдера при входе
                 document.getElementById('wheelCenterEmoji').textContent = '🎁';
                 document.getElementById('wheelCenterEmoji').style.display = 'block';
                 document.getElementById('wheelPercent').style.display = 'block';
@@ -1135,14 +1129,14 @@
 
                 selectedSourceIndex = null;
                 selectedTargetIndex = null;
+                manualTargetSelected = false;
                 document.getElementById('upgradeSkinEmoji').textContent = '➕';
                 document.getElementById('upgradeSkinLabel').textContent = 'Выбрать скин';
                 document.getElementById('targetSkinEmoji').textContent = '🎯';
-                document.getElementById('targetSkinLabel').textContent = 'Выбрать результат';
+                document.getElementById('targetSkinLabel').textContent = 'Подбирается автоматически';
             }
         }
 
-        // === Обновление баланса ===
         function updateBalance() {
             document.getElementById('balanceDisplay').textContent = balance.toLocaleString('ru-RU');
             const upgBal = document.getElementById('upgraderBalanceDisplay');
