@@ -215,165 +215,255 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             min-height: 300px; width: 100%; line-height: 1.6;
         }
-                .upgrader-container { background-color: #0b0e14; min-height: calc(100vh - 140px); display: flex; flex-direction: column; align-items: center; padding: 10px 0; }
-        .upgrader-top { width: 100%; display: flex; justify-content: flex-end; margin-bottom: 10px; }
-        .upgrader-balance { background-color: #1a1d24; padding: 6px 14px; border-radius: 20px; font-size: 14px; color: #ffb300; font-weight: 700; border: 1px solid #2a2e38; display: flex; align-items: center; gap: 6px; }
 
-        .wheel-wrapper { position: relative; width: 280px; height: 280px; margin: 10px 0 20px; display: flex; align-items: center; justify-content: center; }
-        .wheel-svg { width: 100%; height: 100%; transform: rotate(-90deg); position: absolute; top: 0; left: 0; z-index: 2; pointer-events: none; }
-        .wheel-bg-circle { fill: none; stroke: #1f2530; stroke-width: 24; }
-        .wheel-chance-circle { fill: none; stroke: #ff3b30; stroke-width: 24; stroke-linecap: butt; transition: stroke-dasharray 0.4s ease; }
-        .wheel-center {
-            position: absolute; width: 180px; height: 180px; border-radius: 50%;
-            background: radial-gradient(circle at 50% 40%, #2a2e38 0%, #151920 70%, #0b0e14 100%);
-            border: 4px solid #1f2530;
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.6);
-            display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 3;
+        /* === Модальное окно выбора скина === */
+        .modal-box .empty-inv {
+            min-height: auto;
+            padding: 80px 20px;
         }
-        .wheel-percent { font-size: 34px; font-weight: 900; color: #00ff88; text-shadow: 0 0 10px rgba(0, 255, 136, 0.6); }
-        .wheel-center-emoji { font-size: 44px; margin-bottom: 4px; line-height: 1; }
-        .wheel-result-icon { font-size: 50px; font-weight: 900; line-height: 1; }
-        .wheel-result-icon.win { color: #00ff88; }
-        .wheel-result-icon.lose { color: #ff3b30; }
+        .upgrader-container { background-color: #0b0e14; min-height: calc(100vh - 140px); display: flex; flex-direction: column; align-items: center; padding: 10px 0; }
+.upgrader-top { width: 100%; display: flex; justify-content: flex-end; margin-bottom: 10px; }
+.upgrader-balance { background-color: #1a1d24; padding: 6px 14px; border-radius: 20px; font-size: 14px; color: #ffb300; font-weight: 700; border: 1px solid #2a2e38; display: flex; align-items: center; gap: 6px; }
 
-        .wheel-arrow-wrapper { position: absolute; width: 280px; height: 280px; z-index: 4; pointer-events: none; transition: transform 3.2s cubic-bezier(0.15, 0.7, 0.2, 1); }
-        .wheel-arrow {
-            position: absolute; left: 50%; top: 6px; transform: translateX(-50%);
-            width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent;
-            border-top: 18px solid #f57c00;
-        }
+.wheel-wrapper { position: relative; width: 280px; height: 280px; margin: 10px 0 20px; display: flex; align-items: center; justify-content: center; }
+.wheel-svg { width: 100%; height: 100%; transform: rotate(-90deg); position: absolute; top: 0; left: 0; z-index: 2; pointer-events: none; }
+.wheel-bg-circle { fill: none; stroke: #1f2530; stroke-width: 24; }
+.wheel-chance-circle { fill: none; stroke: #ff3b30; stroke-width: 24; stroke-linecap: butt; transition: stroke-dasharray 0.4s ease; }
+.wheel-center {
+    position: absolute; width: 180px; height: 180px; border-radius: 50%;
+    background: radial-gradient(circle at 50% 40%, #2a2e38 0%, #151920 70%, #0b0e14 100%);
+    border: 4px solid #1f2530;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.6);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 3;
+}
+.wheel-percent { font-size: 34px; font-weight: 900; color: #00ff88; text-shadow: 0 0 10px rgba(0, 255, 136, 0.6); }
+.wheel-center-emoji { font-size: 44px; margin-bottom: 4px; line-height: 1; }
+.wheel-result-icon { font-size: 50px; font-weight: 900; line-height: 1; }
+.wheel-result-icon.win { color: #00ff88; }
+.wheel-result-icon.lose { color: #ff3b30; }
 
-        .upgrade-controls { display: flex; align-items: center; gap: 12px; width: 90%; max-width: 380px; margin-bottom: 15px; }
-        .btn-fast-upgrade {
-            width: 50px; height: 50px; min-width: 50px; border-radius: 50%;
-            background-color: #1a1d24; border: 1px solid #2a2e38; color: #f57c00; font-size: 22px;
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-        }
-        .btn-fast-upgrade.active { background-color: #f57c00; color: #0b0e14; }
+.wheel-arrow-wrapper { position: absolute; width: 280px; height: 280px; z-index: 4; pointer-events: none; transition: transform 3.2s cubic-bezier(0.15, 0.7, 0.2, 1); }
+.wheel-arrow {
+    position: absolute; left: 50%; top: 6px; transform: translateX(-50%);
+    width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent;
+    border-top: 18px solid #f57c00;
+}
 
-        .btn-improve {
-            flex: 1; background-color: #1a1d24; border: 1px solid #2a2e38;
-            color: #fff; border-radius: 14px; padding: 16px;
-            font-size: 16px; font-weight: 700; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
-        .btn-improve:disabled { opacity: 0.5; cursor: not-allowed; }
+.upgrade-controls { display: flex; align-items: center; gap: 12px; width: 90%; max-width: 380px; margin-bottom: 15px; }
+.btn-fast-upgrade {
+    width: 50px; height: 50px; min-width: 50px; border-radius: 50%;
+    background-color: #1a1d24; border: 1px solid #2a2e38; color: #f57c00; font-size: 22px;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+.btn-fast-upgrade.active { background-color: #f57c00; color: #0b0e14; }
 
-        .upgrader-chances { display: flex; gap: 8px; margin-bottom: 20px; width: 100%; justify-content: center; flex-wrap: wrap; }
-        .chance-btn {
-            background-color: #1a1d24; border: 1px solid #2a2e38; color: #8a919f;
-            border-radius: 10px; padding: 8px 14px; font-size: 13px; font-weight: 700; cursor: pointer;
-        }
-        .chance-btn.active { background-color: #2a2e38; color: #f57c00; border-color: #f57c00; }
+.btn-improve {
+    flex: 1; background-color: #1a1d24; border: 1px solid #2a2e38;
+    color: #fff; border-radius: 14px; padding: 16px;
+    font-size: 16px; font-weight: 700; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.btn-improve:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .upgrade-skins { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 400px; padding: 0 20px; margin-bottom: 15px; gap: 15px; }
-        .upgrade-skin {
-            flex: 1; text-align: center; background-color: #151920; border: 1px solid #1f2530;
-            border-radius: 12px; padding: 12px; min-height: 120px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;
-        }
-        .upgrade-skin .skin-emoji { font-size: 40px; }
-        .upgrade-skin .skin-label { font-size: 11px; color: #8a919f; margin-top: 6px; }
-        .upgrade-arrow { color: #f57c00; font-size: 22px; font-weight: 700; }
+.upgrader-chances { display: flex; gap: 8px; margin-bottom: 20px; width: 100%; justify-content: center; flex-wrap: wrap; }
+.chance-btn {
+    background-color: #1a1d24; border: 1px solid #2a2e38; color: #8a919f;
+    border-radius: 10px; padding: 8px 14px; font-size: 13px; font-weight: 700; cursor: pointer;
+}
+.chance-btn.active { background-color: #2a2e38; color: #f57c00; border-color: #f57c00; }
 
-        .withdraw-container { display: flex; flex-direction: column; align-items: center; padding: 10px 0; }
-        .withdraw-header { background-color: #11151c; border: 1px solid #1f2530; border-radius: 16px; padding: 16px; width: 100%; margin-bottom: 20px; text-align: center; }
-        .withdraw-header h3 { font-size: 16px; color: #fff; margin-bottom: 6px; }
-        .withdraw-header p { font-size: 13px; color: #8a919f; }
-        .withdraw-step { background-color: #11151c; border: 1px solid #1f2530; border-radius: 16px; padding: 16px; width: 100%; margin-bottom: 15px; }
-        .withdraw-step-title { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-        .withdraw-step-num {
-            width: 22px; height: 22px; border-radius: 50%; background-color: #f57c00; color: #0b0e14;
-            display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900;
-        }
-        .withdraw-preview { background-color: #0f1115; border: 1px dashed #2a2e38; border-radius: 12px; padding: 15px; text-align: center; margin-bottom: 10px; }
-        .withdraw-preview .preview-emoji { font-size: 50px; margin-bottom: 8px; }
-        .withdraw-preview .preview-name { font-size: 14px; font-weight: 700; color: #fff; }
-        .withdraw-preview.empty { color: #8a919f; font-size: 13px; padding: 25px 15px; }
+.upgrade-skins { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 400px; padding: 0 20px; margin-bottom: 15px; gap: 15px; }
+.upgrade-skin {
+    flex: 1; text-align: center; background-color: #151920; border: 1px solid #1f2530;
+    border-radius: 12px; padding: 12px; min-height: 120px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;
+}
+.upgrade-skin .skin-emoji { font-size: 40px; }
+.upgrade-skin .skin-label { font-size: 11px; color: #8a919f; margin-top: 6px; }
+.upgrade-arrow { color: #f57c00; font-size: 22px; font-weight: 700; }
 
-        .upload-photo-btn {
-            width: 100%; background-color: #2a2e38; border: 1px dashed #4a4f5d;
-            color: #8a919f; border-radius: 12px; padding: 20px;
-            font-size: 14px; cursor: pointer;
-            display: flex; flex-direction: column; align-items: center; gap: 6px;
-        }
-        .upload-photo-btn .upload-icon { font-size: 28px; }
+.withdraw-container { display: flex; flex-direction: column; align-items: center; padding: 10px 0; }
+.withdraw-header { background-color: #11151c; border: 1px solid #1f2530; border-radius: 16px; padding: 16px; width: 100%; margin-bottom: 20px; text-align: center; }
+.withdraw-header h3 { font-size: 16px; color: #fff; margin-bottom: 6px; }
+.withdraw-header p { font-size: 13px; color: #8a919f; }
+.withdraw-step { background-color: #11151c; border: 1px solid #1f2530; border-radius: 16px; padding: 16px; width: 100%; margin-bottom: 15px; }
+.withdraw-step-title { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.withdraw-step-num {
+    width: 22px; height: 22px; border-radius: 50%; background-color: #f57c00; color: #0b0e14;
+    display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900;
+}
+.withdraw-preview { background-color: #0f1115; border: 1px dashed #2a2e38; border-radius: 12px; padding: 15px; text-align: center; margin-bottom: 10px; }
+.withdraw-preview .preview-emoji { font-size: 50px; margin-bottom: 8px; }
+.withdraw-preview .preview-name { font-size: 14px; font-weight: 700; color: #fff; }
+.withdraw-preview.empty { color: #8a919f; font-size: 13px; padding: 25px 15px; }
 
-        .upload-preview { width: 100%; border-radius: 12px; margin-top: 10px; display: none; }
-        .upload-preview.show { display: block; }
-        #avatarPhotoPreview { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 10px auto 0; border: 2px solid #f57c00; }
-        #avatarPhotoPreview.show { display: block; }
+.upload-photo-btn {
+    width: 100%; background-color: #2a2e38; border: 1px dashed #4a4f5d;
+    color: #8a919f; border-radius: 12px; padding: 20px;
+    font-size: 14px; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.upload-photo-btn .upload-icon { font-size: 28px; }
 
-        .commission-info { background-color: #0f1115; border-radius: 12px; padding: 12px 14px; margin-bottom: 15px; }
-        .commission-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; font-size: 13px; }
-        .commission-row .label { color: #8a919f; }
-        .commission-row .value { color: #fff; font-weight: 700; }
-        .commission-row .value.gold { color: #ffb300; }
-        .commission-row .value.green { color: #00ff88; }
+.upload-preview { width: 100%; border-radius: 12px; margin-top: 10px; display: none; }
+.upload-preview.show { display: block; }
+#avatarPhotoPreview { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 10px auto 0; border: 2px solid #f57c00; }
+#avatarPhotoPreview.show { display: block; }
 
-        .btn-withdraw {
-            width: 100%; background-color: #21a038; color: #fff;
-            border: none; border-radius: 12px; padding: 16px;
-            font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 5px;
-        }
-        .btn-withdraw:disabled { background-color: #2a2e38; color: #8a919f; cursor: not-allowed; }
+.commission-info { background-color: #0f1115; border-radius: 12px; padding: 12px 14px; margin-bottom: 15px; }
+.commission-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; font-size: 13px; }
+.commission-row .label { color: #8a919f; }
+.commission-row .value { color: #fff; font-weight: 700; }
+.commission-row .value.gold { color: #ffb300; }
+.commission-row .value.green { color: #00ff88; }
 
-        .profile-header {
-            background: linear-gradient(135deg, #1a1d24, #232830);
-            border: 1px solid #1f2530; border-radius: 20px; padding: 20px;
-            text-align: center; margin-bottom: 20px;
-        }
-        .profile-avatar {
-            width: 80px; height: 80px; border-radius: 50%;
-            background: linear-gradient(135deg, #f57c00, #e65100);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 36px; color: #fff; font-weight: 900;
-            margin: 0 auto 12px; border: 3px solid #f57c00;
-        }
-        .profile-name { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 4px; }
-        .profile-id { font-size: 12px; color: #8a919f; }
-        .profile-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
-        .profile-stat { background-color: #11151c; border: 1px solid #1f2530; border-radius: 12px; padding: 12px; text-align: center; }
-        .profile-stat .stat-value { font-size: 20px; font-weight: 900; color: #ffb300; }
-        .profile-stat .stat-label { font-size: 11px; color: #8a919f; margin-top: 4px; }
-        .profile-section-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 12px; margin-top: 20px; }
-        .withdraw-history { background-color: #11151c; border: 1px solid #1f2530; border-radius: 16px; padding: 15px; }
-        .history-item { background-color: #0f1115; border-radius: 12px; padding: 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; }
-        .history-item:last-child { margin-bottom: 0; }
-        .history-emoji { font-size: 32px; }
-        .history-info { flex: 1; }
-        .history-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 2px; }
-        .history-price { font-size: 11px; color: #ffb300; font-weight: 700; }
-        .history-status {
-            font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 700;
-            text-transform: uppercase; cursor: pointer;
-        }
-        .history-status.processing { background: rgba(245, 124, 0, 0.15); color: #f57c00; }
-        .history-status.done { background: rgba(33, 160, 56, 0.15); color: #21a038; }
-        .history-empty { text-align: center; color: #8a919f; padding: 20px; font-size: 13px; }
+.btn-withdraw {
+    width: 100%; background-color: #21a038; color: #fff;
+    border: none; border-radius: 12px; padding: 16px;
+    font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 5px;
+}
+.btn-withdraw:disabled { background-color: #2a2e38; color: #8a919f; cursor: not-allowed; }
 
-        .modal-overlay, .pay-overlay, .drop-modal, .custom-alert {
-            position: fixed; inset: 0; background-color: rgba(0,0,0,0.85);
-            z-index: 200; display: none; align-items: center; justify-content: center;
-            padding: 20px;
-        }
-        .modal-overlay.show, .pay-overlay.show, .drop-modal.show, .custom-alert.show { display: flex; }
-        .custom-alert { z-index: 600; }
+.profile-header {
+    background: linear-gradient(135deg, #1a1d24, #232830);
+    border: 1px solid #1f2530; border-radius: 20px; padding: 20px;
+    text-align: center; margin-bottom: 20px;
+}
+.profile-avatar {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: linear-gradient(135deg, #f57c00, #e65100);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px; color: #fff; font-weight: 900;
+    margin: 0 auto 12px; border: 3px solid #f57c00;
+}
+.profile-name { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.profile-id { font-size: 12px; color: #8a919f; }
+.profile-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+.profile-stat { background-color: #11151c; border: 1px solid #1f2530; border-radius: 12px; padding: 12px; text-align: center; }
+.profile-stat .stat-value { font-size: 20px; font-weight: 900; color: #ffb300; }
+.profile-stat .stat-label { font-size: 11px; color: #8a919f; margin-top: 4px; }
+.profile-section-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 12px; margin-top: 20px; }
+.withdraw-history { background-color: #11151c; border: 1px solid #1f2530; border-radius: 16px; padding: 15px; }
+.history-item { background-color: #0f1115; border-radius: 12px; padding: 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; }
+.history-item:last-child { margin-bottom: 0; }
+.history-emoji { font-size: 32px; }
+.history-info { flex: 1; }
+.history-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+.history-price { font-size: 11px; color: #ffb300; font-weight: 700; }
+.history-status {
+    font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 700;
+    text-transform: uppercase; cursor: pointer;
+}
+.history-status.processing { background: rgba(245, 124, 0, 0.15); color: #f57c00; }
+.history-status.done { background: rgba(33, 160, 56, 0.15); color: #21a038; }
+.history-empty { text-align: center; color: #8a919f; padding: 20px; font-size: 13px; }
 
-        .modal-box {
-            background-color: #151920; border: 1px solid #1f2530;
-            border-radius: 20px; width: 100%; max-width: 420px;
-            max-height: 80vh; overflow-y: auto; padding: 20px;
-        }
-        .modal-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 15px; text-align: center; }
-        .modal-close {
-            background-color: #2a2e38; border: none; color: #e0e0e0;
-            border-radius: 8px; padding: 8px 16px; font-size: 14px;
-            cursor: pointer; margin-top: 15px; width: 100%;
-        }
-        .modal-close:hover { background-color: #f57c00; color: #0b0e14; }
+/* === Мини-игра "Лесенка" === */
+.ladder-container {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 10px 0;
+}
+.ladder-info {
+    background-color: #11151c; border: 1px solid #1f2530;
+    border-radius: 16px; padding: 16px; width: 100%;
+    margin-bottom: 20px; text-align: center;
+}
+.ladder-info h3 { font-size: 16px; color: #fff; margin-bottom: 6px; }
+.ladder-info p { font-size: 13px; color: #8a919f; }
+.ladder-board {
+    display: flex; flex-direction: column-reverse;
+    gap: 10px; width: 100%;
+    margin-bottom: 20px;
+}
+.ladder-step {
+    display: flex; align-items: center; justify-content: space-between;
+    background-color: #151920; border: 1px solid #1f2530;
+    border-radius: 12px; padding: 12px 16px;
+    transition: all 0.3s ease;
+}
+.ladder-step.current {
+    border-color: #f57c00;
+    box-shadow: 0 0 15px rgba(245, 124, 0, 0.4);
+    transform: scale(1.02);
+}
+.ladder-step.passed {
+    border-color: #21a038;
+    background: linear-gradient(90deg, #151920, #1a2a1f);
+}
+.ladder-step.lost {
+    border-color: #ff3b30;
+    background: linear-gradient(90deg, #151920, #2a1a1a);
+}
+.ladder-step-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background-color: #2a2e38; color: #8a919f;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 900;
+    flex-shrink: 0;
+}
+.ladder-step.current .ladder-step-num { background-color: #f57c00; color: #0b0e14; }
+.ladder-step.passed .ladder-step-num { background-color: #21a038; color: #fff; }
+.ladder-step.lost .ladder-step-num { background-color: #ff3b30; color: #fff; }
+.ladder-step-prize {
+    font-size: 15px; font-weight: 700; color: #ffb300;
+    margin-left: 12px; flex: 1;
+}
+.ladder-step-mult {
+    font-size: 12px; color: #8a919f;
+}
+.ladder-controls {
+    display: flex; gap: 10px; width: 100%; margin-bottom: 15px;
+}
+.btn-ladder {
+    flex: 1; background-color: #21a038; color: #fff;
+    border: none; border-radius: 12px; padding: 16px;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+}
+.btn-ladder:hover:not(:disabled) { background-color: #1a7d2b; }
+.btn-ladder:disabled { background-color: #2a2e38; color: #8a919f; cursor: not-allowed; }
+.btn-ladder-cashout {
+    flex: 1; background-color: #f57c00; color: #0b0e14;
+    border: none; border-radius: 12px; padding: 16px;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+}
+.btn-ladder-cashout:hover:not(:disabled) { background-color: #e65100; }
+.btn-ladder-cashout:disabled { background-color: #2a2e38; color: #8a919f; cursor: not-allowed; }
+.ladder-bet {
+    background-color: #11151c; border: 1px solid #1f2530;
+    border-radius: 16px; padding: 16px; width: 100%;
+    margin-bottom: 15px;
+}
+.ladder-bet label { font-size: 13px; color: #8a919f; margin-bottom: 8px; display: block; }
+.ladder-bet input {
+    width: 100%; background-color: #0f1115;
+    border: 1px solid #2a2e38; border-radius: 12px;
+    padding: 14px 16px; color: #fff; font-size: 16px;
+    outline: none;
+}
+.ladder-bet input:focus { border-color: #f57c00; }
 
-        .pay-overlay { align-items: flex-end; padding: 0; z-index: 300; }
+.modal-overlay, .pay-overlay, .drop-modal, .custom-alert {
+    position: fixed; inset: 0; background-color: rgba(0,0,0,0.85);
+    z-index: 200; display: none; align-items: center; justify-content: center;
+    padding: 20px;
+}
+.modal-overlay.show, .pay-overlay.show, .drop-modal.show, .custom-alert.show { display: flex; }
+.custom-alert { z-index: 600; }
+
+.modal-box {
+    background-color: #151920; border: 1px solid #1f2530;
+    border-radius: 20px; width: 100%; max-width: 420px;
+    max-height: 80vh; overflow-y: auto; padding: 20px;
+    display: flex; flex-direction: column;
+}
+.modal-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 15px; text-align: center; }
+.modal-close {
+    background-color: #2a2e38; border: none; color: #e0e0e0;
+    border-radius: 8px; padding: 8px 16px; font-size: 14px;
+    cursor: pointer; margin-top: 15px; width: 100%;
+}
+.modal-close:hover { background-color: #f57c00; color: #0b0e14; }
+               .pay-overlay { align-items: flex-end; padding: 0; z-index: 300; }
         .pay-window {
             background-color: #1a1d24;
             border-top-left-radius: 24px; border-top-right-radius: 24px;
@@ -396,6 +486,7 @@
         .pay-card-row:last-child { margin-bottom: 0; }
         .pay-card-label { font-size: 12px; color: #8a919f; }
         .pay-card-value { font-size: 14px; color: #e0e0e0; font-weight: 600; }
+        .pay-card-code { font-size: 14px; color: #00ff88; font-weight: 700; letter-spacing: 2px; }
         .pay-button {
             width: 100%; background-color: #21a038; color: #fff;
             border: none; border-radius: 14px; padding: 16px;
@@ -438,6 +529,12 @@
         .custom-alert-box .alert-icon { font-size: 42px; margin-bottom: 12px; }
         .custom-alert-box .alert-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 8px; }
         .custom-alert-box .alert-text { font-size: 14px; color: #8a919f; margin-bottom: 20px; line-height: 1.5; text-align: left; }
+        .custom-alert-box .alert-input {
+            width: 100%; background-color: #0f1115; border: 1px solid #2a2e38;
+            border-radius: 12px; padding: 12px 14px; color: #fff;
+            font-size: 15px; outline: none; margin-bottom: 15px;
+        }
+        .custom-alert-box .alert-input:focus { border-color: #f57c00; }
         .custom-alert-box .alert-btn {
             width: 100%; background-color: #f57c00; color: #0b0e14;
             border: none; border-radius: 12px; padding: 14px;
@@ -474,8 +571,8 @@
         }
         .nav-item {
             display: flex; flex-direction: column; align-items: center; gap: 3px;
-            color: #8a919f; font-size: 11px; cursor: pointer;
-            padding: 5px 12px; border-radius: 10px;
+            color: #8a919f; font-size: 10px; cursor: pointer;
+            padding: 5px 8px; border-radius: 10px;
             background: none; border: none;
         }
         .nav-item.active { color: #f57c00; }
@@ -559,6 +656,31 @@
 <div class="screen" id="screen-inventory">
     <div class="section-title">Инвентарь</div>
     <div class="inventory-grid" id="inventoryGrid"></div>
+</div>
+
+<!-- === Мини-игра "Лесенка" === -->
+<div class="screen" id="screen-ladder">
+    <div class="section-title">Лесенка</div>
+    <div class="ladder-container">
+        <div class="ladder-info">
+            <h3>Мини-игра «Лесенка»</h3>
+            <p>Каждая ступень — шанс выиграть больше. Оступишься — потеряешь всё.</p>
+        </div>
+
+        <div class="ladder-bet">
+            <label>Ставка (голда)</label>
+            <input type="number" id="ladderBet" value="100" min="10">
+        </div>
+
+        <div class="ladder-board" id="ladderBoard"></div>
+
+        <div class="ladder-controls">
+            <button class="btn-ladder" id="ladderNextBtn" onclick="ladderNext()">Следующая ступень</button>
+            <button class="btn-ladder-cashout" id="ladderCashoutBtn" onclick="ladderCashout()">Забрать</button>
+        </div>
+
+        <button class="btn-ladder" id="ladderStartBtn" onclick="ladderStart()" style="background-color:#f57c00; color:#0b0e14;">Начать игру</button>
+    </div>
 </div>
 
 <div class="screen" id="screen-withdraw">
@@ -730,6 +852,7 @@
         <div class="pay-amount-sub" id="payAmountGold">Зачислится: 500 🪙</div>
         <div class="pay-card">
             <div class="pay-card-row"><div class="pay-card-label">Способ оплаты</div><div class="pay-card-value">Карта</div></div>
+            <div class="pay-card-row"><div class="pay-card-label">Код</div><div class="pay-card-code" id="payCode">000</div></div>
             <div class="pay-card-row"><div class="pay-card-label">Комиссия</div><div class="pay-card-value">0 ₽</div></div>
             <div class="pay-card-row"><div class="pay-card-label">Курс</div><div class="pay-card-value">1 ₽ = 1 🪙</div></div>
         </div>
@@ -753,7 +876,8 @@
         <div class="alert-icon" id="alertIcon">⚠️</div>
         <div class="alert-title" id="alertTitle">Внимание</div>
         <div class="alert-text" id="alertText">Текст уведомления</div>
-        <button class="alert-btn" id="customAlertBtn">Понятно</button>
+        <input type="text" class="alert-input" id="alertInput" style="display: none;">
+        <button class="alert-btn" id="customAlertBtn" onclick="closeCustomAlert()">Понятно</button>
     </div>
 </div>
 
@@ -772,6 +896,7 @@
 <div class="bottom-nav">
     <button class="nav-item active" onclick="showScreen('cases')" id="navCases"><span class="nav-icon">📦</span><span>Кейсы</span></button>
     <button class="nav-item" onclick="showScreen('inventory')" id="navInventory"><span class="nav-icon">🎒</span><span>Инвентарь</span></button>
+    <button class="nav-item" onclick="showScreen('ladder')" id="navLadder"><span class="nav-icon">🪜</span><span>Лесенка</span></button>
     <button class="nav-item" onclick="showScreen('upgrader')" id="navUpgrader"><span class="nav-icon">⬆️</span><span>Апгрейд</span></button>
     <button class="nav-item" onclick="showScreen('withdraw')" id="navWithdraw"><span class="nav-icon">📤</span><span>Вывод</span></button>
     <button class="nav-item" onclick="showScreen('profile')" id="navProfile"><span class="nav-icon">👤</span><span>Профиль</span></button>
@@ -819,6 +944,22 @@
     let withdrawAvatarData = null;
     let withdrawHistory = [];
 
+    // Лесенка
+    const LADDER_STEPS = [
+        { mult: 1.2, chance: 90 },
+        { mult: 1.5, chance: 80 },
+        { mult: 2, chance: 70 },
+        { mult: 3, chance: 55 },
+        { mult: 5, chance: 40 },
+        { mult: 8, chance: 25 },
+        { mult: 15, chance: 15 },
+        { mult: 50, chance: 5 }
+    ];
+    let ladderActive = false;
+    let ladderCurrentStep = 0;
+    let ladderCurrentBet = 0;
+    let ladderOriginalBet = 0;
+
     function formatNumber(num) {
         return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     }
@@ -844,23 +985,59 @@
     renderInventory();
     updateWheelChance();
     renderWithdrawHistory();
+    renderLadder();
 
     const savedName = localStorage.getItem('ardrop_name');
     if (savedName) document.getElementById('profileNameDisplay').textContent = savedName;
 
+    // === Кастомные уведомления ===
     function closeCustomAlert() {
         document.getElementById('customAlert').classList.remove('show');
+        document.getElementById('alertInput').style.display = 'none';
         const btn = document.getElementById('customAlertBtn');
         btn.textContent = 'Понятно';
         btn.onclick = closeCustomAlert;
     }
+
     function showAlert(icon, title, text, btnText, btnAction) {
         document.getElementById('alertIcon').textContent = icon;
         document.getElementById('alertTitle').textContent = title;
         document.getElementById('alertText').innerHTML = text;
+        document.getElementById('alertInput').style.display = 'none';
         const btn = document.getElementById('customAlertBtn');
         btn.textContent = btnText || 'Понятно';
         btn.onclick = btnAction || closeCustomAlert;
+        document.getElementById('customAlert').classList.add('show');
+    }
+
+    function showConfirm(icon, title, text, onConfirm) {
+        document.getElementById('alertIcon').textContent = icon;
+        document.getElementById('alertTitle').textContent = title;
+        document.getElementById('alertText').innerHTML = text;
+        document.getElementById('alertInput').style.display = 'none';
+        const btn = document.getElementById('customAlertBtn');
+        btn.textContent = 'Подтвердить';
+        btn.onclick = () => {
+            closeCustomAlert();
+            if (onConfirm) onConfirm();
+        };
+        document.getElementById('customAlert').classList.add('show');
+    }
+
+    function showPrompt(icon, title, text, defaultValue, onConfirm) {
+        document.getElementById('alertIcon').textContent = icon;
+        document.getElementById('alertTitle').textContent = title;
+        document.getElementById('alertText').innerHTML = text;
+        const input = document.getElementById('alertInput');
+        input.style.display = 'block';
+        input.value = defaultValue || '';
+        const btn = document.getElementById('customAlertBtn');
+        btn.textContent = 'Сохранить';
+        btn.onclick = () => {
+            const val = input.value.trim();
+            closeCustomAlert();
+            if (onConfirm) onConfirm(val);
+        };
         document.getElementById('customAlert').classList.add('show');
     }
 
@@ -1192,7 +1369,84 @@ function selectFromModal(mode, index) {
 
 function closeModal() {
     document.getElementById('modalOverlay').classList.remove('show');
+}
+
+// === ЛЕСЕНКА ===
+function renderLadder() {
+    const board = document.getElementById('ladderBoard');
+    board.innerHTML = '';
+    LADDER_STEPS.forEach((step, i) => {
+        const el = document.createElement('div');
+        el.className = 'ladder-step';
+        if (ladderActive && i < ladderCurrentStep) el.classList.add('passed');
+        if (ladderActive && i === ladderCurrentStep) el.classList.add('current');
+        el.innerHTML = `
+            <div class="ladder-step-num">${i + 1}</div>
+            <div class="ladder-step-prize">x${step.mult} — ${step.chance}%</div>
+            <div class="ladder-step-mult">${ladderActive && i === ladderCurrentStep ? 'Текущая' : ''}</div>
+        `;
+        board.appendChild(el);
+    });
+    // Обновляем кнопки
+    document.getElementById('ladderNextBtn').disabled = !ladderActive;
+    document.getElementById('ladderCashoutBtn').disabled = !ladderActive || ladderCurrentStep === 0;
+    document.getElementById('ladderStartBtn').style.display = ladderActive ? 'none' : 'block';
+}
+
+function ladderStart() {
+    const bet = parseInt(document.getElementById('ladderBet').value) || 0;
+    if (bet < 10) { showAlert('⚠️', 'Ошибка', 'Минимальная ставка — 10 🪙'); return; }
+    if (bet > balance) { showAlert('⚠️', 'Ошибка', 'Недостаточно голды'); return; }
+    balance -= bet;
+    ladderOriginalBet = bet;
+    ladderCurrentBet = bet;
+    ladderCurrentStep = 0;
+    ladderActive = true;
+    updateBalance();
+    saveState();
+    renderLadder();
+    showPush('ArDrop', `Игра начата. Ставка: ${formatNumber(bet)} 🪙`);
+}
+
+function ladderNext() {
+    if (!ladderActive) return;
+    const step = LADDER_STEPS[ladderCurrentStep];
+    const roll = Math.random() * 100;
+    if (roll < step.chance) {
+        // Успех
+        ladderCurrentBet = ladderOriginalBet * step.mult;
+        ladderCurrentStep++;
+        if (ladderCurrentStep >= LADDER_STEPS.length) {
+            // Дошёл до конца
+            ladderCashout();
+            return;
+        }
+        renderLadder();
+    } else {
+        // Проигрыш
+        ladderActive = false;
+        ladderCurrentStep = 0;
+        ladderCurrentBet = 0;
+        ladderOriginalBet = 0;
+        updateBalance();
+        saveState();
+        renderLadder();
+        showPush('ArDrop', 'Оступился. Ставка сгорела.');
     }
+}
+
+function ladderCashout() {
+    if (!ladderActive || ladderCurrentStep === 0) return;
+    balance += ladderCurrentBet;
+    updateBalance();
+    saveState();
+    showPush('ArDrop', `Забрал ${formatNumber(ladderCurrentBet)} 🪙`);
+    ladderActive = false;
+    ladderCurrentStep = 0;
+    ladderCurrentBet = 0;
+    ladderOriginalBet = 0;
+    renderLadder();
+        }
                 function doUpgrade() {
             if (selectedSourceIndex === null) { showAlert('⚠️', 'Ошибка', 'Выберите свой скин'); return; }
             if (selectedTargetIndex === null) { showAlert('⚠️', 'Ошибка', 'Выберите что получите'); return; }
@@ -1258,6 +1512,7 @@ function closeModal() {
             }, 3400);
         }
 
+        // === Пополнение ===
         function openDepositModal() {
             document.getElementById('depositAmount').value = 500;
             document.getElementById('depositModal').classList.add('show');
@@ -1272,6 +1527,8 @@ function closeModal() {
             document.getElementById('payAmount').textContent = `${formatted} ₽`;
             document.getElementById('payAmountGold').textContent = `Зачислится: ${formatted} 🪙`;
             document.getElementById('payButtonAmount').textContent = `${formatted} ₽`;
+            // Рандомный код из 3 цифр
+            document.getElementById('payCode').textContent = String(Math.floor(Math.random() * 900) + 100);
             closeDepositModal();
             document.getElementById('payOverlay').classList.add('show');
         }
@@ -1285,6 +1542,7 @@ function closeModal() {
             showPush('Оплата прошла', `Зачислено ${formatNumber(amount)} ₽ на баланс`);
         }
 
+        // === Вывод ===
         function openWithdrawItemModal() {
             if (inventory.length === 0) { showAlert('⚠️', 'Инвентарь пуст', 'У вас нет скинов для вывода'); return; }
             document.getElementById('modalTitle').textContent = 'Выберите скин для вывода';
@@ -1460,32 +1718,35 @@ function closeModal() {
         function cancelWithdraw(index) {
             const entry = withdrawHistory[index];
             if (!entry) return;
-            if (confirm(`Отменить вывод ${entry.name}? Скин вернётся в инвентарь.`)) {
+            showConfirm('❓', 'Отменить вывод?', `Скин «${entry.name}» вернётся в инвентарь.`, () => {
                 inventory.push({ name: entry.name, emoji: entry.emoji, price: entry.price });
                 withdrawHistory.splice(index, 1);
                 renderInventory();
                 renderWithdrawHistory();
                 saveState();
-                closeCustomAlert();
                 showPush('ArDrop', `Вывод ${entry.name} отменён. Скин возвращён.`);
-            }
+            });
         }
 
         function resetBalance() {
-            if (confirm('Обнулить баланс? Это действие нельзя отменить.')) {
+            showConfirm('⚠️', 'Обнулить баланс?', 'Это действие нельзя отменить.', () => {
                 balance = 0;
                 updateBalance();
                 saveState();
                 showPush('ArDrop', 'Баланс обнулён');
-            }
+            });
         }
 
         function openEditProfile() {
-            const newName = prompt('Введите новое имя:', document.getElementById('profileNameDisplay').textContent);
-            if (newName && newName.trim()) {
-                document.getElementById('profileNameDisplay').textContent = newName.trim();
-                localStorage.setItem('ardrop_name', newName.trim());
-            }
+            showPrompt('✏️', 'Редактирование профиля', 'Введите новое имя:', 
+                document.getElementById('profileNameDisplay').textContent,
+                (newName) => {
+                    if (newName) {
+                        document.getElementById('profileNameDisplay').textContent = newName;
+                        localStorage.setItem('ardrop_name', newName);
+                        showPush('ArDrop', `Имя изменено на «${newName}»`);
+                    }
+                });
         }
 
         function showScreen(name) {
@@ -1501,6 +1762,11 @@ function closeModal() {
                 document.getElementById('screen-inventory').classList.add('active');
                 document.getElementById('navInventory').classList.add('active');
                 renderInventory();
+            } else if (name === 'ladder') {
+                document.getElementById('screen-ladder').classList.add('active');
+                document.getElementById('navLadder').classList.add('active');
+                updateBalance();
+                renderLadder();
             } else if (name === 'upgrader') {
                 document.getElementById('screen-upgrader').classList.add('active');
                 document.getElementById('navUpgrader').classList.add('active');
