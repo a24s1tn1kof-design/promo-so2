@@ -439,6 +439,7 @@
         .upgrade-skin .skin-label { font-size: 11px; color: #8a919f; margin-top: 6px; }
         .upgrade-arrow { color: #f57c00; font-size: 22px; font-weight: 700; }
 
+        /* === Модалки === */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -485,6 +486,125 @@
 
         .modal-close:hover { background-color: #f57c00; color: #0b0e14; }
 
+        /* === Окно оплаты (Сбер) === */
+        .pay-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0,0,0,0.85);
+            z-index: 300;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .pay-overlay.show { display: flex; }
+
+        .pay-window {
+            background-color: #1a1d24;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            width: 100%;
+            max-width: 480px;
+            padding: 25px 20px 30px;
+            animation: slideUp 0.3s ease;
+            cursor: pointer;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .pay-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .pay-logo-circle {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #21a038, #1a7d2b);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 24px;
+            font-weight: 900;
+        }
+
+        .pay-logo-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .pay-amount-label {
+            font-size: 13px;
+            color: #8a919f;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        .pay-amount {
+            font-size: 36px;
+            font-weight: 900;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        .pay-amount-sub {
+            font-size: 14px;
+            color: #ffb300;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .pay-card {
+            background-color: #0f1115;
+            border-radius: 14px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .pay-card-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .pay-card-row:last-child { margin-bottom: 0; }
+        .pay-card-label { font-size: 12px; color: #8a919f; }
+        .pay-card-value { font-size: 14px; color: #e0e0e0; font-weight: 600; }
+
+        .pay-button {
+            width: 100%;
+            background-color: #21a038;
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-align: center;
+        }
+
+        .pay-button:hover { background-color: #1a7d2b; }
+
+        .pay-hint {
+            text-align: center;
+            font-size: 12px;
+            color: #8a919f;
+            margin-top: 12px;
+        }
+
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0;
             background-color: #11151c; border-top: 1px solid #1f2530;
@@ -502,160 +622,181 @@
     </style>
 </head>
 <body>
-
     <div class="header">
-        <div class="logo">
-            <div class="logo-icon">A</div>
-            <span>ArDrop</span>
+    <div class="logo">
+        <div class="logo-icon">A</div>
+        <span>ArDrop</span>
+    </div>
+    <div class="balance">
+        <svg class="gold-icon" viewBox="0 0 32 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 6L2 20H30L28 6H4Z" fill="url(#goldGrad)"/>
+            <path d="M2 20L1 24H31L30 20H2Z" fill="#8B6914"/>
+            <path d="M4 6L2 20H30L28 6H4Z" stroke="#FFE066" stroke-width="0.8"/>
+            <path d="M6 8L5 10H29L28 8H6Z" fill="#FFE066" opacity="0.4"/>
+            <defs>
+                <linearGradient id="goldGrad" x1="2" y1="6" x2="30" y2="20" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#FFD700"/><stop offset="0.5" stop-color="#FFA500"/><stop offset="1" stop-color="#CC8800"/>
+                </linearGradient>
+            </defs>
+        </svg>
+        <span id="balanceDisplay">5000</span>
+    </div>
+</div>
+
+<div class="screen active" id="screen-cases">
+    <div class="section-title">Кейсы</div>
+    <div class="cases-grid" id="casesGrid"></div>
+</div>
+
+<div class="screen" id="screen-case">
+    <div class="case-header">
+        <button class="back-btn" onclick="showScreen('cases')">←</button>
+        <div class="case-header-info">
+            <h2 id="caseTitle">Кейс</h2>
+            <p>Цена: <span style="color: #ffb300;" id="casePrice">0</span></p>
         </div>
-        <div class="balance">
-            <svg class="gold-icon" viewBox="0 0 32 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4 6L2 20H30L28 6H4Z" fill="url(#goldGrad)"/>
-                <path d="M2 20L1 24H31L30 20H2Z" fill="#8B6914"/>
-                <path d="M4 6L2 20H30L28 6H4Z" stroke="#FFE066" stroke-width="0.8"/>
-                <path d="M6 8L5 10H29L28 8H6Z" fill="#FFE066" opacity="0.4"/>
-                <defs>
-                    <linearGradient id="goldGrad" x1="2" y1="6" x2="30" y2="20" gradientUnits="userSpaceOnUse">
-                        <stop stop-color="#FFD700"/><stop offset="0.5" stop-color="#FFA500"/><stop offset="1" stop-color="#CC8800"/>
-                    </linearGradient>
-                </defs>
+    </div>
+
+    <div class="case-controls">
+        <button class="btn-deposit" onclick="openDepositModal()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+            Пополнить баланс
+        </button>
+        <div class="quantity-selector">
+            <button class="qty-btn active" onclick="setQuantity(1)">1</button>
+            <button class="qty-btn" onclick="setQuantity(2)">2</button>
+            <button class="qty-btn" onclick="setQuantity(3)">3</button>
+            <button class="qty-btn" onclick="setQuantity(4)">4</button>
+            <button class="qty-btn" onclick="setQuantity(5)">5</button>
+            <button class="qty-btn" onclick="setQuantity(10)">10</button>
+        </div>
+        <div class="fast-open-toggle">
+            <div class="fast-open-label"><span class="lightning-icon">⚡</span><span>Открыть быстро</span></div>
+            <label class="switch"><input type="checkbox" id="fastOpenCheckbox"><span class="slider"></span></label>
+        </div>
+    </div>
+
+    <div class="roulette-wrapper" id="rouletteWrapper">
+        <div class="roulette-line"></div>
+        <div class="roulette-track" id="rouletteTrack"></div>
+    </div>
+
+    <div class="insufficient-funds" id="insufficientFunds">
+        <div>На балансе <span id="currentBalanceWarn">0</span> из <span id="requiredBalanceWarn">0</span></div>
+        <div style="font-size: 12px; color: #8a919f; margin-top: 4px;">Пополните еще на <span id="missingBalance">0</span></div>
+    </div>
+
+    <button class="btn-open-case" id="openCaseBtn" onclick="spinRoulette()">Открыть кейс</button>
+
+    <div class="drop-result" id="dropResult">
+        <h3>Вам выпало:</h3>
+        <span class="drop-item-emoji" id="dropIcon">🎁</span>
+        <div class="drop-name" id="dropName">Предмет</div>
+    </div>
+
+    <div class="case-contents">
+        <h3 class="contents-title">Содержимое кейса <span id="contentsCaseName">Кейс</span></h3>
+        <div class="contents-grid" id="contentsGrid"></div>
+    </div>
+</div>
+
+<div class="screen" id="screen-inventory">
+    <div class="section-title">Инвентарь</div>
+    <div class="inventory-grid" id="inventoryGrid"></div>
+</div>
+
+<div class="screen" id="screen-upgrader">
+    <div class="upgrader-container">
+        <div class="upgrader-top">
+            <div class="upgrader-balance">
+                <span id="upgraderBalanceDisplay">5000</span> 🪙
+            </div>
+        </div>
+
+        <div class="wheel-wrapper">
+            <svg class="wheel-svg" viewBox="0 0 280 280">
+                <circle class="wheel-bg-circle" cx="140" cy="140" r="110"></circle>
+                <circle class="wheel-chance-circle" id="chanceCircle" cx="140" cy="140" r="110" stroke-dasharray="0 691"></circle>
             </svg>
-            <span id="balanceDisplay">5000</span>
-        </div>
-    </div>
-
-    <div class="screen active" id="screen-cases">
-        <div class="section-title">Кейсы</div>
-        <div class="cases-grid" id="casesGrid"></div>
-    </div>
-
-    <div class="screen" id="screen-case">
-        <div class="case-header">
-            <button class="back-btn" onclick="showScreen('cases')">←</button>
-            <div class="case-header-info">
-                <h2 id="caseTitle">Кейс</h2>
-                <p>Цена: <span style="color: #ffb300;" id="casePrice">0</span></p>
+            <div class="wheel-center">
+                <div class="wheel-center-emoji" id="wheelCenterEmoji">🎁</div>
+                <div class="wheel-percent" id="wheelPercent">50%</div>
+            </div>
+            <div class="wheel-arrow-wrapper" id="wheelArrowWrapper">
+                <div class="wheel-arrow"></div>
             </div>
         </div>
 
-        <div class="case-controls">
-            <button class="btn-deposit" onclick="alert('Функция пополнения в разработке')">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                Пополнить баланс
+        <div class="upgrade-controls">
+            <button class="btn-fast-upgrade" id="fastUpgradeBtn" onclick="toggleFastUpgrade()">⚡</button>
+            <button class="btn-improve" id="improveBtn" onclick="doUpgrade()">
+                <span style="font-size: 18px;">🛡</span> Улучшить
             </button>
-            <div class="quantity-selector">
-                <button class="qty-btn active" onclick="setQuantity(1)">1</button>
-                <button class="qty-btn" onclick="setQuantity(2)">2</button>
-                <button class="qty-btn" onclick="setQuantity(3)">3</button>
-                <button class="qty-btn" onclick="setQuantity(4)">4</button>
-                <button class="qty-btn" onclick="setQuantity(5)">5</button>
-                <button class="qty-btn" onclick="setQuantity(10)">10</button>
-            </div>
-            <div class="fast-open-toggle">
-                <div class="fast-open-label"><span class="lightning-icon">⚡</span><span>Открыть быстро</span></div>
-                <label class="switch"><input type="checkbox" id="fastOpenCheckbox"><span class="slider"></span></label>
-            </div>
         </div>
 
-        <div class="roulette-wrapper" id="rouletteWrapper">
-            <div class="roulette-line"></div>
-            <div class="roulette-track" id="rouletteTrack"></div>
+        <div class="upgrader-chances">
+            <button class="chance-btn active" onclick="setMultiplier(2)">x2</button>
+            <button class="chance-btn" onclick="setMultiplier(3)">x3</button>
+            <button class="chance-btn" onclick="setMultiplier(5)">x5</button>
+            <button class="chance-btn" onclick="setMultiplier(10)">x10</button>
+            <button class="chance-btn" onclick="setMultiplier(25)">x25</button>
         </div>
 
-        <div class="insufficient-funds" id="insufficientFunds">
-            <div>На балансе <span id="currentBalanceWarn">0</span> из <span id="requiredBalanceWarn">0</span></div>
-            <div style="font-size: 12px; color: #8a919f; margin-top: 4px;">Пополните еще на <span id="missingBalance">0</span></div>
-        </div>
-
-        <button class="btn-open-case" id="openCaseBtn" onclick="spinRoulette()">Открыть кейс</button>
-
-        <div class="drop-result" id="dropResult">
-            <h3>Вам выпало:</h3>
-            <span class="drop-item-emoji" id="dropIcon">🎁</span>
-            <div class="drop-name" id="dropName">Предмет</div>
-        </div>
-
-        <div class="case-contents">
-            <h3 class="contents-title">Содержимое кейса <span id="contentsCaseName">Кейс</span></h3>
-            <div class="contents-grid" id="contentsGrid"></div>
-        </div>
-    </div>
-
-    <div class="screen" id="screen-inventory">
-        <div class="section-title">Инвентарь</div>
-        <div class="inventory-grid" id="inventoryGrid"></div>
-    </div>
-
-    <div class="screen" id="screen-upgrader">
-        <div class="upgrader-container">
-            <div class="upgrader-top">
-                <div class="upgrader-balance">
-                    <span id="upgraderBalanceDisplay">5000</span> 🪙
-                </div>
+        <div class="upgrade-skins">
+            <div class="upgrade-skin" onclick="openInventoryModal('source')">
+                <div class="skin-emoji" id="upgradeSkinEmoji">➕</div>
+                <div class="skin-label" id="upgradeSkinLabel">Выбрать скин</div>
             </div>
-
-            <div class="wheel-wrapper">
-                <svg class="wheel-svg" viewBox="0 0 280 280">
-                    <circle class="wheel-bg-circle" cx="140" cy="140" r="110"></circle>
-                    <circle class="wheel-chance-circle" id="chanceCircle" cx="140" cy="140" r="110"
-                            stroke-dasharray="0 691"></circle>
-                </svg>
-                <div class="wheel-center">
-                    <div class="wheel-center-emoji" id="wheelCenterEmoji">🎁</div>
-                    <div class="wheel-percent" id="wheelPercent">50%</div>
-                </div>
-                <div class="wheel-arrow-wrapper" id="wheelArrowWrapper">
-                    <div class="wheel-arrow"></div>
-                </div>
-            </div>
-
-            <div class="upgrade-controls">
-                <button class="btn-fast-upgrade" id="fastUpgradeBtn" onclick="toggleFastUpgrade()">⚡</button>
-                <button class="btn-improve" id="improveBtn" onclick="doUpgrade()">
-                    <span style="font-size: 18px;">🛡</span> Улучшить
-                </button>
-            </div>
-
-            <div class="upgrader-chances">
-                <button class="chance-btn active" onclick="setMultiplier(2)">x2</button>
-                <button class="chance-btn" onclick="setMultiplier(3)">x3</button>
-                <button class="chance-btn" onclick="setMultiplier(5)">x5</button>
-                <button class="chance-btn" onclick="setMultiplier(10)">x10</button>
-                <button class="chance-btn" onclick="setMultiplier(25)">x25</button>
-            </div>
-
-            <div class="upgrade-skins">
-                <div class="upgrade-skin" onclick="openInventoryModal('source')">
-                    <div class="skin-emoji" id="upgradeSkinEmoji">➕</div>
-                    <div class="skin-label" id="upgradeSkinLabel">Выбрать скин</div>
-                </div>
-                <div class="upgrade-arrow">→</div>
-                <div class="upgrade-skin" onclick="openTargetModal()">
-                    <div class="skin-emoji" id="targetSkinEmoji">🎯</div>
-                    <div class="skin-label" id="targetSkinLabel">Подбирается автоматически</div>
-                </div>
+            <div class="upgrade-arrow">→</div>
+            <div class="upgrade-skin" onclick="openTargetModal()">
+                <div class="skin-emoji" id="targetSkinEmoji">🎯</div>
+                <div class="skin-label" id="targetSkinLabel">Подбирается автоматически</div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-box">
-            <div class="modal-title" id="modalTitle">Выберите скин</div>
-            <div class="inventory-grid" id="modalGrid"></div>
-            <button class="modal-close" onclick="closeModal()">Закрыть</button>
-        </div>
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+        <div class="modal-title" id="modalTitle">Выберите скин</div>
+        <div class="inventory-grid" id="modalGrid"></div>
+        <button class="modal-close" onclick="closeModal()">Закрыть</button>
     </div>
+</div>
 
-    <div class="bottom-nav">
-        <button class="nav-item active" onclick="showScreen('cases')" id="navCases">
-            <span class="nav-icon">📦</span><span>Кейсы</span>
-        </button>
-        <button class="nav-item" onclick="showScreen('inventory')" id="navInventory">
-            <span class="nav-icon">🎒</span><span>Инвентарь</span>
-        </button>
-        <button class="nav-item" onclick="showScreen('upgrader')" id="navUpgrader">
-            <span class="nav-icon">⬆️</span><span>Апгрейд</span>
-        </button>
+<div class="modal-overlay" id="depositModal">
+    <div class="modal-box">
+        <div class="modal-title">Пополнение баланса</div>
+        <label style="font-size: 13px; color: #8a919f; margin-bottom: 8px; display: block;">Сумма в рублях</label>
+        <input type="number" id="depositAmount" placeholder="Например: 500" value="500" min="1" style="width:100%; background-color:#0f1115; border:1px solid #2a2e38; border-radius:12px; padding:14px 16px; color:#fff; font-size:16px; outline:none; margin-bottom:15px;">
+        <button class="btn-deposit" style="background-color: #f57c00; border-color: #f57c00; color: #0b0e14;" onclick="openPayWindow()">Перейти к оплате</button>
+        <button class="modal-close" onclick="closeDepositModal()">Отмена</button>
+    </div>
+</div>
+
+<div class="pay-overlay" id="payOverlay">
+    <div class="pay-window" id="payWindow" onclick="confirmPayment()">
+        <div class="pay-logo">
+            <div class="pay-logo-circle">С</div>
+            <div class="pay-logo-text">СберБанк</div>
+        </div>
+        <div class="pay-amount-label">Сумма пополнения</div>
+        <div class="pay-amount" id="payAmount">500 ₽</div>
+        <div class="pay-amount-sub" id="payAmountGold">Зачислится: 500 🪙</div>
+        <div class="pay-card">
+            <div class="pay-card-row"><div class="pay-card-label">Способ оплаты</div><div class="pay-card-value">•••• 1234</div></div>
+            <div class="pay-card-row"><div class="pay-card-label">Комиссия</div><div class="pay-card-value">0 ₽</div></div>
+            <div class="pay-card-row"><div class="pay-card-label">Курс</div><div class="pay-card-value">1 ₽ = 1 🪙</div></div>
+        </div>
+        <div class="pay-button">Оплатить <span id="payButtonAmount">500 ₽</span></div>
+        <div class="pay-hint">Нажмите в любом месте, чтобы подтвердить оплату</div>
+    </div>
+</div>
+
+<div class="bottom-nav">
+    <button class="nav-item active" onclick="showScreen('cases')" id="navCases"><span class="nav-icon">📦</span><span>Кейсы</span></button>
+    <button class="nav-item" onclick="showScreen('inventory')" id="navInventory"><span class="nav-icon">🎒</span><span>Инвентарь</span></button>
+    <button class="nav-item" onclick="showScreen('upgrader')" id="navUpgrader"><span class="nav-icon">⬆️</span><span>Апгрейд</span></button>
     </div>
     <script>
     const cases = [
@@ -680,11 +821,9 @@
         { name: "Керамбит | Doppler", emoji: "🗡️", price: 3500 }
     ];
 
-    // === Автосохранение ===
     function saveState() {
         localStorage.setItem('ardrop_save', JSON.stringify({ balance, inventory }));
     }
-
     function loadState() {
         const saved = localStorage.getItem('ardrop_save');
         if (saved) {
@@ -902,7 +1041,6 @@
             btn.classList.remove('active');
             if (btn.textContent === `x${mult}`) btn.classList.add('active');
         });
-
         if (selectedSourceIndex !== null && !manualTargetSelected) {
             autoPickTarget();
         } else if (selectedSourceIndex !== null && selectedTargetIndex !== null) {
@@ -914,60 +1052,48 @@
         if (selectedSourceIndex === null) return;
         const src = inventory[selectedSourceIndex];
         if (!src) return;
-
         const targetPrice = src.price * currentMultiplier;
-
-        let bestIndex = 0;
-        let bestDiff = Infinity;
+        let bestIndex = 0, bestDiff = Infinity;
         possibleDrops.forEach((drop, i) => {
             const diff = Math.abs(drop.price - targetPrice);
-            if (diff < bestDiff) {
-                bestDiff = diff;
-                bestIndex = i;
-            }
+            if (diff < bestDiff) { bestDiff = diff; bestIndex = i; }
         });
-
         selectedTargetIndex = bestIndex;
         const tgt = possibleDrops[bestIndex];
-
         document.getElementById('targetSkinEmoji').textContent = tgt.emoji;
         document.getElementById('targetSkinLabel').textContent = `${tgt.name} (${tgt.price} 🪙)`;
-
         updateWheelChance();
     }
-
-    function updateCircleArc(chancePercent) {
-        const radius = 110;
-        const circumference = 2 * Math.PI * radius;
-        const arcLength = (chancePercent / 100) * circumference;
-        const circle = document.getElementById('chanceCircle');
-        circle.setAttribute('stroke-dasharray', `${arcLength} ${circumference - arcLength}`);
-        circle.setAttribute('stroke-dashoffset', '0');
-    }
-
-    function updateWheelChance() {
-        if (selectedSourceIndex === null || selectedTargetIndex === null) return;
-        const src = inventory[selectedSourceIndex];
-        const tgt = possibleDrops[selectedTargetIndex];
-        if (!src || !tgt) return;
-        if (tgt.price <= src.price) {
-            document.getElementById('wheelPercent').textContent = '0%';
-            updateCircleArc(0);
-            return;
+                function updateCircleArc(chancePercent) {
+            const radius = 110;
+            const circumference = 2 * Math.PI * radius;
+            const arcLength = (chancePercent / 100) * circumference;
+            const circle = document.getElementById('chanceCircle');
+            circle.setAttribute('stroke-dasharray', `${arcLength} ${circumference - arcLength}`);
+            circle.setAttribute('stroke-dashoffset', '0');
         }
-        const chance = (src.price / tgt.price) * 100;
-        document.getElementById('wheelPercent').textContent = `${chance.toFixed(1)}%`;
-        updateCircleArc(chance);
-    }
 
-    function toggleFastUpgrade() {
-        isFastUpgrade = !isFastUpgrade;
-        document.getElementById('fastUpgradeBtn').classList.toggle('active', isFastUpgrade);
-    }
-                let modalMode = 'source';
+        function updateWheelChance() {
+            if (selectedSourceIndex === null || selectedTargetIndex === null) return;
+            const src = inventory[selectedSourceIndex];
+            const tgt = possibleDrops[selectedTargetIndex];
+            if (!src || !tgt) return;
+            if (tgt.price <= src.price) {
+                document.getElementById('wheelPercent').textContent = '0%';
+                updateCircleArc(0);
+                return;
+            }
+            const chance = (src.price / tgt.price) * 100;
+            document.getElementById('wheelPercent').textContent = `${chance.toFixed(1)}%`;
+            updateCircleArc(chance);
+        }
+
+        function toggleFastUpgrade() {
+            isFastUpgrade = !isFastUpgrade;
+            document.getElementById('fastUpgradeBtn').classList.toggle('active', isFastUpgrade);
+        }
 
         function openInventoryModal(mode) {
-            modalMode = mode;
             document.getElementById('modalTitle').textContent = mode === 'source' ? 'Выберите свой скин' : 'Выберите что получите';
             const grid = document.getElementById('modalGrid');
             grid.innerHTML = '';
@@ -1020,34 +1146,20 @@
         function doUpgrade() {
             if (selectedSourceIndex === null) { alert('Выберите свой скин'); return; }
             if (selectedTargetIndex === null) { alert('Выберите что получите'); return; }
-
             const sourceItem = inventory[selectedSourceIndex];
             const targetItem = possibleDrops[selectedTargetIndex];
-
-            if (targetItem.price <= sourceItem.price) {
-                alert('Целевой скин должен быть дороже исходного!');
-                return;
-            }
-
+            if (targetItem.price <= sourceItem.price) { alert('Целевой скин должен быть дороже исходного!'); return; }
             const chance = (sourceItem.price / targetItem.price) * 100;
             const roll = Math.random() * 100;
             const isWin = roll < chance;
 
             document.getElementById('improveBtn').disabled = true;
             document.getElementById('improveBtn').textContent = 'Крутим...';
-
             document.getElementById('wheelPercent').style.display = 'none';
             document.getElementById('wheelCenterEmoji').style.display = 'none';
 
             const chanceAngle = (chance / 100) * 360;
-            let finalAngle = Math.random() * 360;
-
-            if (isWin) {
-                finalAngle = Math.random() * chanceAngle;
-            } else {
-                finalAngle = chanceAngle + Math.random() * (360 - chanceAngle);
-            }
-
+            let finalAngle = isWin ? Math.random() * chanceAngle : chanceAngle + Math.random() * (360 - chanceAngle);
             const totalRotation = 360 * 4 + finalAngle;
 
             const wrapper = document.getElementById('wheelArrowWrapper');
@@ -1058,18 +1170,13 @@
                 const resultIcon = document.createElement('div');
                 resultIcon.className = 'wheel-result-icon ' + (isWin ? 'win' : 'lose');
                 resultIcon.textContent = isWin ? '✓' : '✕';
-
                 const center = document.querySelector('.wheel-center');
                 const oldIcon = center.querySelector('.wheel-result-icon');
                 if (oldIcon) oldIcon.remove();
                 center.appendChild(resultIcon);
 
-                if (isWin) {
-                    inventory.splice(selectedSourceIndex, 1);
-                    inventory.push(targetItem);
-                } else {
-                    inventory.splice(selectedSourceIndex, 1);
-                }
+                if (isWin) { inventory.splice(selectedSourceIndex, 1); inventory.push(targetItem); }
+                else { inventory.splice(selectedSourceIndex, 1); }
 
                 selectedSourceIndex = null;
                 selectedTargetIndex = null;
@@ -1080,7 +1187,6 @@
                 document.getElementById('targetSkinLabel').textContent = 'Подбирается автоматически';
                 document.getElementById('improveBtn').disabled = false;
                 document.getElementById('improveBtn').innerHTML = '<span style="font-size: 18px;">🛡</span> Улучшить';
-
                 renderInventory();
                 updateBalance();
                 saveState();
@@ -1092,15 +1198,40 @@
                     document.getElementById('wheelCenterEmoji').textContent = '🎁';
                     document.getElementById('wheelPercent').textContent = '50%';
                     updateCircleArc(50);
-
                     wrapper.style.transition = 'none';
                     wrapper.style.transform = 'rotate(0deg)';
-                    setTimeout(() => {
-                        wrapper.style.transition = 'transform 3.2s cubic-bezier(0.15, 0.7, 0.2, 1)';
-                    }, 50);
+                    setTimeout(() => { wrapper.style.transition = 'transform 3.2s cubic-bezier(0.15, 0.7, 0.2, 1)'; }, 50);
                 }, 2000);
-
             }, 3400);
+        }
+
+        function openDepositModal() {
+            document.getElementById('depositAmount').value = 500;
+            document.getElementById('depositModal').classList.add('show');
+        }
+
+        function closeDepositModal() {
+            document.getElementById('depositModal').classList.remove('show');
+        }
+
+        function openPayWindow() {
+            const amount = parseInt(document.getElementById('depositAmount').value);
+            if (!amount || amount < 1) { alert('Введите сумму больше 0'); return; }
+            document.getElementById('payAmount').textContent = `${amount} ₽`;
+            document.getElementById('payAmountGold').textContent = `Зачислится: ${amount} 🪙`;
+            document.getElementById('payButtonAmount').textContent = `${amount} ₽`;
+            closeDepositModal();
+            document.getElementById('payOverlay').classList.add('show');
+        }
+
+        function confirmPayment() {
+            const amount = parseInt(document.getElementById('depositAmount').value);
+            if (!amount || amount < 1) return;
+            balance += amount;
+            updateBalance();
+            saveState();
+            document.getElementById('payOverlay').classList.remove('show');
+            alert(`Оплата прошла успешно!\nЗачислено: ${amount} 🪙`);
         }
 
         function showScreen(name) {
@@ -1120,13 +1251,11 @@
                 document.getElementById('screen-upgrader').classList.add('active');
                 document.getElementById('navUpgrader').classList.add('active');
                 updateBalance();
-
                 document.getElementById('wheelCenterEmoji').textContent = '🎁';
                 document.getElementById('wheelCenterEmoji').style.display = 'block';
                 document.getElementById('wheelPercent').style.display = 'block';
                 document.getElementById('wheelPercent').textContent = '50%';
                 updateCircleArc(50);
-
                 selectedSourceIndex = null;
                 selectedTargetIndex = null;
                 manualTargetSelected = false;
